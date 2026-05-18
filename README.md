@@ -103,6 +103,7 @@ Current regression coverage includes:
 - PCODE symbol canonicalization snapshots (cross-scene canonical aliases, cluster registry, and alias-transition fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - PCODE pseudocode quality snapshots (canonical-alias pseudocode lines, intent profiles, and alias/libcall usage fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - PCODE emitter output snapshots (scene pseudo-function heads, function signatures, and emitted-line digests) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
+- PCODE scene decomp bundle snapshots (full normalized pseudo-function bundles, function ordering, and bundle text digests) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 
 ## Snapshot Refresh Utility
 
@@ -177,6 +178,10 @@ Refresh only PCODE pseudocode quality snapshots:
 Refresh only PCODE emitter output snapshots:
 
 `pwsh -File scripts/refresh_snapshot_baselines.ps1 --only emit`
+
+Refresh only PCODE scene decomp bundle snapshots:
+
+`pwsh -File scripts/refresh_snapshot_baselines.ps1 --only bundle`
 
 Refresh from an explicit dataset path:
 
