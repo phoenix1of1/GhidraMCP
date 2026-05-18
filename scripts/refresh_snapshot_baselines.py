@@ -56,6 +56,7 @@ STRUCT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 SEMANTIC_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 SYMBOL_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 CANON_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+PSEUDO_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -151,6 +152,9 @@ SYMBOL_MAX_SYMBOLS_PER_KIND = 40
 SYMBOL_SUMMARY_HEAD_LIMIT = 60
 CANON_REGISTRY_LIMIT = 80
 CANON_ALIAS_HEAD_LIMIT = 80
+PSEUDO_MAX_STEPS = 1200
+PSEUDO_MAX_PATHS = 16
+PSEUDO_LINE_HEAD_LIMIT = 80
 SEMANTIC_BEHAVIOR_TAGS = {
     "WAITFRAME": ["timing"],
     "WAITTIME": ["timing"],
@@ -2133,6 +2137,146 @@ def _build_pcode_symbol_canonicalization_snapshots(vm_mod, scanner_mod, dataset_
     return out
 
 
+def _region_control_prefix(terminator: str, has_backedge: bool) -> str:
+    if has_backedge:
+        return "while"
+    if terminator == "conditional":
+        return "if"
+    if terminator in {"halt", "ret"}:
+        return "return"
+    if terminator == "jump":
+        return "goto"
+    return "step"
+
+
+def _build_pcode_pseudocode_quality_snapshots(vm_mod, scanner_mod, dataset_dir: Path) -> dict:
+    idx_rows = vm_mod.read_index(dataset_dir / "INDEX")
+    idx_by_name = {row["filename"].lower(): row["index"] for row in idx_rows}
+
+    canonical_by_scene = _build_pcode_symbol_canonicalization_snapshots(vm_mod, scanner_mod, dataset_dir)
+
+    out = {}
+    for scene_name in PSEUDO_CONTRACT_SCENES:
+        scene_path = dataset_dir / scene_name
+        data = scene_path.read_bytes()
+        scripts = vm_mod.collect_script_handles(scene_path, idx_by_name)
+        scripts = sorted(scripts, key=lambda s: (s.get("source", ""), s.get("handle", 0)))[:60]
+
+        scene_canonical_map = (
+            canonical_by_scene.get(scene_name, {}).get("canonical_symbol_map", {})
+        )
+
+        pseudocode_lines: list[str] = []
+        symbol_alias_usage_histogram = collections.Counter()
+        libcall_usage_histogram = collections.Counter()
+        region_intent_histogram = collections.Counter()
+        scripts_with_pseudocode = 0
+
+        for script in scripts:
+            handle = script["handle"]
+            file_index, offset = vm_mod.split_handle(handle)
+            if file_index != idx_by_name.get(scene_name.lower(), -1) or offset >= len(data):
+                continue
+
+            trace = vm_mod.execute_script(data, offset, max_steps=PSEUDO_MAX_STEPS, max_paths=PSEUDO_MAX_PATHS)
+            disassembly = scanner_mod.disassemble(data, offset, max_ins=STRUCT_MAX_INS)
+            instructions = disassembly.get("instructions", [])
+            regions = _script_structured_regions(instructions)
+            if not regions:
+                continue
+
+            libcall_events_by_ip: dict[int, list[dict]] = collections.defaultdict(list)
+            for event in trace.get("events", []):
+                if event.get("event") != "libcall":
+                    continue
+                ip = event.get("ip")
+                if isinstance(ip, int):
+                    libcall_events_by_ip[ip].append(event)
+
+            script_line_count = 0
+            for region in regions:
+                start_ip = int(region["start_ip"])
+                end_ip = int(region["end_ip"])
+                region_calls: list[str] = []
+                region_aliases: list[str] = []
+
+                for ip in sorted(libcall_events_by_ip.keys()):
+                    if not (start_ip <= ip <= end_ip):
+                        continue
+                    for event in libcall_events_by_ip[ip]:
+                        libcall_name = str(event.get("libcall_name") or "")
+                        if libcall_name:
+                            region_calls.append(libcall_name)
+                            libcall_usage_histogram[libcall_name] += 1
+
+                        for token in event.get("stack_top") or []:
+                            parsed = _parse_symbol_token(str(token))
+                            if parsed is None:
+                                continue
+                            kind, index = parsed
+                            symbol_key = f"{kind}:{index}"
+                            canonical_name = (
+                                scene_canonical_map.get(symbol_key, {}).get("canonical_name")
+                            )
+                            if canonical_name:
+                                region_aliases.append(canonical_name)
+
+                region_aliases = sorted(set(region_aliases))
+                for alias in region_aliases:
+                    symbol_alias_usage_histogram[alias] += 1
+
+                intent_tags = set()
+                for call_name in region_calls:
+                    intent_tags.update(_semantic_behavior_tags(call_name))
+                primary_intent = sorted(intent_tags)[0] if intent_tags else "control"
+                region_intent_histogram[primary_intent] += 1
+
+                control_prefix = _region_control_prefix(
+                    str(region["terminator"]),
+                    bool(region["has_backedge"]),
+                )
+                alias_phrase = ",".join(region_aliases[:2]) if region_aliases else "state"
+                call_phrase = ",".join(region_calls[:2]).lower() if region_calls else "noop"
+
+                if control_prefix == "if":
+                    line = f"if {alias_phrase}: {primary_intent} via {call_phrase}"
+                elif control_prefix == "while":
+                    line = f"while {alias_phrase}: {primary_intent} via {call_phrase}"
+                elif control_prefix == "return":
+                    line = f"return {primary_intent} via {call_phrase}"
+                elif control_prefix == "goto":
+                    line = f"goto {primary_intent} via {call_phrase}"
+                else:
+                    line = f"step {primary_intent} via {call_phrase}"
+
+                pseudocode_lines.append(line)
+                script_line_count += 1
+
+            if script_line_count > 0:
+                scripts_with_pseudocode += 1
+
+        lines_head = pseudocode_lines[:PSEUDO_LINE_HEAD_LIMIT]
+        top_symbol_aliases = [name for name, _ in symbol_alias_usage_histogram.most_common(20)]
+        top_libcalls = [name for name, _ in libcall_usage_histogram.most_common(20)]
+
+        out[scene_name] = {
+            "script_handles_found": len(scripts),
+            "scripts_with_pseudocode": scripts_with_pseudocode,
+            "pseudocode_line_count": len(pseudocode_lines),
+            "pseudocode_summary_head": lines_head,
+            "pseudocode_summary_head_sha256": hashlib.sha256("|".join(lines_head).encode("utf-8")).hexdigest(),
+            "region_intent_histogram": dict(sorted(region_intent_histogram.items())),
+            "symbol_alias_usage_histogram": dict(sorted(symbol_alias_usage_histogram.items())),
+            "libcall_usage_histogram": dict(sorted(libcall_usage_histogram.items())),
+            "top_symbol_aliases": top_symbol_aliases,
+            "top_symbol_aliases_sha256": hashlib.sha256("|".join(top_symbol_aliases).encode("utf-8")).hexdigest(),
+            "top_libcalls": top_libcalls,
+            "top_libcalls_sha256": hashlib.sha256("|".join(top_libcalls).encode("utf-8")).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -2360,7 +2504,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -2374,7 +2518,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -2397,6 +2541,7 @@ def main() -> int:
         "semantic": repo_root / "tests" / "snapshots" / "pcode_semantic_annotation_snapshots.json",
         "symbols": repo_root / "tests" / "snapshots" / "pcode_symbol_recovery_snapshots.json",
         "canon": repo_root / "tests" / "snapshots" / "pcode_symbol_canonicalization_snapshots.json",
+        "pseudo": repo_root / "tests" / "snapshots" / "pcode_pseudocode_quality_snapshots.json",
     }
 
     if args.check:
@@ -2570,6 +2715,16 @@ def main() -> int:
         else:
             _write_json(targets["canon"], payload)
             print("- updated pcode_symbol_canonicalization_snapshots.json")
+
+    if "pseudo" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        payload = _build_pcode_pseudocode_quality_snapshots(vm_mod, scanner_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["pseudo"], payload) and ok
+        else:
+            _write_json(targets["pseudo"], payload)
+            print("- updated pcode_pseudocode_quality_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")
