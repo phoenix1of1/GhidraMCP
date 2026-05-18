@@ -10,7 +10,7 @@ for ($i = 0; $i -lt $args.Count; $i++) {
     }
 }
 
-$RefreshArgs = @("-File", $Refresh, "--check")
+$RefreshArgs = @("-File", $Refresh, "--check", "--only", "all")
 $TestArgs = @("-File", $Tests)
 
 if ($DatasetPath) {

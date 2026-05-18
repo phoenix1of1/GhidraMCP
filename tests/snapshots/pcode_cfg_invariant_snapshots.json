@@ -1,0 +1,131 @@
+{
+  "BAR.SCN": {
+    "scripts_traced": 22,
+    "scripts_with_cfg_events": 18,
+    "scripts_with_multi_path": 18,
+    "cfg_event_count": 38,
+    "max_branch_fanout": 2,
+    "max_paths_started": 3,
+    "max_path_depth": 1,
+    "cfg_opcode_histogram": {
+      "JMPFALSE": 23,
+      "JUMP": 15
+    },
+    "cfg_target_count_histogram": {
+      "2": 38
+    },
+    "cfg_transition_histogram": {
+      "JMPFALSE->JMPFALSE": 5,
+      "JMPFALSE->JUMP": 15
+    },
+    "top_cfg_opcodes": [
+      "JMPFALSE",
+      "JUMP"
+    ],
+    "top_cfg_opcodes_sha256": "269847dcfa514245540d650805da0f45fd94ca91cdb020a691316975f4f08ee3",
+    "cfg_sequence_head": [
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JMPFALSE",
+      "JMPFALSE",
+      "JMPFALSE"
+    ],
+    "cfg_sequence_head_sha256": "d23416928593a2ecaa11fc6466d9e2f1e7598ddde98595297eba6982dc6161cb"
+  },
+  "CLIMAX.SCN": {
+    "scripts_traced": 15,
+    "scripts_with_cfg_events": 2,
+    "scripts_with_multi_path": 2,
+    "cfg_event_count": 4,
+    "max_branch_fanout": 2,
+    "max_paths_started": 2,
+    "max_path_depth": 1,
+    "cfg_opcode_histogram": {
+      "JMPFALSE": 2,
+      "JUMP": 2
+    },
+    "cfg_target_count_histogram": {
+      "2": 4
+    },
+    "cfg_transition_histogram": {
+      "JMPFALSE->JUMP": 2
+    },
+    "top_cfg_opcodes": [
+      "JMPFALSE",
+      "JUMP"
+    ],
+    "top_cfg_opcodes_sha256": "269847dcfa514245540d650805da0f45fd94ca91cdb020a691316975f4f08ee3",
+    "cfg_sequence_head": [
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP"
+    ],
+    "cfg_sequence_head_sha256": "ead9a6abb6a3da1d35b3e24d870e3dbceaae7688f4bd81b8069eed3ddc77beba"
+  },
+  "FINALE.SCN": {
+    "scripts_traced": 17,
+    "scripts_with_cfg_events": 5,
+    "scripts_with_multi_path": 4,
+    "cfg_event_count": 12,
+    "max_branch_fanout": 2,
+    "max_paths_started": 2,
+    "max_path_depth": 1,
+    "cfg_opcode_histogram": {
+      "JMPFALSE": 8,
+      "JUMP": 4
+    },
+    "cfg_target_count_histogram": {
+      "2": 12
+    },
+    "cfg_transition_histogram": {
+      "JMPFALSE->JMPFALSE": 3,
+      "JMPFALSE->JUMP": 4
+    },
+    "top_cfg_opcodes": [
+      "JMPFALSE",
+      "JUMP"
+    ],
+    "top_cfg_opcodes_sha256": "269847dcfa514245540d650805da0f45fd94ca91cdb020a691316975f4f08ee3",
+    "cfg_sequence_head": [
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JMPFALSE",
+      "JUMP",
+      "JMPFALSE",
+      "JMPFALSE"
+    ],
+    "cfg_sequence_head_sha256": "c859fa3225453ad7681b6c528431d1a4dd22963e5fd8be1fe94ff32986a0693c"
+  }
+}

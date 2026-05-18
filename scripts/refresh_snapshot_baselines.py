@@ -49,6 +49,7 @@ INVENTORY_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 HOTSPOT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 DIALOGUE_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 TIMING_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+CFG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -124,6 +125,9 @@ TIMING_DIALOGUE_CALLS = {"CONVERSATION", "CONVTOPIC", "ADDTOPIC", "TALK", "TALKA
 TIMING_PLAY_CALLS = {"PLAY", "TOPPLAY", "SPLAY", "STAND", "SWALK", "WALK"}
 TIMING_MAX_STEPS = 1200
 TIMING_MAX_PATHS = 16
+CFG_EVENT_NAMES = {"jump", "conditional_jump"}
+CFG_MAX_STEPS = 1200
+CFG_MAX_PATHS = 16
 
 
 def _load_module(name: str, module_path: Path):
@@ -894,6 +898,94 @@ def _build_timing_wait_semantics_contract_snapshots(vm_mod, dataset_dir: Path) -
     return out
 
 
+def _build_pcode_cfg_invariant_snapshots(vm_mod, dataset_dir: Path) -> dict:
+    idx_rows = vm_mod.read_index(dataset_dir / "INDEX")
+    idx_by_name = {row["filename"].lower(): row["index"] for row in idx_rows}
+
+    out = {}
+    for scene_name in CFG_CONTRACT_SCENES:
+        scene_path = dataset_dir / scene_name
+        data = scene_path.read_bytes()
+        scripts = vm_mod.collect_script_handles(scene_path, idx_by_name)
+        scripts = sorted(scripts, key=lambda s: (s.get("source", ""), s.get("handle", 0)))[:60]
+
+        opcode_histogram = collections.Counter()
+        branch_target_count_histogram = collections.Counter()
+        cfg_transition_histogram = collections.Counter()
+        cfg_sequence: list[str] = []
+
+        scripts_with_cfg_events = 0
+        scripts_with_multi_path = 0
+        cfg_event_count = 0
+        max_branch_fanout = 0
+        max_paths_started = 0
+        max_path_depth = 0
+
+        for script in scripts:
+            handle = script["handle"]
+            file_index, offset = vm_mod.split_handle(handle)
+            if file_index != idx_by_name.get(scene_name.lower(), -1) or offset >= len(data):
+                continue
+
+            trace = vm_mod.execute_script(data, offset, max_steps=CFG_MAX_STEPS, max_paths=CFG_MAX_PATHS)
+            events = trace.get("events", [])
+            states = trace.get("final_states", [])
+
+            local_cfg_sequence: list[str] = []
+            for event in events:
+                max_path_depth = max(max_path_depth, _event_path_depth(event))
+                event_name = event.get("event")
+                if event_name not in CFG_EVENT_NAMES:
+                    continue
+
+                opcode = "JUMP" if event_name == "jump" else (event.get("opcode") or "COND")
+                local_cfg_sequence.append(opcode)
+                cfg_sequence.append(opcode)
+                opcode_histogram[opcode] += 1
+                cfg_event_count += 1
+
+                targets = event.get("targets") or []
+                fanout = len(targets)
+                max_branch_fanout = max(max_branch_fanout, fanout)
+                branch_target_count_histogram[fanout] += 1
+
+            for state in states:
+                max_path_depth = max(max_path_depth, _state_path_depth(state))
+
+            for i in range(len(local_cfg_sequence) - 1):
+                cfg_transition_histogram[f"{local_cfg_sequence[i]}->{local_cfg_sequence[i + 1]}"] += 1
+
+            if local_cfg_sequence:
+                scripts_with_cfg_events += 1
+                paths_started = int(trace.get("paths_started") or 1)
+                max_paths_started = max(max_paths_started, paths_started)
+                if paths_started > 1:
+                    scripts_with_multi_path += 1
+
+        top_cfg_opcodes = [name for name, _ in opcode_histogram.most_common(8)]
+        sequence_head = cfg_sequence[:30]
+        out[scene_name] = {
+            "scripts_traced": len(scripts),
+            "scripts_with_cfg_events": scripts_with_cfg_events,
+            "scripts_with_multi_path": scripts_with_multi_path,
+            "cfg_event_count": cfg_event_count,
+            "max_branch_fanout": max_branch_fanout,
+            "max_paths_started": max_paths_started,
+            "max_path_depth": max_path_depth,
+            "cfg_opcode_histogram": dict(sorted(opcode_histogram.items())),
+            "cfg_target_count_histogram": {
+                str(key): branch_target_count_histogram[key] for key in sorted(branch_target_count_histogram.keys())
+            },
+            "cfg_transition_histogram": dict(sorted(cfg_transition_histogram.items())),
+            "top_cfg_opcodes": top_cfg_opcodes,
+            "top_cfg_opcodes_sha256": hashlib.sha256("|".join(top_cfg_opcodes).encode("utf-8")).hexdigest(),
+            "cfg_sequence_head": sequence_head,
+            "cfg_sequence_head_sha256": hashlib.sha256("|".join(sequence_head).encode("utf-8")).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -1121,7 +1213,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -1135,7 +1227,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -1151,6 +1243,7 @@ def main() -> int:
         "hotspot": repo_root / "tests" / "snapshots" / "hotspot_interaction_contracts.json",
         "dialogue": repo_root / "tests" / "snapshots" / "dialogue_topic_routing_contracts.json",
         "timing": repo_root / "tests" / "snapshots" / "timing_wait_semantics_contracts.json",
+        "cfg": repo_root / "tests" / "snapshots" / "pcode_cfg_invariant_snapshots.json",
     }
 
     if args.check:
@@ -1258,6 +1351,15 @@ def main() -> int:
         else:
             _write_json(targets["timing"], payload)
             print("- updated timing_wait_semantics_contracts.json")
+
+    if "cfg" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        payload = _build_pcode_cfg_invariant_snapshots(vm_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["cfg"], payload) and ok
+        else:
+            _write_json(targets["cfg"], payload)
+            print("- updated pcode_cfg_invariant_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")
