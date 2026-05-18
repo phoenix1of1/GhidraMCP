@@ -1,0 +1,403 @@
+{
+  "BAR.SCN": {
+    "script_handles_found": 22,
+    "symbols_with_canonical_alias": 11,
+    "canonical_names_ranked": [
+      "g_input_002",
+      "g_item_003",
+      "g_output_004",
+      "g_state_001"
+    ],
+    "canonical_symbol_map": {
+      "global:101": {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g101_state",
+        "role": "state",
+        "type_hint": "state_value"
+      },
+      "global:143": {
+        "canonical_name": "g_input_002",
+        "cluster_key": "global:input:input_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g143_input",
+        "role": "input",
+        "type_hint": "input_value"
+      },
+      "global:163": {
+        "canonical_name": "g_output_004",
+        "cluster_key": "global:output:output_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g163_output",
+        "role": "output",
+        "type_hint": "output_value"
+      },
+      "global:240": {
+        "canonical_name": "g_input_002",
+        "cluster_key": "global:input:input_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g240_input",
+        "role": "input",
+        "type_hint": "input_value"
+      },
+      "global:241": {
+        "canonical_name": "g_input_002",
+        "cluster_key": "global:input:input_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g241_input",
+        "role": "input",
+        "type_hint": "input_value"
+      },
+      "global:246": {
+        "canonical_name": "g_item_003",
+        "cluster_key": "global:item:item_id:b11a85b296a9:10459d772133",
+        "recovered_name": "g246_item",
+        "role": "item",
+        "type_hint": "item_id"
+      },
+      "global:247": {
+        "canonical_name": "g_item_003",
+        "cluster_key": "global:item:item_id:b11a85b296a9:10459d772133",
+        "recovered_name": "g247_item",
+        "role": "item",
+        "type_hint": "item_id"
+      },
+      "global:248": {
+        "canonical_name": "g_item_003",
+        "cluster_key": "global:item:item_id:b11a85b296a9:10459d772133",
+        "recovered_name": "g248_item",
+        "role": "item",
+        "type_hint": "item_id"
+      },
+      "global:281": {
+        "canonical_name": "g_input_002",
+        "cluster_key": "global:input:input_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g281_input",
+        "role": "input",
+        "type_hint": "input_value"
+      },
+      "global:296": {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g296_state",
+        "role": "state",
+        "type_hint": "state_value"
+      },
+      "global:298": {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g298_state",
+        "role": "state",
+        "type_hint": "state_value"
+      }
+    },
+    "canonical_alias_transition_histogram": {},
+    "canonical_alias_head": [
+      "g_state_001 <- g101_state",
+      "g_input_002 <- g143_input",
+      "g_output_004 <- g163_output",
+      "g_input_002 <- g240_input",
+      "g_input_002 <- g241_input",
+      "g_item_003 <- g246_item",
+      "g_item_003 <- g247_item",
+      "g_item_003 <- g248_item",
+      "g_input_002 <- g281_input",
+      "g_state_001 <- g296_state",
+      "g_state_001 <- g298_state"
+    ],
+    "canonical_alias_head_sha256": "76113a97abc5286aa25bd8187f7fb1e6609739baec1af74da4f81d6ca43a0664",
+    "global_cluster_count": 4,
+    "multi_scene_cluster_count": 2,
+    "canonical_registry_head": [
+      {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "kind": "global",
+        "role": "state",
+        "type_hint": "state_value",
+        "member_count": 7,
+        "scene_count": 2,
+        "scenes": [
+          "BAR.SCN",
+          "FINALE.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:101",
+          "BAR.SCN:global:296",
+          "BAR.SCN:global:298",
+          "FINALE.SCN:global:271",
+          "FINALE.SCN:global:296",
+          "FINALE.SCN:global:297"
+        ]
+      },
+      {
+        "canonical_name": "g_input_002",
+        "cluster_key": "global:input:input_value:e3b0c44298fc:e3b0c44298fc",
+        "kind": "global",
+        "role": "input",
+        "type_hint": "input_value",
+        "member_count": 5,
+        "scene_count": 2,
+        "scenes": [
+          "BAR.SCN",
+          "FINALE.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:143",
+          "BAR.SCN:global:240",
+          "BAR.SCN:global:241",
+          "BAR.SCN:global:281",
+          "FINALE.SCN:global:257"
+        ]
+      },
+      {
+        "canonical_name": "g_item_003",
+        "cluster_key": "global:item:item_id:b11a85b296a9:10459d772133",
+        "kind": "global",
+        "role": "item",
+        "type_hint": "item_id",
+        "member_count": 3,
+        "scene_count": 1,
+        "scenes": [
+          "BAR.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:246",
+          "BAR.SCN:global:247",
+          "BAR.SCN:global:248"
+        ]
+      },
+      {
+        "canonical_name": "g_output_004",
+        "cluster_key": "global:output:output_value:e3b0c44298fc:e3b0c44298fc",
+        "kind": "global",
+        "role": "output",
+        "type_hint": "output_value",
+        "member_count": 1,
+        "scene_count": 1,
+        "scenes": [
+          "BAR.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:163"
+        ]
+      }
+    ],
+    "canonical_registry_head_sha256": "9d7d463db0a180d4ca2eff5717de81e8c7d57a40a559a9cbe54b6e28e33cc79b"
+  },
+  "CLIMAX.SCN": {
+    "script_handles_found": 15,
+    "symbols_with_canonical_alias": 0,
+    "canonical_names_ranked": [],
+    "canonical_symbol_map": {},
+    "canonical_alias_transition_histogram": {},
+    "canonical_alias_head": [],
+    "canonical_alias_head_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "global_cluster_count": 4,
+    "multi_scene_cluster_count": 2,
+    "canonical_registry_head": [
+      {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "kind": "global",
+        "role": "state",
+        "type_hint": "state_value",
+        "member_count": 7,
+        "scene_count": 2,
+        "scenes": [
+          "BAR.SCN",
+          "FINALE.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:101",
+          "BAR.SCN:global:296",
+          "BAR.SCN:global:298",
+          "FINALE.SCN:global:271",
+          "FINALE.SCN:global:296",
+          "FINALE.SCN:global:297"
+        ]
+      },
+      {
+        "canonical_name": "g_input_002",
+        "cluster_key": "global:input:input_value:e3b0c44298fc:e3b0c44298fc",
+        "kind": "global",
+        "role": "input",
+        "type_hint": "input_value",
+        "member_count": 5,
+        "scene_count": 2,
+        "scenes": [
+          "BAR.SCN",
+          "FINALE.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:143",
+          "BAR.SCN:global:240",
+          "BAR.SCN:global:241",
+          "BAR.SCN:global:281",
+          "FINALE.SCN:global:257"
+        ]
+      },
+      {
+        "canonical_name": "g_item_003",
+        "cluster_key": "global:item:item_id:b11a85b296a9:10459d772133",
+        "kind": "global",
+        "role": "item",
+        "type_hint": "item_id",
+        "member_count": 3,
+        "scene_count": 1,
+        "scenes": [
+          "BAR.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:246",
+          "BAR.SCN:global:247",
+          "BAR.SCN:global:248"
+        ]
+      },
+      {
+        "canonical_name": "g_output_004",
+        "cluster_key": "global:output:output_value:e3b0c44298fc:e3b0c44298fc",
+        "kind": "global",
+        "role": "output",
+        "type_hint": "output_value",
+        "member_count": 1,
+        "scene_count": 1,
+        "scenes": [
+          "BAR.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:163"
+        ]
+      }
+    ],
+    "canonical_registry_head_sha256": "9d7d463db0a180d4ca2eff5717de81e8c7d57a40a559a9cbe54b6e28e33cc79b"
+  },
+  "FINALE.SCN": {
+    "script_handles_found": 17,
+    "symbols_with_canonical_alias": 5,
+    "canonical_names_ranked": [
+      "g_input_002",
+      "g_state_001"
+    ],
+    "canonical_symbol_map": {
+      "global:257": {
+        "canonical_name": "g_input_002",
+        "cluster_key": "global:input:input_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g257_input",
+        "role": "input",
+        "type_hint": "input_value"
+      },
+      "global:271": {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g271_state",
+        "role": "state",
+        "type_hint": "state_value"
+      },
+      "global:296": {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g296_state",
+        "role": "state",
+        "type_hint": "state_value"
+      },
+      "global:297": {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g297_state",
+        "role": "state",
+        "type_hint": "state_value"
+      },
+      "global:298": {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "recovered_name": "g298_state",
+        "role": "state",
+        "type_hint": "state_value"
+      }
+    },
+    "canonical_alias_transition_histogram": {},
+    "canonical_alias_head": [
+      "g_input_002 <- g257_input",
+      "g_state_001 <- g271_state",
+      "g_state_001 <- g296_state",
+      "g_state_001 <- g297_state",
+      "g_state_001 <- g298_state"
+    ],
+    "canonical_alias_head_sha256": "d00e9a740c5d681caceddb5957115e0a1524c149630bc6c8ef309bdf0dcc487a",
+    "global_cluster_count": 4,
+    "multi_scene_cluster_count": 2,
+    "canonical_registry_head": [
+      {
+        "canonical_name": "g_state_001",
+        "cluster_key": "global:state:state_value:e3b0c44298fc:e3b0c44298fc",
+        "kind": "global",
+        "role": "state",
+        "type_hint": "state_value",
+        "member_count": 7,
+        "scene_count": 2,
+        "scenes": [
+          "BAR.SCN",
+          "FINALE.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:101",
+          "BAR.SCN:global:296",
+          "BAR.SCN:global:298",
+          "FINALE.SCN:global:271",
+          "FINALE.SCN:global:296",
+          "FINALE.SCN:global:297"
+        ]
+      },
+      {
+        "canonical_name": "g_input_002",
+        "cluster_key": "global:input:input_value:e3b0c44298fc:e3b0c44298fc",
+        "kind": "global",
+        "role": "input",
+        "type_hint": "input_value",
+        "member_count": 5,
+        "scene_count": 2,
+        "scenes": [
+          "BAR.SCN",
+          "FINALE.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:143",
+          "BAR.SCN:global:240",
+          "BAR.SCN:global:241",
+          "BAR.SCN:global:281",
+          "FINALE.SCN:global:257"
+        ]
+      },
+      {
+        "canonical_name": "g_item_003",
+        "cluster_key": "global:item:item_id:b11a85b296a9:10459d772133",
+        "kind": "global",
+        "role": "item",
+        "type_hint": "item_id",
+        "member_count": 3,
+        "scene_count": 1,
+        "scenes": [
+          "BAR.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:246",
+          "BAR.SCN:global:247",
+          "BAR.SCN:global:248"
+        ]
+      },
+      {
+        "canonical_name": "g_output_004",
+        "cluster_key": "global:output:output_value:e3b0c44298fc:e3b0c44298fc",
+        "kind": "global",
+        "role": "output",
+        "type_hint": "output_value",
+        "member_count": 1,
+        "scene_count": 1,
+        "scenes": [
+          "BAR.SCN"
+        ],
+        "member_examples": [
+          "BAR.SCN:global:163"
+        ]
+      }
+    ],
+    "canonical_registry_head_sha256": "9d7d463db0a180d4ca2eff5717de81e8c7d57a40a559a9cbe54b6e28e33cc79b"
+  }
+}

@@ -55,6 +55,7 @@ IR_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 STRUCT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 SEMANTIC_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 SYMBOL_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+CANON_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -148,6 +149,8 @@ SYMBOL_MAX_STEPS = 1200
 SYMBOL_MAX_PATHS = 16
 SYMBOL_MAX_SYMBOLS_PER_KIND = 40
 SYMBOL_SUMMARY_HEAD_LIMIT = 60
+CANON_REGISTRY_LIMIT = 80
+CANON_ALIAS_HEAD_LIMIT = 80
 SEMANTIC_BEHAVIOR_TAGS = {
     "WAITFRAME": ["timing"],
     "WAITTIME": ["timing"],
@@ -2008,6 +2011,128 @@ def _build_pcode_symbol_recovery_snapshots(vm_mod, scanner_mod, dataset_dir: Pat
     return out
 
 
+def _canonical_cluster_key(symbol_entry: dict) -> str:
+    kind = str(symbol_entry.get("kind") or "unknown")
+    role = str(symbol_entry.get("role") or "state")
+    type_hint = str(symbol_entry.get("type_hint") or "value")
+    behavior_hash = str(symbol_entry.get("behavior_tags_sha256") or "")[:12]
+    top_hash = str(symbol_entry.get("top_libcalls_sha256") or "")[:12]
+    return f"{kind}:{role}:{type_hint}:{behavior_hash}:{top_hash}"
+
+
+def _canonical_name(kind: str, role: str, cluster_index: int) -> str:
+    prefix = "l" if kind == "local" else "g"
+    return f"{prefix}_{role}_{cluster_index:03d}"
+
+
+def _build_pcode_symbol_canonicalization_snapshots(vm_mod, scanner_mod, dataset_dir: Path) -> dict:
+    per_scene_symbols = _build_pcode_symbol_recovery_snapshots(vm_mod, scanner_mod, dataset_dir)
+
+    cluster_members: dict[str, list[tuple[str, str, dict]]] = {}
+    for scene_name in CANON_CONTRACT_SCENES:
+        scene_payload = per_scene_symbols.get(scene_name, {})
+        scene_table = scene_payload.get("symbol_table", {})
+        for symbol_key, symbol_entry in scene_table.items():
+            cluster_key = _canonical_cluster_key(symbol_entry)
+            cluster_members.setdefault(cluster_key, []).append((scene_name, symbol_key, symbol_entry))
+
+    ranked_clusters = sorted(
+        cluster_members.keys(),
+        key=lambda key: (
+            -len(cluster_members[key]),
+            len({scene for scene, _, _ in cluster_members[key]}),
+            key,
+        ),
+    )
+
+    cluster_to_canonical: dict[str, str] = {}
+    for idx, cluster_key in enumerate(ranked_clusters, start=1):
+        members = cluster_members[cluster_key]
+        member_kind = str(members[0][2].get("kind") or "global")
+        member_role = str(members[0][2].get("role") or "state")
+        cluster_to_canonical[cluster_key] = _canonical_name(member_kind, member_role, idx)
+
+    registry_rows = []
+    for cluster_key in ranked_clusters[:CANON_REGISTRY_LIMIT]:
+        canonical = cluster_to_canonical[cluster_key]
+        members = sorted(cluster_members[cluster_key], key=lambda row: (row[0], row[1]))
+        scenes = sorted({scene for scene, _, _ in members})
+        exemplar = members[0][2]
+        registry_rows.append(
+            {
+                "canonical_name": canonical,
+                "cluster_key": cluster_key,
+                "kind": exemplar.get("kind"),
+                "role": exemplar.get("role"),
+                "type_hint": exemplar.get("type_hint"),
+                "member_count": len(members),
+                "scene_count": len(scenes),
+                "scenes": scenes,
+                "member_examples": [f"{scene}:{symbol_key}" for scene, symbol_key, _ in members[:6]],
+            }
+        )
+
+    out = {}
+    multi_scene_cluster_count = sum(
+        1 for key in ranked_clusters if len({scene for scene, _, _ in cluster_members[key]}) > 1
+    )
+    for scene_name in CANON_CONTRACT_SCENES:
+        scene_payload = per_scene_symbols.get(scene_name, {})
+        scene_table = scene_payload.get("symbol_table", {})
+        scene_transition_hist = scene_payload.get("symbol_transition_histogram", {})
+
+        canonical_map = {}
+        alias_lines: list[str] = []
+        alias_transition_hist = collections.Counter()
+
+        for symbol_key in sorted(scene_table.keys()):
+            symbol_entry = scene_table[symbol_key]
+            cluster_key = _canonical_cluster_key(symbol_entry)
+            canonical = cluster_to_canonical.get(cluster_key, "g_state_000")
+            canonical_map[symbol_key] = {
+                "canonical_name": canonical,
+                "cluster_key": cluster_key,
+                "recovered_name": symbol_entry.get("recovered_name"),
+                "role": symbol_entry.get("role"),
+                "type_hint": symbol_entry.get("type_hint"),
+            }
+            alias_lines.append(f"{canonical} <- {symbol_entry.get('recovered_name')}")
+
+        for edge, count in scene_transition_hist.items():
+            src, sep, dst = str(edge).partition("->")
+            if not sep:
+                continue
+            src_canonical = canonical_map.get(src, {}).get("canonical_name")
+            dst_canonical = canonical_map.get(dst, {}).get("canonical_name")
+            if not src_canonical or not dst_canonical:
+                continue
+            alias_transition_hist[f"{src_canonical}->{dst_canonical}"] += int(count)
+
+        alias_head = alias_lines[:CANON_ALIAS_HEAD_LIMIT]
+        canonical_names_ranked = sorted(
+            {row["canonical_name"] for row in canonical_map.values()},
+            key=lambda name: name,
+        )
+
+        out[scene_name] = {
+            "script_handles_found": scene_payload.get("script_handles_found", 0),
+            "symbols_with_canonical_alias": len(canonical_map),
+            "canonical_names_ranked": canonical_names_ranked,
+            "canonical_symbol_map": {key: canonical_map[key] for key in sorted(canonical_map.keys())},
+            "canonical_alias_transition_histogram": dict(sorted(alias_transition_hist.items())),
+            "canonical_alias_head": alias_head,
+            "canonical_alias_head_sha256": hashlib.sha256("|".join(alias_head).encode("utf-8")).hexdigest(),
+            "global_cluster_count": len(ranked_clusters),
+            "multi_scene_cluster_count": multi_scene_cluster_count,
+            "canonical_registry_head": registry_rows,
+            "canonical_registry_head_sha256": hashlib.sha256(
+                "|".join(row["canonical_name"] for row in registry_rows).encode("utf-8")
+            ).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -2235,7 +2360,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -2249,7 +2374,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -2271,6 +2396,7 @@ def main() -> int:
         "struct": repo_root / "tests" / "snapshots" / "pcode_structuring_snapshots.json",
         "semantic": repo_root / "tests" / "snapshots" / "pcode_semantic_annotation_snapshots.json",
         "symbols": repo_root / "tests" / "snapshots" / "pcode_symbol_recovery_snapshots.json",
+        "canon": repo_root / "tests" / "snapshots" / "pcode_symbol_canonicalization_snapshots.json",
     }
 
     if args.check:
@@ -2434,6 +2560,16 @@ def main() -> int:
         else:
             _write_json(targets["symbols"], payload)
             print("- updated pcode_symbol_recovery_snapshots.json")
+
+    if "canon" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        payload = _build_pcode_symbol_canonicalization_snapshots(vm_mod, scanner_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["canon"], payload) and ok
+        else:
+            _write_json(targets["canon"], payload)
+            print("- updated pcode_symbol_canonicalization_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")
