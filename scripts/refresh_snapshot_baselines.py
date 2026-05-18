@@ -52,6 +52,7 @@ TIMING_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 CFG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 LIBSIG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 IR_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+STRUCT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -135,6 +136,8 @@ LIBSIG_MAX_PATHS = 16
 LIBSIG_MAX_CALLS = 30
 LIBSIG_ARG_SHAPE_WINDOW = 6
 IR_MAX_INS = 800
+STRUCT_MAX_INS = 800
+STRUCT_REGION_SIGNATURE_LIMIT = 60
 
 
 def _load_module(name: str, module_path: Path):
@@ -490,6 +493,101 @@ def _script_block_shapes(instructions: list[dict]) -> tuple[list[int], list[str]
             block_terminators.append("fallthrough")
 
     return block_sizes, block_terminators
+
+
+def _script_structured_regions(instructions: list[dict]) -> list[dict]:
+    if not instructions:
+        return []
+
+    ip_to_index = {ins["ip"]: idx for idx, ins in enumerate(instructions)}
+    leader_ips = {instructions[0]["ip"]}
+
+    for idx, ins in enumerate(instructions):
+        name = ins.get("name")
+        if name not in {"JUMP", "JMPFALSE", "JMPTRUE"}:
+            continue
+
+        target = ins.get("operand")
+        if isinstance(target, int) and target in ip_to_index:
+            leader_ips.add(target)
+
+        if idx + 1 < len(instructions):
+            leader_ips.add(instructions[idx + 1]["ip"])
+
+    leader_indices = sorted(ip_to_index[ip] for ip in leader_ips)
+    blocks: list[dict] = []
+    for i, start_idx in enumerate(leader_indices):
+        end_idx = leader_indices[i + 1] if i + 1 < len(leader_indices) else len(instructions)
+        block = instructions[start_idx:end_idx]
+        if not block:
+            continue
+
+        tail = block[-1].get("name")
+        if tail == "JUMP":
+            terminator = "jump"
+        elif tail in {"JMPFALSE", "JMPTRUE"}:
+            terminator = "conditional"
+        elif tail == "HALT":
+            terminator = "halt"
+        elif tail == "RET":
+            terminator = "ret"
+        else:
+            terminator = "fallthrough"
+
+        blocks.append(
+            {
+                "index": len(blocks),
+                "start_ip": block[0]["ip"],
+                "end_ip": block[-1]["ip"],
+                "size": len(block),
+                "terminator": terminator,
+                "tail_operand": block[-1].get("operand"),
+            }
+        )
+
+    if not blocks:
+        return []
+
+    start_ip_to_block = {block["start_ip"]: block for block in blocks}
+
+    for idx, block in enumerate(blocks):
+        successors: list[int] = []
+        term = block["terminator"]
+        target = block.get("tail_operand")
+
+        if term in {"jump", "conditional"} and isinstance(target, int):
+            dest = start_ip_to_block.get(target)
+            if dest is not None:
+                successors.append(dest["index"])
+
+        if term in {"conditional", "fallthrough"} and idx + 1 < len(blocks):
+            successors.append(blocks[idx + 1]["index"])
+
+        unique_successors = sorted(set(successors))
+        block["successors"] = unique_successors
+        block["fanout"] = len(unique_successors)
+        block["has_backedge"] = any(dst <= block["index"] for dst in unique_successors)
+
+    # Approximate nesting depth by longest acyclic conditional chain in forward edges.
+    cache: dict[int, int] = {}
+
+    def cond_depth(block_index: int) -> int:
+        if block_index in cache:
+            return cache[block_index]
+
+        block = blocks[block_index]
+        forward = [dst for dst in block["successors"] if dst > block_index]
+        best = 0
+        for dst in forward:
+            best = max(best, cond_depth(dst))
+        cache[block_index] = (1 if block["terminator"] == "conditional" else 0) + best
+        return cache[block_index]
+
+    max_conditional_depth = max(cond_depth(i) for i in range(len(blocks)))
+    for block in blocks:
+        block["max_conditional_depth"] = max_conditional_depth
+
+    return blocks
 
 
 def _build_branch_convergence_contract_snapshots(vm_mod, dataset_dir: Path) -> dict:
@@ -1283,6 +1381,101 @@ def _build_pcode_ir_lift_snapshots(scanner_mod, dataset_dir: Path) -> dict:
     return out
 
 
+def _build_pcode_structuring_snapshots(scanner_mod, dataset_dir: Path) -> dict:
+    idx_rows = scanner_mod.read_index(dataset_dir / "INDEX")
+    idx_by_name = {row["filename"].lower(): row["index"] for row in idx_rows}
+
+    out = {}
+    for scene_name in STRUCT_CONTRACT_SCENES:
+        scene_path = dataset_dir / scene_name
+        data = scene_path.read_bytes()
+        scripts, films = scanner_mod.collect_script_handles(scene_path, idx_by_name)
+        scripts = sorted(scripts, key=lambda s: (s.get("source", ""), s.get("handle", 0)))[:60]
+
+        terminator_histogram = collections.Counter()
+        region_size_histogram = collections.Counter()
+        region_signature_histogram = collections.Counter()
+        region_sequence: list[str] = []
+
+        scripts_with_regions = 0
+        scripts_with_loops = 0
+        region_count = 0
+        loop_region_count = 0
+        conditional_region_count = 0
+        max_region_size = 0
+        max_cfg_fanout = 0
+        max_conditional_nesting = 0
+
+        for script in scripts:
+            handle = script["handle"]
+            file_index, offset = scanner_mod.handle_to_file_offset(handle)
+            if file_index != idx_by_name.get(scene_name.lower(), -1) or offset >= len(data):
+                continue
+
+            result = scanner_mod.disassemble(data, offset, max_ins=STRUCT_MAX_INS)
+            instructions = result.get("instructions", [])
+            regions = _script_structured_regions(instructions)
+            if not regions:
+                continue
+
+            scripts_with_regions += 1
+            script_has_loop = False
+            for region in regions:
+                region_count += 1
+                terminator = region["terminator"]
+                size = int(region["size"])
+                fanout = int(region["fanout"])
+                has_backedge = bool(region["has_backedge"])
+
+                terminator_histogram[terminator] += 1
+                region_size_histogram[str(size)] += 1
+                max_region_size = max(max_region_size, size)
+                max_cfg_fanout = max(max_cfg_fanout, fanout)
+                max_conditional_nesting = max(max_conditional_nesting, int(region["max_conditional_depth"]))
+
+                if terminator == "conditional":
+                    conditional_region_count += 1
+                if has_backedge:
+                    loop_region_count += 1
+                    script_has_loop = True
+
+                signature = f"{terminator}:{fanout}:{'loop' if has_backedge else 'plain'}"
+                region_signature_histogram[signature] += 1
+                region_sequence.append(signature)
+
+            if script_has_loop:
+                scripts_with_loops += 1
+
+        top_region_signatures = [name for name, _ in region_signature_histogram.most_common(12)]
+        sequence_head = region_sequence[:STRUCT_REGION_SIGNATURE_LIMIT]
+        out[scene_name] = {
+            "script_handles_found": len(scripts),
+            "icon_films_found": len(films),
+            "scripts_with_regions": scripts_with_regions,
+            "scripts_with_loops": scripts_with_loops,
+            "region_count": region_count,
+            "loop_region_count": loop_region_count,
+            "conditional_region_count": conditional_region_count,
+            "max_region_size": max_region_size,
+            "max_cfg_fanout": max_cfg_fanout,
+            "max_conditional_nesting": max_conditional_nesting,
+            "region_terminator_histogram": dict(sorted(terminator_histogram.items())),
+            "region_size_histogram": {
+                key: region_size_histogram[key] for key in sorted(region_size_histogram.keys(), key=int)
+            },
+            "top_region_signatures": top_region_signatures,
+            "top_region_signatures_sha256": hashlib.sha256(
+                "|".join(top_region_signatures).encode("utf-8")
+            ).hexdigest(),
+            "region_signature_sequence_head": sequence_head,
+            "region_signature_sequence_head_sha256": hashlib.sha256(
+                "|".join(sequence_head).encode("utf-8")
+            ).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -1510,7 +1703,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -1524,7 +1717,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -1543,6 +1736,7 @@ def main() -> int:
         "cfg": repo_root / "tests" / "snapshots" / "pcode_cfg_invariant_snapshots.json",
         "libsig": repo_root / "tests" / "snapshots" / "pcode_libcall_signature_contracts.json",
         "ir": repo_root / "tests" / "snapshots" / "pcode_ir_lift_snapshots.json",
+        "struct": repo_root / "tests" / "snapshots" / "pcode_structuring_snapshots.json",
     }
 
     if args.check:
@@ -1677,6 +1871,15 @@ def main() -> int:
         else:
             _write_json(targets["ir"], payload)
             print("- updated pcode_ir_lift_snapshots.json")
+
+    if "struct" in refresh:
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        payload = _build_pcode_structuring_snapshots(scanner_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["struct"], payload) and ok
+        else:
+            _write_json(targets["struct"], payload)
+            print("- updated pcode_structuring_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")
