@@ -51,6 +51,7 @@ DIALOGUE_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 TIMING_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 CFG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 LIBSIG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+IR_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -133,6 +134,7 @@ LIBSIG_MAX_STEPS = 1200
 LIBSIG_MAX_PATHS = 16
 LIBSIG_MAX_CALLS = 30
 LIBSIG_ARG_SHAPE_WINDOW = 6
+IR_MAX_INS = 800
 
 
 def _load_module(name: str, module_path: Path):
@@ -425,6 +427,69 @@ def _arg_shape(stack_top: list, window: int = LIBSIG_ARG_SHAPE_WINDOW) -> str:
         return "empty"
     suffix = stack_top[-window:]
     return ">".join(_stack_token_kind(token) for token in suffix)
+
+
+def _ir_node_kind(opcode_name: str) -> str:
+    if opcode_name == "LIBCALL":
+        return "libcall"
+    if opcode_name in {"HALT", "RET", "CALL", "JUMP", "JMPFALSE", "JMPTRUE"}:
+        return "control"
+    if opcode_name in {"IMM", "ZERO", "ONE", "MINUSONE", "LOAD", "GLOAD", "STORE", "GSTORE", "ALLOC", "DUP"}:
+        return "stack"
+    if opcode_name in {"FILM", "CDFILM", "STR", "FONT", "PAL", "CIMM"}:
+        return "resource"
+    if opcode_name in {"PLUS", "MINUS", "MULT", "DIV", "MOD", "NEG", "COMP"}:
+        return "math"
+    if opcode_name in {"EQUAL", "LESS", "LEQUAL", "NEQUAL", "GEQUAL", "GREAT", "LOR", "LAND", "NOT", "AND", "OR", "EOR"}:
+        return "logic"
+    if opcode_name in {"ESCON", "ESCOFF"}:
+        return "state"
+    return "unknown"
+
+
+def _script_block_shapes(instructions: list[dict]) -> tuple[list[int], list[str]]:
+    if not instructions:
+        return [], []
+
+    ip_to_index = {ins["ip"]: idx for idx, ins in enumerate(instructions)}
+    leader_ips = {instructions[0]["ip"]}
+
+    for idx, ins in enumerate(instructions):
+        name = ins.get("name")
+        if name not in {"JUMP", "JMPFALSE", "JMPTRUE"}:
+            continue
+
+        target = ins.get("operand")
+        if isinstance(target, int) and target in ip_to_index:
+            leader_ips.add(target)
+
+        if idx + 1 < len(instructions):
+            leader_ips.add(instructions[idx + 1]["ip"])
+
+    leader_indices = sorted(ip_to_index[ip] for ip in leader_ips)
+
+    block_sizes: list[int] = []
+    block_terminators: list[str] = []
+    for i, start_idx in enumerate(leader_indices):
+        end_idx = leader_indices[i + 1] if i + 1 < len(leader_indices) else len(instructions)
+        block = instructions[start_idx:end_idx]
+        if not block:
+            continue
+
+        block_sizes.append(len(block))
+        tail = block[-1].get("name")
+        if tail == "JUMP":
+            block_terminators.append("jump")
+        elif tail in {"JMPFALSE", "JMPTRUE"}:
+            block_terminators.append("conditional")
+        elif tail == "HALT":
+            block_terminators.append("halt")
+        elif tail == "RET":
+            block_terminators.append("ret")
+        else:
+            block_terminators.append("fallthrough")
+
+    return block_sizes, block_terminators
 
 
 def _build_branch_convergence_contract_snapshots(vm_mod, dataset_dir: Path) -> dict:
@@ -1127,6 +1192,97 @@ def _build_pcode_libcall_signature_contract_snapshots(vm_mod, dataset_dir: Path)
     return out
 
 
+def _build_pcode_ir_lift_snapshots(scanner_mod, dataset_dir: Path) -> dict:
+    idx_rows = scanner_mod.read_index(dataset_dir / "INDEX")
+    idx_by_name = {row["filename"].lower(): row["index"] for row in idx_rows}
+
+    out = {}
+    for scene_name in IR_CONTRACT_SCENES:
+        scene_path = dataset_dir / scene_name
+        data = scene_path.read_bytes()
+        scripts, films = scanner_mod.collect_script_handles(scene_path, idx_by_name)
+        scripts = sorted(scripts, key=lambda s: (s.get("source", ""), s.get("handle", 0)))[:60]
+
+        node_kind_histogram = collections.Counter()
+        opcode_histogram = collections.Counter()
+        block_size_histogram = collections.Counter()
+        block_terminator_histogram = collections.Counter()
+        block_terminator_sequence: list[str] = []
+
+        scripts_with_blocks = 0
+        scripts_with_control_branches = 0
+        libcall_annotated_node_count = 0
+        instruction_count = 0
+        block_count = 0
+        max_block_size = 0
+
+        for script in scripts:
+            handle = script["handle"]
+            file_index, offset = scanner_mod.handle_to_file_offset(handle)
+            if file_index != idx_by_name.get(scene_name.lower(), -1) or offset >= len(data):
+                continue
+
+            result = scanner_mod.disassemble(data, offset, max_ins=IR_MAX_INS)
+            instructions = result.get("instructions", [])
+            if not instructions:
+                continue
+
+            scripts_with_blocks += 1
+            instruction_count += len(instructions)
+
+            has_control_branch = False
+            for ins in instructions:
+                opcode_name = ins.get("name") or "OP_UNKNOWN"
+                opcode_histogram[opcode_name] += 1
+                node_kind_histogram[_ir_node_kind(opcode_name)] += 1
+                if opcode_name == "LIBCALL":
+                    libcall_annotated_node_count += 1
+                if opcode_name in {"JUMP", "JMPFALSE", "JMPTRUE"}:
+                    has_control_branch = True
+
+            if has_control_branch:
+                scripts_with_control_branches += 1
+
+            block_sizes, block_terminators = _script_block_shapes(instructions)
+            block_count += len(block_sizes)
+            for size in block_sizes:
+                block_size_histogram[str(size)] += 1
+                max_block_size = max(max_block_size, size)
+            for term in block_terminators:
+                block_terminator_histogram[term] += 1
+                block_terminator_sequence.append(term)
+
+        top_ir_node_kinds = [name for name, _ in node_kind_histogram.most_common(8)]
+        top_ir_opcodes = [name for name, _ in opcode_histogram.most_common(12)]
+        sequence_head = block_terminator_sequence[:40]
+        out[scene_name] = {
+            "script_handles_found": len(scripts),
+            "icon_films_found": len(films),
+            "scripts_with_blocks": scripts_with_blocks,
+            "scripts_with_control_branches": scripts_with_control_branches,
+            "instruction_count": instruction_count,
+            "block_count": block_count,
+            "max_block_size": max_block_size,
+            "libcall_annotated_node_count": libcall_annotated_node_count,
+            "ir_node_kind_histogram": dict(sorted(node_kind_histogram.items())),
+            "ir_opcode_histogram": dict(sorted(opcode_histogram.items())),
+            "ir_block_size_histogram": {
+                key: block_size_histogram[key] for key in sorted(block_size_histogram.keys(), key=int)
+            },
+            "ir_block_terminator_histogram": dict(sorted(block_terminator_histogram.items())),
+            "top_ir_node_kinds": top_ir_node_kinds,
+            "top_ir_node_kinds_sha256": hashlib.sha256("|".join(top_ir_node_kinds).encode("utf-8")).hexdigest(),
+            "top_ir_opcodes": top_ir_opcodes,
+            "top_ir_opcodes_sha256": hashlib.sha256("|".join(top_ir_opcodes).encode("utf-8")).hexdigest(),
+            "ir_block_terminator_sequence_head": sequence_head,
+            "ir_block_terminator_sequence_head_sha256": hashlib.sha256(
+                "|".join(sequence_head).encode("utf-8")
+            ).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -1354,7 +1510,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -1368,7 +1524,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -1386,6 +1542,7 @@ def main() -> int:
         "timing": repo_root / "tests" / "snapshots" / "timing_wait_semantics_contracts.json",
         "cfg": repo_root / "tests" / "snapshots" / "pcode_cfg_invariant_snapshots.json",
         "libsig": repo_root / "tests" / "snapshots" / "pcode_libcall_signature_contracts.json",
+        "ir": repo_root / "tests" / "snapshots" / "pcode_ir_lift_snapshots.json",
     }
 
     if args.check:
@@ -1511,6 +1668,15 @@ def main() -> int:
         else:
             _write_json(targets["libsig"], payload)
             print("- updated pcode_libcall_signature_contracts.json")
+
+    if "ir" in refresh:
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        payload = _build_pcode_ir_lift_snapshots(scanner_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["ir"], payload) and ok
+        else:
+            _write_json(targets["ir"], payload)
+            print("- updated pcode_ir_lift_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")
