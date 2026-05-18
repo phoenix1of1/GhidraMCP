@@ -60,6 +60,7 @@ PSEUDO_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 EMIT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 BUNDLE_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 DELTA_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+DIGEST_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -168,6 +169,7 @@ BUNDLE_MAX_BODY_LINES = 32
 BUNDLE_FUNCTION_LIMIT = 40
 BUNDLE_TEXT_HEAD_LIMIT = 120
 DELTA_CHANGE_HEAD_LIMIT = 80
+DIGEST_HEAD_LIMIT = 80
 SEMANTIC_BEHAVIOR_TAGS = {
     "WAITFRAME": ["timing"],
     "WAITTIME": ["timing"],
@@ -2692,6 +2694,84 @@ def _build_pcode_semantic_delta_report_snapshots(
     return out
 
 
+def _build_pcode_regression_digest_snapshots(
+    delta_payload: dict,
+    bundle_payload: dict,
+) -> dict:
+    out = {}
+    for scene_name in DIGEST_CONTRACT_SCENES:
+        delta_scene = delta_payload.get(scene_name, {}) if isinstance(delta_payload, dict) else {}
+        bundle_scene = bundle_payload.get(scene_name, {}) if isinstance(bundle_payload, dict) else {}
+
+        current_count = int(delta_scene.get("current_function_count") or 0)
+        added_count = int(delta_scene.get("added_function_count") or 0)
+        removed_count = int(delta_scene.get("removed_function_count") or 0)
+        changed_body_count = int(delta_scene.get("changed_body_count") or 0)
+        changed_sig_count = int(delta_scene.get("changed_signature_count") or 0)
+        severity_score = added_count * 3 + removed_count * 3 + changed_body_count * 2 + changed_sig_count
+
+        if severity_score == 0:
+            severity = "none"
+        elif severity_score <= 3:
+            severity = "low"
+        elif severity_score <= 8:
+            severity = "medium"
+        else:
+            severity = "high"
+
+        digest_lines = [
+            f"# {scene_name} regression digest",
+            f"severity: {severity} (score={severity_score})",
+            f"functions: current={current_count} added={added_count} removed={removed_count}",
+            f"changes: body={changed_body_count} signature={changed_sig_count}",
+        ]
+
+        if bool(delta_scene.get("has_scene_digest_change")):
+            digest_lines.append("scene bundle digest changed")
+        else:
+            digest_lines.append("scene bundle digest unchanged")
+
+        if bool(delta_scene.get("has_scene_signature_change")):
+            digest_lines.append("scene signature profile changed")
+        else:
+            digest_lines.append("scene signature profile unchanged")
+
+        added = list(delta_scene.get("added_functions") or [])
+        removed = list(delta_scene.get("removed_functions") or [])
+        changed_body = list(delta_scene.get("changed_body_functions") or [])
+        changed_sig = list(delta_scene.get("changed_signature_functions") or [])
+
+        for name in added[:8]:
+            digest_lines.append(f"+ {name}")
+        for name in removed[:8]:
+            digest_lines.append(f"- {name}")
+        for name in changed_body[:8]:
+            digest_lines.append(f"~ body {name}")
+        for name in changed_sig[:8]:
+            digest_lines.append(f"~ sig {name}")
+
+        top_sigs = list(bundle_scene.get("top_function_signatures") or [])
+        for signature in top_sigs[:6]:
+            digest_lines.append(f"sig {signature}")
+
+        digest_lines = digest_lines[:DIGEST_HEAD_LIMIT]
+        out[scene_name] = {
+            "severity": severity,
+            "severity_score": severity_score,
+            "current_function_count": current_count,
+            "added_function_count": added_count,
+            "removed_function_count": removed_count,
+            "changed_body_count": changed_body_count,
+            "changed_signature_count": changed_sig_count,
+            "digest_head": digest_lines,
+            "digest_head_sha256": hashlib.sha256("|".join(digest_lines).encode("utf-8")).hexdigest(),
+            "delta_token": str(delta_scene.get("delta_token") or ""),
+            "bundle_text_digest": str(bundle_scene.get("bundle_text_digest") or ""),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -2919,7 +2999,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -2933,7 +3013,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -2960,11 +3040,16 @@ def main() -> int:
         "emit": repo_root / "tests" / "snapshots" / "pcode_emitter_output_snapshots.json",
         "bundle": repo_root / "tests" / "snapshots" / "pcode_scene_decomp_bundle_snapshots.json",
         "delta": repo_root / "tests" / "snapshots" / "pcode_semantic_delta_report_snapshots.json",
+        "digest": repo_root / "tests" / "snapshots" / "pcode_regression_digest_snapshots.json",
     }
 
     previous_bundle_payload = {}
     if targets["bundle"].exists():
         previous_bundle_payload = _read_json(targets["bundle"])
+
+    previous_delta_payload = {}
+    if targets["delta"].exists():
+        previous_delta_payload = _read_json(targets["delta"])
 
     if args.check:
         print("Checking snapshot baselines (dry mode)")
@@ -3178,6 +3263,21 @@ def main() -> int:
         else:
             _write_json(targets["delta"], payload)
             print("- updated pcode_semantic_delta_report_snapshots.json")
+
+    if "digest" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        current_bundle_payload = _build_pcode_scene_decomp_bundle_snapshots(vm_mod, scanner_mod, dataset_dir)
+        if "delta" in refresh:
+            delta_payload = _build_pcode_semantic_delta_report_snapshots(previous_bundle_payload, current_bundle_payload)
+        else:
+            delta_payload = previous_delta_payload if previous_delta_payload else _build_pcode_semantic_delta_report_snapshots(previous_bundle_payload, current_bundle_payload)
+        payload = _build_pcode_regression_digest_snapshots(delta_payload, current_bundle_payload)
+        if args.check:
+            ok = _check_snapshot(targets["digest"], payload) and ok
+        else:
+            _write_json(targets["digest"], payload)
+            print("- updated pcode_regression_digest_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")

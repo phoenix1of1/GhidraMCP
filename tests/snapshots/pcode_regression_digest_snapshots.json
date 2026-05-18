@@ -1,0 +1,78 @@
+{
+  "BAR.SCN": {
+    "severity": "none",
+    "severity_score": 0,
+    "current_function_count": 22,
+    "added_function_count": 0,
+    "removed_function_count": 0,
+    "changed_body_count": 0,
+    "changed_signature_count": 0,
+    "digest_head": [
+      "# BAR.SCN regression digest",
+      "severity: none (score=0)",
+      "functions: current=22 added=0 removed=0",
+      "changes: body=0 signature=0",
+      "scene bundle digest unchanged",
+      "scene signature profile unchanged",
+      "sig regions:3|paths:2|term:conditional,jump,halt|intent:control,tag|aliases:",
+      "sig regions:1|paths:1|term:halt|intent:playback|aliases:",
+      "sig regions:6|paths:2|term:jump,conditional,halt|intent:control,inventory|aliases:g_item_003",
+      "sig regions:30|paths:2|term:jump,conditional,halt|intent:control,flow,inventory|aliases:",
+      "sig regions:46|paths:2|term:jump,conditional,halt|intent:control,flow,inventory|aliases:",
+      "sig regions:3|paths:2|term:conditional,jump,halt|intent:control,playback|aliases:"
+    ],
+    "digest_head_sha256": "046396300dc4cd4669c9519fa129568d749d8037b3fc7d0eefe5b554f692e4e8",
+    "delta_token": "add4b099e783f1850f6eda7e8b7dd210d79bcde6f48db0acc9b70af6aee2ddbf",
+    "bundle_text_digest": "b9d46a155f7272c47ab5ed91013474be433b3decb8f0245efd96ee4a4f2d571f"
+  },
+  "CLIMAX.SCN": {
+    "severity": "none",
+    "severity_score": 0,
+    "current_function_count": 15,
+    "added_function_count": 0,
+    "removed_function_count": 0,
+    "changed_body_count": 0,
+    "changed_signature_count": 0,
+    "digest_head": [
+      "# CLIMAX.SCN regression digest",
+      "severity: none (score=0)",
+      "functions: current=15 added=0 removed=0",
+      "changes: body=0 signature=0",
+      "scene bundle digest unchanged",
+      "scene signature profile unchanged",
+      "sig regions:1|paths:1|term:halt|intent:playback|aliases:",
+      "sig regions:30|paths:2|term:jump,conditional,halt|intent:control,flow,inventory|aliases:",
+      "sig regions:46|paths:2|term:jump,conditional,halt|intent:control,flow,inventory|aliases:",
+      "sig regions:1|paths:1|term:fallthrough|intent:audio|aliases:"
+    ],
+    "digest_head_sha256": "330d40a0994fc6e010f861668d18b6b536bb8ac122f0646899023bc3ef70bb36",
+    "delta_token": "cc6eab0caa2176e885e85313070a89f720bf41ea3974c69cef77a1894b6bde38",
+    "bundle_text_digest": "d99c72ffc3b44a692aaa0b4aa74d6edf6c270bc97673d06a75ffe59e2779c26b"
+  },
+  "FINALE.SCN": {
+    "severity": "none",
+    "severity_score": 0,
+    "current_function_count": 17,
+    "added_function_count": 0,
+    "removed_function_count": 0,
+    "changed_body_count": 0,
+    "changed_signature_count": 0,
+    "digest_head": [
+      "# FINALE.SCN regression digest",
+      "severity: none (score=0)",
+      "functions: current=17 added=0 removed=0",
+      "changes: body=0 signature=0",
+      "scene bundle digest unchanged",
+      "scene signature profile unchanged",
+      "sig regions:1|paths:1|term:halt|intent:playback|aliases:",
+      "sig regions:30|paths:2|term:jump,conditional,halt|intent:control,flow,inventory|aliases:",
+      "sig regions:91|paths:2|term:jump,conditional,halt|intent:control,state,flow|aliases:",
+      "sig regions:3|paths:2|term:conditional,jump,halt|intent:control,tag|aliases:",
+      "sig regions:22|paths:2|term:conditional,jump,halt|intent:control,actor,timing|aliases:",
+      "sig regions:17|paths:1|term:conditional,jump,halt|intent:control,flow,state|aliases:"
+    ],
+    "digest_head_sha256": "9a034c97664ccd51559010bba04ba9d0df2b12940810afbb3999b229a7b63962",
+    "delta_token": "cbdf4fab453b889298200da5d7987ec85716fbd741b9233d0d2b8c5af3356ca1",
+    "bundle_text_digest": "52458f76f97ed0d65bbb50be545e73b566e26c005e1d55579268026e6bb706c4"
+  }
+}
