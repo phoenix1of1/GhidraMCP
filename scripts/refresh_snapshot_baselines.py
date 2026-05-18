@@ -53,6 +53,7 @@ CFG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 LIBSIG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 IR_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 STRUCT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+SEMANTIC_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -138,6 +139,78 @@ LIBSIG_ARG_SHAPE_WINDOW = 6
 IR_MAX_INS = 800
 STRUCT_MAX_INS = 800
 STRUCT_REGION_SIGNATURE_LIMIT = 60
+SEMANTIC_MAX_STEPS = 1200
+SEMANTIC_MAX_PATHS = 16
+SEMANTIC_MAX_CALLS = 30
+SEMANTIC_PSEUDOCODE_LINE_LIMIT = 48
+SEMANTIC_BEHAVIOR_TAGS = {
+    "WAITFRAME": ["timing"],
+    "WAITTIME": ["timing"],
+    "EVENT": ["flow", "timing"],
+    "PLAY": ["playback"],
+    "TOPPLAY": ["playback"],
+    "SPLAY": ["playback"],
+    "STAND": ["playback"],
+    "SWALK": ["playback"],
+    "WALK": ["playback"],
+    "BACKGROUND": ["render"],
+    "CONTROL": ["flow"],
+    "CONVERSATION": ["dialogue"],
+    "CONVTOPIC": ["dialogue"],
+    "ADDTOPIC": ["dialogue"],
+    "TALK": ["dialogue"],
+    "TALKAT": ["dialogue"],
+    "TALKATS": ["dialogue"],
+    "PRINTOBJ": ["dialogue", "ui"],
+    "PRINTTAG": ["dialogue", "ui"],
+    "SHOWSTRING": ["dialogue", "ui"],
+    "INVENTORY": ["inventory", "ui"],
+    "ININVENTORY": ["inventory"],
+    "INWHICHINV": ["inventory"],
+    "WHICHINVENTORY": ["inventory"],
+    "ADDINV1": ["inventory"],
+    "ADDINV2": ["inventory"],
+    "ADDOPENINV": ["inventory"],
+    "DELINV": ["inventory"],
+    "SETINVLIMIT": ["inventory"],
+    "GETINVLIMIT": ["inventory"],
+    "SETINVSIZE": ["inventory"],
+    "HELDOBJECT": ["inventory"],
+    "OBJECTHELD": ["inventory"],
+    "SCANICON": ["inventory", "ui"],
+    "PLAYSAMPLE": ["audio"],
+    "STOPSAMPLE": ["audio"],
+    "SETTAG": ["tag"],
+    "KILLTAG": ["tag"],
+    "TAGACTOR": ["tag", "actor"],
+    "UNTAGACTOR": ["tag", "actor"],
+}
+SEMANTIC_ARG_LABELS = {
+    "PLAY": ["film", "x", "y", "flags"],
+    "TOPPLAY": ["film", "x", "y", "flags"],
+    "SPLAY": ["film", "x", "y", "flags"],
+    "STAND": ["film", "x", "y", "flags"],
+    "SWALK": ["film", "x", "y", "flags"],
+    "WALK": ["film", "x", "y", "flags"],
+    "WAITFRAME": ["frames"],
+    "WAITTIME": ["ticks"],
+    "EVENT": ["event_id"],
+    "CONTROL": ["control_id", "value"],
+    "TALK": ["actor", "text"],
+    "TALKAT": ["actor", "x", "y", "text"],
+    "TALKATS": ["actor", "x", "y", "text"],
+    "CONVERSATION": ["conversation_id"],
+    "CONVTOPIC": ["topic_id"],
+    "ADDTOPIC": ["topic_id"],
+    "INVENTORY": ["item_id"],
+    "ININVENTORY": ["item_id"],
+    "INWHICHINV": ["item_id"],
+    "WHICHINVENTORY": ["item_id"],
+    "ADDINV1": ["item_id"],
+    "ADDINV2": ["item_id"],
+    "ADDOPENINV": ["item_id"],
+    "DELINV": ["item_id"],
+}
 
 
 def _load_module(name: str, module_path: Path):
@@ -588,6 +661,58 @@ def _script_structured_regions(instructions: list[dict]) -> list[dict]:
         block["max_conditional_depth"] = max_conditional_depth
 
     return blocks
+
+
+def _semantic_behavior_tags(libcall_name: str) -> list[str]:
+    if libcall_name in SEMANTIC_BEHAVIOR_TAGS:
+        return list(SEMANTIC_BEHAVIOR_TAGS[libcall_name])
+
+    upper = str(libcall_name or "").upper()
+    inferred: list[str] = []
+    if "INV" in upper:
+        inferred.append("inventory")
+    if upper.startswith("TALK") or upper.startswith("CONV"):
+        inferred.append("dialogue")
+    if upper.startswith("WAIT"):
+        inferred.append("timing")
+    if "PLAY" in upper:
+        inferred.append("playback")
+    if not inferred:
+        inferred.append("state")
+    return inferred
+
+
+def _semantic_arg_labels(libcall_name: str, max_observed_arity: int) -> list[str]:
+    if max_observed_arity <= 0:
+        return []
+
+    base = list(SEMANTIC_ARG_LABELS.get(libcall_name, []))
+    labels = base[:max_observed_arity]
+    while len(labels) < max_observed_arity:
+        labels.append(f"arg{len(labels) + 1}")
+    return labels
+
+
+def _region_pseudocode_line(terminator: str, has_backedge: bool, primary_intent: str, region_calls: list[str]) -> str:
+    if has_backedge:
+        prefix = "loop"
+    elif terminator == "conditional":
+        prefix = "if cond"
+    elif terminator in {"halt", "ret"}:
+        prefix = "return"
+    elif terminator == "jump":
+        prefix = "goto"
+    else:
+        prefix = "step"
+
+    if region_calls:
+        call_phrase = ", ".join(region_calls[:2]).lower()
+    else:
+        call_phrase = "state"
+
+    if prefix == "if cond":
+        return f"if cond: {primary_intent} via {call_phrase}"
+    return f"{prefix} {primary_intent} via {call_phrase}"
 
 
 def _build_branch_convergence_contract_snapshots(vm_mod, dataset_dir: Path) -> dict:
@@ -1476,6 +1601,175 @@ def _build_pcode_structuring_snapshots(scanner_mod, dataset_dir: Path) -> dict:
     return out
 
 
+def _build_pcode_semantic_annotation_snapshots(vm_mod, scanner_mod, dataset_dir: Path) -> dict:
+    idx_rows = vm_mod.read_index(dataset_dir / "INDEX")
+    idx_by_name = {row["filename"].lower(): row["index"] for row in idx_rows}
+
+    out = {}
+    for scene_name in SEMANTIC_CONTRACT_SCENES:
+        scene_path = dataset_dir / scene_name
+        data = scene_path.read_bytes()
+        scripts = vm_mod.collect_script_handles(scene_path, idx_by_name)
+        scripts = sorted(scripts, key=lambda s: (s.get("source", ""), s.get("handle", 0)))[:60]
+        _, films = scanner_mod.collect_script_handles(scene_path, idx_by_name)
+
+        semantic_calls: dict[str, dict] = {}
+        transition_histogram = collections.Counter()
+        region_semantic_histogram = collections.Counter()
+        region_semantic_sequence: list[str] = []
+        pseudocode_lines: list[str] = []
+
+        scripts_with_semantics = 0
+        semantic_region_count = 0
+
+        for script in scripts:
+            handle = script["handle"]
+            file_index, offset = vm_mod.split_handle(handle)
+            if file_index != idx_by_name.get(scene_name.lower(), -1) or offset >= len(data):
+                continue
+
+            trace = vm_mod.execute_script(data, offset, max_steps=SEMANTIC_MAX_STEPS, max_paths=SEMANTIC_MAX_PATHS)
+            events = trace.get("events", [])
+
+            disassembly = scanner_mod.disassemble(data, offset, max_ins=STRUCT_MAX_INS)
+            instructions = disassembly.get("instructions", [])
+            regions = _script_structured_regions(instructions)
+            if not regions:
+                continue
+
+            local_sequence: list[str] = []
+            libcall_events_by_ip: dict[int, list[str]] = collections.defaultdict(list)
+
+            for event in events:
+                if event.get("event") != "libcall":
+                    continue
+
+                name = event.get("libcall_name")
+                if not name:
+                    continue
+
+                local_sequence.append(name)
+                stack_top = event.get("stack_top") or []
+                depth = int(event.get("stack_depth") or 0)
+                arity = len(stack_top)
+
+                entry = semantic_calls.setdefault(
+                    name,
+                    {
+                        "occurrence_count": 0,
+                        "max_observed_arity": 0,
+                        "stack_depth_min": None,
+                        "stack_depth_max": 0,
+                        "arg_arity_histogram": collections.Counter(),
+                        "behavior_tags": set(),
+                    },
+                )
+                entry["occurrence_count"] += 1
+                entry["max_observed_arity"] = max(entry["max_observed_arity"], arity)
+                entry["stack_depth_min"] = depth if entry["stack_depth_min"] is None else min(entry["stack_depth_min"], depth)
+                entry["stack_depth_max"] = max(entry["stack_depth_max"], depth)
+                entry["arg_arity_histogram"][str(arity)] += 1
+                entry["behavior_tags"].update(_semantic_behavior_tags(name))
+
+                ip = event.get("ip")
+                if isinstance(ip, int):
+                    libcall_events_by_ip[ip].append(name)
+
+            for i in range(1, len(local_sequence)):
+                transition_histogram[f"{local_sequence[i - 1]}->{local_sequence[i]}"] += 1
+
+            script_has_semantic_region = False
+            for region in regions:
+                start_ip = int(region["start_ip"])
+                end_ip = int(region["end_ip"])
+                region_calls: list[str] = []
+                for ip in sorted(libcall_events_by_ip.keys()):
+                    if start_ip <= ip <= end_ip:
+                        region_calls.extend(libcall_events_by_ip[ip])
+
+                if region_calls:
+                    script_has_semantic_region = True
+                    semantic_region_count += 1
+                    intent_set = set()
+                    for call in region_calls:
+                        intent_set.update(_semantic_behavior_tags(call))
+                    intents = sorted(intent_set)
+                    primary_intent = intents[0] if intents else "state"
+                else:
+                    primary_intent = "control"
+
+                signature = (
+                    f"{region['terminator']}:{primary_intent}:"
+                    f"{'loop' if region['has_backedge'] else 'plain'}"
+                )
+                region_semantic_histogram[signature] += 1
+                region_semantic_sequence.append(signature)
+
+                if len(pseudocode_lines) < SEMANTIC_PSEUDOCODE_LINE_LIMIT:
+                    pseudocode_lines.append(
+                        _region_pseudocode_line(
+                            region["terminator"],
+                            bool(region["has_backedge"]),
+                            primary_intent,
+                            region_calls,
+                        )
+                    )
+
+            if script_has_semantic_region:
+                scripts_with_semantics += 1
+
+        ranked_calls = sorted(
+            semantic_calls.keys(),
+            key=lambda name: (-semantic_calls[name]["occurrence_count"], name),
+        )[:SEMANTIC_MAX_CALLS]
+
+        semantic_call_contracts = {}
+        for name in ranked_calls:
+            entry = semantic_calls[name]
+            max_arity = int(entry["max_observed_arity"])
+            behavior_tags = sorted(entry["behavior_tags"])
+            semantic_call_contracts[name] = {
+                "occurrence_count": int(entry["occurrence_count"]),
+                "behavior_tags": behavior_tags,
+                "behavior_tags_sha256": hashlib.sha256("|".join(behavior_tags).encode("utf-8")).hexdigest(),
+                "max_observed_arity": max_arity,
+                "argument_labels": _semantic_arg_labels(name, max_arity),
+                "arg_arity_histogram": {
+                    key: entry["arg_arity_histogram"][key]
+                    for key in sorted(entry["arg_arity_histogram"].keys(), key=int)
+                },
+                "stack_depth_min": 0 if entry["stack_depth_min"] is None else int(entry["stack_depth_min"]),
+                "stack_depth_max": int(entry["stack_depth_max"]),
+            }
+
+        top_region_semantics = [name for name, _ in region_semantic_histogram.most_common(12)]
+        region_sequence_head = region_semantic_sequence[:STRUCT_REGION_SIGNATURE_LIMIT]
+        pseudocode_head = pseudocode_lines[:SEMANTIC_PSEUDOCODE_LINE_LIMIT]
+
+        semantic_libcall_count = sum(int(values["occurrence_count"]) for values in semantic_calls.values())
+        out[scene_name] = {
+            "script_handles_found": len(scripts),
+            "icon_films_found": len(films),
+            "scripts_with_semantics": scripts_with_semantics,
+            "semantic_region_count": semantic_region_count,
+            "semantic_libcall_count": semantic_libcall_count,
+            "unique_semantic_libcall_count": len(semantic_calls),
+            "libcalls_ranked": ranked_calls,
+            "libcall_semantics": {name: semantic_call_contracts[name] for name in sorted(semantic_call_contracts.keys())},
+            "libcall_transition_histogram": dict(sorted(transition_histogram.items())),
+            "top_region_semantics": top_region_semantics,
+            "top_region_semantics_sha256": hashlib.sha256("|".join(top_region_semantics).encode("utf-8")).hexdigest(),
+            "region_semantic_sequence_head": region_sequence_head,
+            "region_semantic_sequence_head_sha256": hashlib.sha256(
+                "|".join(region_sequence_head).encode("utf-8")
+            ).hexdigest(),
+            "pseudocode_summary_head": pseudocode_head,
+            "pseudocode_summary_head_sha256": hashlib.sha256("|".join(pseudocode_head).encode("utf-8")).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -1703,7 +1997,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -1717,7 +2011,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -1737,6 +2031,7 @@ def main() -> int:
         "libsig": repo_root / "tests" / "snapshots" / "pcode_libcall_signature_contracts.json",
         "ir": repo_root / "tests" / "snapshots" / "pcode_ir_lift_snapshots.json",
         "struct": repo_root / "tests" / "snapshots" / "pcode_structuring_snapshots.json",
+        "semantic": repo_root / "tests" / "snapshots" / "pcode_semantic_annotation_snapshots.json",
     }
 
     if args.check:
@@ -1880,6 +2175,16 @@ def main() -> int:
         else:
             _write_json(targets["struct"], payload)
             print("- updated pcode_structuring_snapshots.json")
+
+    if "semantic" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        payload = _build_pcode_semantic_annotation_snapshots(vm_mod, scanner_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["semantic"], payload) and ok
+        else:
+            _write_json(targets["semantic"], payload)
+            print("- updated pcode_semantic_annotation_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")

@@ -1,0 +1,2047 @@
+{
+  "BAR.SCN": {
+    "script_handles_found": 22,
+    "icon_films_found": 0,
+    "scripts_with_semantics": 22,
+    "semantic_region_count": 28,
+    "semantic_libcall_count": 52,
+    "unique_semantic_libcall_count": 16,
+    "libcalls_ranked": [
+      "PLAY",
+      "KILLTAG",
+      "STAND",
+      "WAITTIME",
+      "ININVENTORY",
+      "SWALK",
+      "ACTORXPOS",
+      "AUXSCALE",
+      "CONTROL",
+      "EVENT",
+      "INVENTORY",
+      "BACKGROUND",
+      "OFFSET",
+      "PLAYMIDI",
+      "SCREENXPOS",
+      "SETTAG"
+    ],
+    "libcall_semantics": {
+      "ACTORXPOS": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 2
+        },
+        "stack_depth_min": 26,
+        "stack_depth_max": 26
+      },
+      "AUXSCALE": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 2
+        },
+        "stack_depth_min": 15,
+        "stack_depth_max": 29
+      },
+      "BACKGROUND": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "render"
+        ],
+        "behavior_tags_sha256": "887270d0cbc560af35f1326d55e9dbdc35ea2301c2cd26633fb6d4932deee268",
+        "max_observed_arity": 1,
+        "argument_labels": [
+          "arg1"
+        ],
+        "arg_arity_histogram": {
+          "1": 1
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 1
+      },
+      "CONTROL": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "flow"
+        ],
+        "behavior_tags_sha256": "3b21278178ed3463f3bde3a35f088caf6d99ff1b2f647d9a0c2b8de599ec3dc6",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "control_id",
+          "value",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 2
+        },
+        "stack_depth_min": 13,
+        "stack_depth_max": 15
+      },
+      "EVENT": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "flow",
+          "timing"
+        ],
+        "behavior_tags_sha256": "e20a0af489da918be01bc784368870d3901cf128e03423f22a4082197fed95bf",
+        "max_observed_arity": 0,
+        "argument_labels": [],
+        "arg_arity_histogram": {
+          "0": 2
+        },
+        "stack_depth_min": 0,
+        "stack_depth_max": 0
+      },
+      "ININVENTORY": {
+        "occurrence_count": 3,
+        "behavior_tags": [
+          "inventory"
+        ],
+        "behavior_tags_sha256": "b11a85b296a90afc460430434a504e7acb04b064575b7277724688af0e59d189",
+        "max_observed_arity": 2,
+        "argument_labels": [
+          "item_id",
+          "arg2"
+        ],
+        "arg_arity_histogram": {
+          "2": 3
+        },
+        "stack_depth_min": 2,
+        "stack_depth_max": 2
+      },
+      "INVENTORY": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "inventory",
+          "ui"
+        ],
+        "behavior_tags_sha256": "29f2e434beada9a5f59553a5789f227c1a90f11b0c2a5a2ca7f8d4c1a58614e6",
+        "max_observed_arity": 1,
+        "argument_labels": [
+          "item_id"
+        ],
+        "arg_arity_histogram": {
+          "1": 2
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 1
+      },
+      "KILLTAG": {
+        "occurrence_count": 10,
+        "behavior_tags": [
+          "tag"
+        ],
+        "behavior_tags_sha256": "2a1073a6e67f0e5f09a5957c659503c690efe7272be8313df872556a9a684d8c",
+        "max_observed_arity": 1,
+        "argument_labels": [
+          "arg1"
+        ],
+        "arg_arity_histogram": {
+          "1": 10
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 1
+      },
+      "OFFSET": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 2,
+        "argument_labels": [
+          "arg1",
+          "arg2"
+        ],
+        "arg_arity_histogram": {
+          "2": 1
+        },
+        "stack_depth_min": 2,
+        "stack_depth_max": 2
+      },
+      "PLAY": {
+        "occurrence_count": 13,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "6": 4,
+          "10": 9
+        },
+        "stack_depth_min": 6,
+        "stack_depth_max": 35
+      },
+      "PLAYMIDI": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 31,
+        "stack_depth_max": 31
+      },
+      "SCREENXPOS": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 16,
+        "stack_depth_max": 16
+      },
+      "SETTAG": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "tag"
+        ],
+        "behavior_tags_sha256": "2a1073a6e67f0e5f09a5957c659503c690efe7272be8313df872556a9a684d8c",
+        "max_observed_arity": 7,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7"
+        ],
+        "arg_arity_histogram": {
+          "7": 1
+        },
+        "stack_depth_min": 7,
+        "stack_depth_max": 7
+      },
+      "STAND": {
+        "occurrence_count": 4,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 4
+        },
+        "stack_depth_min": 10,
+        "stack_depth_max": 23
+      },
+      "SWALK": {
+        "occurrence_count": 3,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "6": 1,
+          "8": 1,
+          "10": 1
+        },
+        "stack_depth_min": 6,
+        "stack_depth_max": 19
+      },
+      "WAITTIME": {
+        "occurrence_count": 4,
+        "behavior_tags": [
+          "timing"
+        ],
+        "behavior_tags_sha256": "f6cfb8c3f101748fab3f98b775ae62e1b58891817d14477a2f4cc15e0e1bb9f8",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "ticks",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 4
+        },
+        "stack_depth_min": 17,
+        "stack_depth_max": 33
+      }
+    },
+    "libcall_transition_histogram": {
+      "ACTORXPOS->ACTORXPOS": 1,
+      "ACTORXPOS->WAITTIME": 1,
+      "AUXSCALE->AUXSCALE": 1,
+      "AUXSCALE->PLAY": 1,
+      "BACKGROUND->AUXSCALE": 1,
+      "CONTROL->SWALK": 1,
+      "EVENT->INVENTORY": 2,
+      "OFFSET->SWALK": 1,
+      "PLAY->PLAY": 8,
+      "PLAY->PLAYMIDI": 1,
+      "PLAY->SETTAG": 1,
+      "PLAYMIDI->WAITTIME": 1,
+      "SCREENXPOS->WAITTIME": 1,
+      "STAND->CONTROL": 2,
+      "STAND->STAND": 1,
+      "STAND->WAITTIME": 1,
+      "SWALK->STAND": 3,
+      "WAITTIME->ACTORXPOS": 1,
+      "WAITTIME->SCREENXPOS": 1
+    },
+    "top_region_semantics": [
+      "conditional:control:plain",
+      "jump:control:plain",
+      "halt:control:plain",
+      "jump:tag:plain",
+      "conditional:flow:plain",
+      "halt:playback:plain",
+      "conditional:inventory:plain",
+      "jump:inventory:plain",
+      "jump:timing:plain",
+      "jump:playback:plain",
+      "halt:flow:plain",
+      "conditional:render:plain"
+    ],
+    "top_region_semantics_sha256": "61416607ad7e6635f9927265a41923e1166b8def9cda18d7dc02650b041ac70b",
+    "region_semantic_sequence_head": [
+      "conditional:flow:plain",
+      "jump:inventory:plain",
+      "conditional:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "jump:control:plain",
+      "jump:control:plain",
+      "halt:control:plain",
+      "conditional:flow:plain",
+      "jump:inventory:plain",
+      "conditional:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain"
+    ],
+    "region_semantic_sequence_head_sha256": "9c096c78ca129e1170b65d4408218516e555749638784e14096d399d3d60f58c",
+    "pseudocode_summary_head": [
+      "if cond: flow via event",
+      "goto inventory via inventory",
+      "if cond: control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "goto control via state",
+      "goto control via state",
+      "return control via state",
+      "if cond: flow via event",
+      "goto inventory via inventory",
+      "if cond: control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state"
+    ],
+    "pseudocode_summary_head_sha256": "c15fd6e1841daac22123a86b6cd98f8c2f5ea0a2617e003cd485d76102ac23a1"
+  },
+  "CLIMAX.SCN": {
+    "script_handles_found": 15,
+    "icon_films_found": 0,
+    "scripts_with_semantics": 15,
+    "semantic_region_count": 17,
+    "semantic_libcall_count": 264,
+    "unique_semantic_libcall_count": 16,
+    "libcalls_ranked": [
+      "PLAY",
+      "TALK",
+      "OFFSET",
+      "PLAYSAMPLE",
+      "WAITFRAME",
+      "TALKAT",
+      "WAITTIME",
+      "SCROLL",
+      "STAND",
+      "EVENT",
+      "INVENTORY",
+      "NEWSCENE",
+      "PLAYMIDI",
+      "SWALK",
+      "BACKGROUND",
+      "SAVESCENE"
+    ],
+    "libcall_semantics": {
+      "BACKGROUND": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "render"
+        ],
+        "behavior_tags_sha256": "887270d0cbc560af35f1326d55e9dbdc35ea2301c2cd26633fb6d4932deee268",
+        "max_observed_arity": 1,
+        "argument_labels": [
+          "arg1"
+        ],
+        "arg_arity_histogram": {
+          "1": 1
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 1
+      },
+      "EVENT": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "flow",
+          "timing"
+        ],
+        "behavior_tags_sha256": "e20a0af489da918be01bc784368870d3901cf128e03423f22a4082197fed95bf",
+        "max_observed_arity": 0,
+        "argument_labels": [],
+        "arg_arity_histogram": {
+          "0": 2
+        },
+        "stack_depth_min": 0,
+        "stack_depth_max": 0
+      },
+      "INVENTORY": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "inventory",
+          "ui"
+        ],
+        "behavior_tags_sha256": "29f2e434beada9a5f59553a5789f227c1a90f11b0c2a5a2ca7f8d4c1a58614e6",
+        "max_observed_arity": 1,
+        "argument_labels": [
+          "item_id"
+        ],
+        "arg_arity_histogram": {
+          "1": 2
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 1
+      },
+      "NEWSCENE": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 2
+        },
+        "stack_depth_min": 19,
+        "stack_depth_max": 23
+      },
+      "OFFSET": {
+        "occurrence_count": 36,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 36
+        },
+        "stack_depth_min": 18,
+        "stack_depth_max": 34
+      },
+      "PLAY": {
+        "occurrence_count": 57,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "6": 11,
+          "10": 46
+        },
+        "stack_depth_min": 6,
+        "stack_depth_max": 38
+      },
+      "PLAYMIDI": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "4": 1,
+          "10": 1
+        },
+        "stack_depth_min": 4,
+        "stack_depth_max": 31
+      },
+      "PLAYSAMPLE": {
+        "occurrence_count": 35,
+        "behavior_tags": [
+          "audio"
+        ],
+        "behavior_tags_sha256": "6ed8919ce20490a5e3ad8630a4fab69475297abd07db73918dd5f36fcfaeb11b",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "2": 1,
+          "10": 34
+        },
+        "stack_depth_min": 2,
+        "stack_depth_max": 34
+      },
+      "SAVESCENE": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 20,
+        "stack_depth_max": 20
+      },
+      "SCROLL": {
+        "occurrence_count": 6,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 6
+        },
+        "stack_depth_min": 24,
+        "stack_depth_max": 36
+      },
+      "STAND": {
+        "occurrence_count": 3,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 3
+        },
+        "stack_depth_min": 12,
+        "stack_depth_max": 22
+      },
+      "SWALK": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "8": 1,
+          "10": 1
+        },
+        "stack_depth_min": 8,
+        "stack_depth_max": 18
+      },
+      "TALK": {
+        "occurrence_count": 40,
+        "behavior_tags": [
+          "dialogue"
+        ],
+        "behavior_tags_sha256": "abe0ba24dae6eb854ba26a5f2f34497e2be2df3daaa9acbc4e6d3cf6f05065d7",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "actor",
+          "text",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 40
+        },
+        "stack_depth_min": 18,
+        "stack_depth_max": 34
+      },
+      "TALKAT": {
+        "occurrence_count": 28,
+        "behavior_tags": [
+          "dialogue"
+        ],
+        "behavior_tags_sha256": "abe0ba24dae6eb854ba26a5f2f34497e2be2df3daaa9acbc4e6d3cf6f05065d7",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "actor",
+          "x",
+          "y",
+          "text",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 28
+        },
+        "stack_depth_min": 20,
+        "stack_depth_max": 36
+      },
+      "WAITFRAME": {
+        "occurrence_count": 35,
+        "behavior_tags": [
+          "timing"
+        ],
+        "behavior_tags_sha256": "f6cfb8c3f101748fab3f98b775ae62e1b58891817d14477a2f4cc15e0e1bb9f8",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "frames",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 35
+        },
+        "stack_depth_min": 18,
+        "stack_depth_max": 34
+      },
+      "WAITTIME": {
+        "occurrence_count": 12,
+        "behavior_tags": [
+          "timing"
+        ],
+        "behavior_tags_sha256": "f6cfb8c3f101748fab3f98b775ae62e1b58891817d14477a2f4cc15e0e1bb9f8",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "ticks",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 12
+        },
+        "stack_depth_min": 18,
+        "stack_depth_max": 34
+      }
+    },
+    "libcall_transition_histogram": {
+      "BACKGROUND->PLAYMIDI": 1,
+      "EVENT->INVENTORY": 2,
+      "NEWSCENE->PLAY": 1,
+      "OFFSET->OFFSET": 1,
+      "OFFSET->PLAY": 9,
+      "OFFSET->TALK": 23,
+      "OFFSET->WAITTIME": 3,
+      "PLAY->OFFSET": 13,
+      "PLAY->PLAY": 5,
+      "PLAY->PLAYSAMPLE": 2,
+      "PLAY->SCROLL": 1,
+      "PLAY->STAND": 1,
+      "PLAY->TALK": 2,
+      "PLAY->TALKAT": 15,
+      "PLAY->WAITFRAME": 3,
+      "PLAY->WAITTIME": 4,
+      "PLAYMIDI->TALKAT": 1,
+      "PLAYSAMPLE->PLAY": 1,
+      "PLAYSAMPLE->PLAYSAMPLE": 2,
+      "PLAYSAMPLE->SCROLL": 1,
+      "PLAYSAMPLE->SWALK": 1,
+      "PLAYSAMPLE->WAITFRAME": 29,
+      "PLAYSAMPLE->WAITTIME": 1,
+      "SAVESCENE->NEWSCENE": 1,
+      "SCROLL->PLAY": 1,
+      "SCROLL->PLAYSAMPLE": 1,
+      "SCROLL->TALK": 2,
+      "SCROLL->WAITFRAME": 2,
+      "STAND->OFFSET": 1,
+      "STAND->SWALK": 1,
+      "STAND->WAITTIME": 1,
+      "SWALK->STAND": 2,
+      "TALK->OFFSET": 20,
+      "TALK->PLAY": 8,
+      "TALK->SCROLL": 2,
+      "TALK->TALK": 9,
+      "TALK->WAITTIME": 1,
+      "TALKAT->PLAY": 13,
+      "TALKAT->PLAYMIDI": 1,
+      "TALKAT->PLAYSAMPLE": 1,
+      "TALKAT->TALK": 1,
+      "TALKAT->TALKAT": 10,
+      "TALKAT->WAITTIME": 2,
+      "WAITFRAME->OFFSET": 1,
+      "WAITFRAME->PLAY": 4,
+      "WAITFRAME->PLAYSAMPLE": 28,
+      "WAITFRAME->SCROLL": 1,
+      "WAITFRAME->WAITFRAME": 1,
+      "WAITTIME->NEWSCENE": 1,
+      "WAITTIME->PLAY": 4,
+      "WAITTIME->SAVESCENE": 1,
+      "WAITTIME->SCROLL": 1,
+      "WAITTIME->TALK": 3,
+      "WAITTIME->TALKAT": 2
+    },
+    "top_region_semantics": [
+      "jump:control:plain",
+      "conditional:control:plain",
+      "halt:playback:plain",
+      "conditional:flow:plain",
+      "jump:inventory:plain",
+      "halt:control:plain",
+      "fallthrough:audio:plain"
+    ],
+    "top_region_semantics_sha256": "bcc4940c58baf15666f0592c5a78f7c71f29f48c0a4687f7f9141e59a47ca196",
+    "region_semantic_sequence_head": [
+      "conditional:flow:plain",
+      "jump:inventory:plain",
+      "conditional:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "jump:control:plain",
+      "jump:control:plain",
+      "halt:control:plain",
+      "conditional:flow:plain",
+      "jump:inventory:plain",
+      "conditional:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain"
+    ],
+    "region_semantic_sequence_head_sha256": "9c096c78ca129e1170b65d4408218516e555749638784e14096d399d3d60f58c",
+    "pseudocode_summary_head": [
+      "if cond: flow via event",
+      "goto inventory via inventory",
+      "if cond: control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "goto control via state",
+      "goto control via state",
+      "return control via state",
+      "if cond: flow via event",
+      "goto inventory via inventory",
+      "if cond: control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state"
+    ],
+    "pseudocode_summary_head_sha256": "c15fd6e1841daac22123a86b6cd98f8c2f5ea0a2617e003cd485d76102ac23a1"
+  },
+  "FINALE.SCN": {
+    "script_handles_found": 17,
+    "icon_films_found": 0,
+    "scripts_with_semantics": 17,
+    "semantic_region_count": 22,
+    "semantic_libcall_count": 161,
+    "unique_semantic_libcall_count": 29,
+    "libcalls_ranked": [
+      "PLAY",
+      "WAITFRAME",
+      "PLAYSAMPLE",
+      "TALK",
+      "WAITTIME",
+      "OFFSET",
+      "SETTAG",
+      "STAND",
+      "SWALK",
+      "KILLTAG",
+      "PLAYMIDI",
+      "ACTORYPOS",
+      "CONTROL",
+      "DELINV",
+      "EVENT",
+      "INVENTORY",
+      "ACTORATTR",
+      "ACTORDIRECTION",
+      "ACTORXPOS",
+      "BACKGROUND",
+      "KILLEXIT",
+      "MOVECURSOR",
+      "NEWSCENE",
+      "NOBLOCKING",
+      "SCREENXPOS",
+      "SCROLL",
+      "STOPSAMPLE",
+      "TAGACTOR",
+      "WALK"
+    ],
+    "libcall_semantics": {
+      "ACTORATTR": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 21,
+        "stack_depth_max": 21
+      },
+      "ACTORDIRECTION": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 23,
+        "stack_depth_max": 23
+      },
+      "ACTORXPOS": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 19,
+        "stack_depth_max": 19
+      },
+      "ACTORYPOS": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "1": 1,
+          "10": 1
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 19
+      },
+      "BACKGROUND": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "render"
+        ],
+        "behavior_tags_sha256": "887270d0cbc560af35f1326d55e9dbdc35ea2301c2cd26633fb6d4932deee268",
+        "max_observed_arity": 1,
+        "argument_labels": [
+          "arg1"
+        ],
+        "arg_arity_histogram": {
+          "1": 1
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 1
+      },
+      "CONTROL": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "flow"
+        ],
+        "behavior_tags_sha256": "3b21278178ed3463f3bde3a35f088caf6d99ff1b2f647d9a0c2b8de599ec3dc6",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "control_id",
+          "value",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 2
+        },
+        "stack_depth_min": 24,
+        "stack_depth_max": 25
+      },
+      "DELINV": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "inventory"
+        ],
+        "behavior_tags_sha256": "b11a85b296a90afc460430434a504e7acb04b064575b7277724688af0e59d189",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "item_id",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 2
+        },
+        "stack_depth_min": 19,
+        "stack_depth_max": 22
+      },
+      "EVENT": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "flow",
+          "timing"
+        ],
+        "behavior_tags_sha256": "e20a0af489da918be01bc784368870d3901cf128e03423f22a4082197fed95bf",
+        "max_observed_arity": 0,
+        "argument_labels": [],
+        "arg_arity_histogram": {
+          "0": 2
+        },
+        "stack_depth_min": 0,
+        "stack_depth_max": 0
+      },
+      "INVENTORY": {
+        "occurrence_count": 2,
+        "behavior_tags": [
+          "inventory",
+          "ui"
+        ],
+        "behavior_tags_sha256": "29f2e434beada9a5f59553a5789f227c1a90f11b0c2a5a2ca7f8d4c1a58614e6",
+        "max_observed_arity": 1,
+        "argument_labels": [
+          "item_id"
+        ],
+        "arg_arity_histogram": {
+          "1": 2
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 1
+      },
+      "KILLEXIT": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 18,
+        "stack_depth_max": 18
+      },
+      "KILLTAG": {
+        "occurrence_count": 4,
+        "behavior_tags": [
+          "tag"
+        ],
+        "behavior_tags_sha256": "2a1073a6e67f0e5f09a5957c659503c690efe7272be8313df872556a9a684d8c",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "1": 1,
+          "10": 3
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 33
+      },
+      "MOVECURSOR": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 24,
+        "stack_depth_max": 24
+      },
+      "NEWSCENE": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 31,
+        "stack_depth_max": 31
+      },
+      "NOBLOCKING": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 1,
+        "argument_labels": [
+          "arg1"
+        ],
+        "arg_arity_histogram": {
+          "1": 1
+        },
+        "stack_depth_min": 1,
+        "stack_depth_max": 1
+      },
+      "OFFSET": {
+        "occurrence_count": 11,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 11
+        },
+        "stack_depth_min": 18,
+        "stack_depth_max": 32
+      },
+      "PLAY": {
+        "occurrence_count": 27,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "6": 10,
+          "10": 17
+        },
+        "stack_depth_min": 6,
+        "stack_depth_max": 38
+      },
+      "PLAYMIDI": {
+        "occurrence_count": 4,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "3": 3,
+          "10": 1
+        },
+        "stack_depth_min": 3,
+        "stack_depth_max": 33
+      },
+      "PLAYSAMPLE": {
+        "occurrence_count": 21,
+        "behavior_tags": [
+          "audio"
+        ],
+        "behavior_tags_sha256": "6ed8919ce20490a5e3ad8630a4fab69475297abd07db73918dd5f36fcfaeb11b",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 21
+        },
+        "stack_depth_min": 15,
+        "stack_depth_max": 34
+      },
+      "SCREENXPOS": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 20,
+        "stack_depth_max": 20
+      },
+      "SCROLL": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "state"
+        ],
+        "behavior_tags_sha256": "4ba69735ca53765ed6a709edb56c6ea236b7193a3b29a6b390c346f0f4340e4e",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 29,
+        "stack_depth_max": 29
+      },
+      "SETTAG": {
+        "occurrence_count": 9,
+        "behavior_tags": [
+          "tag"
+        ],
+        "behavior_tags_sha256": "2a1073a6e67f0e5f09a5957c659503c690efe7272be8313df872556a9a684d8c",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 9
+        },
+        "stack_depth_min": 17,
+        "stack_depth_max": 30
+      },
+      "STAND": {
+        "occurrence_count": 7,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "7": 1,
+          "10": 6
+        },
+        "stack_depth_min": 7,
+        "stack_depth_max": 25
+      },
+      "STOPSAMPLE": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "audio"
+        ],
+        "behavior_tags_sha256": "6ed8919ce20490a5e3ad8630a4fab69475297abd07db73918dd5f36fcfaeb11b",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 16,
+        "stack_depth_max": 16
+      },
+      "SWALK": {
+        "occurrence_count": 5,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "9": 2,
+          "10": 3
+        },
+        "stack_depth_min": 9,
+        "stack_depth_max": 28
+      },
+      "TAGACTOR": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "actor",
+          "tag"
+        ],
+        "behavior_tags_sha256": "f8ed81cf535eae87c652c549da5b0914d965b0e29d1b98c1b855104dc34f95d6",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "arg1",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 21,
+        "stack_depth_max": 21
+      },
+      "TALK": {
+        "occurrence_count": 13,
+        "behavior_tags": [
+          "dialogue"
+        ],
+        "behavior_tags_sha256": "abe0ba24dae6eb854ba26a5f2f34497e2be2df3daaa9acbc4e6d3cf6f05065d7",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "actor",
+          "text",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 13
+        },
+        "stack_depth_min": 15,
+        "stack_depth_max": 34
+      },
+      "WAITFRAME": {
+        "occurrence_count": 25,
+        "behavior_tags": [
+          "timing"
+        ],
+        "behavior_tags_sha256": "f6cfb8c3f101748fab3f98b775ae62e1b58891817d14477a2f4cc15e0e1bb9f8",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "frames",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 25
+        },
+        "stack_depth_min": 18,
+        "stack_depth_max": 34
+      },
+      "WAITTIME": {
+        "occurrence_count": 12,
+        "behavior_tags": [
+          "timing"
+        ],
+        "behavior_tags_sha256": "f6cfb8c3f101748fab3f98b775ae62e1b58891817d14477a2f4cc15e0e1bb9f8",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "ticks",
+          "arg2",
+          "arg3",
+          "arg4",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 12
+        },
+        "stack_depth_min": 13,
+        "stack_depth_max": 34
+      },
+      "WALK": {
+        "occurrence_count": 1,
+        "behavior_tags": [
+          "playback"
+        ],
+        "behavior_tags_sha256": "963a76dc3ea273393f719cead9f33aa64f584f6a75f3dea2820228fa0a8f7198",
+        "max_observed_arity": 10,
+        "argument_labels": [
+          "film",
+          "x",
+          "y",
+          "flags",
+          "arg5",
+          "arg6",
+          "arg7",
+          "arg8",
+          "arg9",
+          "arg10"
+        ],
+        "arg_arity_histogram": {
+          "10": 1
+        },
+        "stack_depth_min": 22,
+        "stack_depth_max": 22
+      }
+    },
+    "libcall_transition_histogram": {
+      "ACTORDIRECTION->ACTORATTR": 1,
+      "ACTORXPOS->ACTORYPOS": 1,
+      "ACTORYPOS->EVENT": 1,
+      "ACTORYPOS->WAITTIME": 1,
+      "BACKGROUND->NOBLOCKING": 1,
+      "CONTROL->SETTAG": 1,
+      "CONTROL->WAITTIME": 1,
+      "DELINV->MOVECURSOR": 1,
+      "DELINV->PLAY": 1,
+      "EVENT->INVENTORY": 2,
+      "KILLEXIT->DELINV": 1,
+      "KILLTAG->KILLTAG": 2,
+      "KILLTAG->WAITTIME": 1,
+      "MOVECURSOR->CONTROL": 1,
+      "OFFSET->PLAY": 1,
+      "OFFSET->PLAYMIDI": 1,
+      "OFFSET->PLAYSAMPLE": 1,
+      "OFFSET->TAGACTOR": 1,
+      "OFFSET->TALK": 3,
+      "OFFSET->WAITFRAME": 4,
+      "PLAY->OFFSET": 1,
+      "PLAY->PLAY": 6,
+      "PLAY->PLAYSAMPLE": 5,
+      "PLAY->SCROLL": 1,
+      "PLAY->SETTAG": 1,
+      "PLAY->TALK": 1,
+      "PLAY->WAITFRAME": 1,
+      "PLAY->WAITTIME": 1,
+      "PLAYMIDI->PLAY": 1,
+      "PLAYMIDI->STAND": 1,
+      "PLAYMIDI->SWALK": 2,
+      "PLAYSAMPLE->STAND": 1,
+      "PLAYSAMPLE->SWALK": 1,
+      "PLAYSAMPLE->WAITFRAME": 19,
+      "SCREENXPOS->WAITTIME": 1,
+      "SCROLL->TALK": 1,
+      "SETTAG->KILLEXIT": 1,
+      "SETTAG->KILLTAG": 1,
+      "SETTAG->PLAY": 1,
+      "SETTAG->SETTAG": 6,
+      "STAND->CONTROL": 1,
+      "STAND->PLAY": 1,
+      "STAND->PLAYSAMPLE": 1,
+      "STAND->SETTAG": 1,
+      "STAND->STAND": 1,
+      "STAND->SWALK": 1,
+      "STAND->WAITTIME": 1,
+      "STOPSAMPLE->WAITFRAME": 1,
+      "SWALK->NEWSCENE": 1,
+      "SWALK->STAND": 4,
+      "TAGACTOR->DELINV": 1,
+      "TALK->OFFSET": 5,
+      "TALK->TALK": 2,
+      "TALK->WAITTIME": 5,
+      "TALK->WALK": 1,
+      "WAITFRAME->OFFSET": 4,
+      "WAITFRAME->PLAY": 6,
+      "WAITFRAME->PLAYSAMPLE": 14,
+      "WAITFRAME->STOPSAMPLE": 1,
+      "WAITTIME->ACTORDIRECTION": 1,
+      "WAITTIME->ACTORXPOS": 1,
+      "WAITTIME->OFFSET": 1,
+      "WAITTIME->SCREENXPOS": 1,
+      "WAITTIME->TALK": 6,
+      "WAITTIME->WAITTIME": 1,
+      "WALK->SWALK": 1
+    },
+    "top_region_semantics": [
+      "conditional:control:plain",
+      "jump:control:plain",
+      "halt:playback:plain",
+      "halt:control:plain",
+      "conditional:flow:plain",
+      "jump:inventory:plain",
+      "conditional:state:plain",
+      "jump:tag:plain",
+      "conditional:actor:plain",
+      "jump:timing:plain",
+      "halt:dialogue:plain",
+      "halt:render:plain"
+    ],
+    "top_region_semantics_sha256": "b228fec7af2f187ddac2fa0ea362f2bf1b091773334e6decf9c5ac80896b9b68",
+    "region_semantic_sequence_head": [
+      "conditional:flow:plain",
+      "jump:inventory:plain",
+      "conditional:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "jump:control:plain",
+      "jump:control:plain",
+      "halt:control:plain",
+      "conditional:state:plain",
+      "conditional:flow:plain",
+      "jump:inventory:plain",
+      "conditional:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain",
+      "conditional:control:plain",
+      "jump:control:plain"
+    ],
+    "region_semantic_sequence_head_sha256": "d23ba1c71ca18d29c7a2f9e1924b3066dbc78baa423ad6d94e55f91efb3be7e3",
+    "pseudocode_summary_head": [
+      "if cond: flow via event",
+      "goto inventory via inventory",
+      "if cond: control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "goto control via state",
+      "goto control via state",
+      "return control via state",
+      "if cond: state via actorypos",
+      "if cond: flow via event",
+      "goto inventory via inventory",
+      "if cond: control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state",
+      "if cond: control via state",
+      "goto control via state"
+    ],
+    "pseudocode_summary_head_sha256": "db5692d0cbed7a873822ec924bbba3c57738ab27e8888b61f6388c999d6c5204"
+  }
+}

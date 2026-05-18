@@ -94,6 +94,11 @@ Current regression coverage includes:
 - Hotspot interaction contract snapshots (TAG/EXIT polygon invariants plus conversation/talk dispatch fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - Dialogue/topic routing contract snapshots (dialogue sequence, hotspot/inventory-to-dialogue transitions, and dialogue-to-action fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - Timing/wait semantics contract snapshots (WAITFRAME/WAITTIME/EVENT density and transition fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
+- PCODE CFG invariant snapshots (entry/reachability/dead-end characteristics and edge fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
+- PCODE libcall signature contract snapshots (argument-shape and arity profiles with stack-depth ranges) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
+- PCODE IR lift snapshots (node-kind/opcode/block-shape histograms and terminator fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
+- PCODE structuring snapshots (region terminator/loop/conditional metrics and structural fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
+- PCODE semantic annotation snapshots (libcall behavior tags, argument labels, region semantics, and pseudocode summary fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 
 ## Snapshot Refresh Utility
 
@@ -132,6 +137,26 @@ Refresh only dialogue/topic routing contracts:
 Refresh only timing/wait semantics contracts:
 
 `pwsh -File scripts/refresh_snapshot_baselines.ps1 --only timing`
+
+Refresh only PCODE CFG invariant snapshots:
+
+`pwsh -File scripts/refresh_snapshot_baselines.ps1 --only cfg`
+
+Refresh only PCODE libcall signature contracts:
+
+`pwsh -File scripts/refresh_snapshot_baselines.ps1 --only libsig`
+
+Refresh only PCODE IR lift snapshots:
+
+`pwsh -File scripts/refresh_snapshot_baselines.ps1 --only ir`
+
+Refresh only PCODE structuring snapshots:
+
+`pwsh -File scripts/refresh_snapshot_baselines.ps1 --only struct`
+
+Refresh only PCODE semantic annotation snapshots:
+
+`pwsh -File scripts/refresh_snapshot_baselines.ps1 --only semantic`
 
 Refresh from an explicit dataset path:
 
