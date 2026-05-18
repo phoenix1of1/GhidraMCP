@@ -57,6 +57,7 @@ SEMANTIC_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 SYMBOL_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 CANON_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 PSEUDO_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+EMIT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -155,6 +156,10 @@ CANON_ALIAS_HEAD_LIMIT = 80
 PSEUDO_MAX_STEPS = 1200
 PSEUDO_MAX_PATHS = 16
 PSEUDO_LINE_HEAD_LIMIT = 80
+EMIT_MAX_STEPS = 1200
+EMIT_MAX_PATHS = 16
+EMIT_MAX_BODY_LINES = 10
+EMIT_FUNCTION_HEAD_LIMIT = 24
 SEMANTIC_BEHAVIOR_TAGS = {
     "WAITFRAME": ["timing"],
     "WAITTIME": ["timing"],
@@ -2277,6 +2282,163 @@ def _build_pcode_pseudocode_quality_snapshots(vm_mod, scanner_mod, dataset_dir: 
     return out
 
 
+def _build_pcode_emitter_output_snapshots(vm_mod, scanner_mod, dataset_dir: Path) -> dict:
+    idx_rows = vm_mod.read_index(dataset_dir / "INDEX")
+    idx_by_name = {row["filename"].lower(): row["index"] for row in idx_rows}
+
+    canonical_by_scene = _build_pcode_symbol_canonicalization_snapshots(vm_mod, scanner_mod, dataset_dir)
+    pseudo_by_scene = _build_pcode_pseudocode_quality_snapshots(vm_mod, scanner_mod, dataset_dir)
+
+    out = {}
+    for scene_name in EMIT_CONTRACT_SCENES:
+        scene_path = dataset_dir / scene_name
+        data = scene_path.read_bytes()
+        scripts = vm_mod.collect_script_handles(scene_path, idx_by_name)
+        scripts = sorted(scripts, key=lambda s: (s.get("source", ""), s.get("handle", 0)))[:60]
+
+        scene_canonical_map = (
+            canonical_by_scene.get(scene_name, {}).get("canonical_symbol_map", {})
+        )
+
+        function_rows = []
+        function_signature_histogram = collections.Counter()
+        emitted_line_fingerprint_tokens: list[str] = []
+        scripts_emitted = 0
+
+        scene_stub = scene_name.split(".", 1)[0].lower()
+        for script in scripts:
+            handle = int(script.get("handle") or 0)
+            file_index, offset = vm_mod.split_handle(handle)
+            if file_index != idx_by_name.get(scene_name.lower(), -1) or offset >= len(data):
+                continue
+
+            disassembly = scanner_mod.disassemble(data, offset, max_ins=STRUCT_MAX_INS)
+            instructions = disassembly.get("instructions", [])
+            regions = _script_structured_regions(instructions)
+            if not regions:
+                continue
+
+            trace = vm_mod.execute_script(data, offset, max_steps=EMIT_MAX_STEPS, max_paths=EMIT_MAX_PATHS)
+            libcall_events_by_ip: dict[int, list[dict]] = collections.defaultdict(list)
+            for event in trace.get("events", []):
+                if event.get("event") != "libcall":
+                    continue
+                ip = event.get("ip")
+                if isinstance(ip, int):
+                    libcall_events_by_ip[ip].append(event)
+
+            body_lines: list[str] = []
+            terminator_hist = collections.Counter()
+            intent_hist = collections.Counter()
+            alias_usage = collections.Counter()
+            for region in regions:
+                start_ip = int(region["start_ip"])
+                end_ip = int(region["end_ip"])
+                terminator = str(region["terminator"])
+                terminator_hist[terminator] += 1
+
+                calls: list[str] = []
+                aliases: list[str] = []
+                for ip in sorted(libcall_events_by_ip.keys()):
+                    if not (start_ip <= ip <= end_ip):
+                        continue
+                    for event in libcall_events_by_ip[ip]:
+                        call_name = str(event.get("libcall_name") or "")
+                        if call_name:
+                            calls.append(call_name)
+                        for token in event.get("stack_top") or []:
+                            parsed = _parse_symbol_token(str(token))
+                            if parsed is None:
+                                continue
+                            kind, index = parsed
+                            symbol_key = f"{kind}:{index}"
+                            canonical_name = scene_canonical_map.get(symbol_key, {}).get("canonical_name")
+                            if canonical_name:
+                                aliases.append(canonical_name)
+
+                aliases = sorted(set(aliases))
+                for alias in aliases:
+                    alias_usage[alias] += 1
+
+                intent_tags = set()
+                for call_name in calls:
+                    intent_tags.update(_semantic_behavior_tags(call_name))
+                intent = sorted(intent_tags)[0] if intent_tags else "control"
+                intent_hist[intent] += 1
+
+                control = _region_control_prefix(terminator, bool(region["has_backedge"]))
+                alias_phrase = ",".join(aliases[:2]) if aliases else "state"
+                call_phrase = ",".join(calls[:2]).lower() if calls else "noop"
+                if control == "if":
+                    line = f"if ({alias_phrase}) then {intent}::{call_phrase}"
+                elif control == "while":
+                    line = f"while ({alias_phrase}) do {intent}::{call_phrase}"
+                elif control == "return":
+                    line = f"return {intent}::{call_phrase}"
+                elif control == "goto":
+                    line = f"goto {intent}::{call_phrase}"
+                else:
+                    line = f"step {intent}::{call_phrase}"
+
+                if len(body_lines) < EMIT_MAX_BODY_LINES:
+                    body_lines.append(line)
+                    emitted_line_fingerprint_tokens.append(line)
+
+            if not body_lines:
+                continue
+
+            scripts_emitted += 1
+            function_name = f"{scene_stub}_fn_{handle:08X}"
+            signature_tokens = [
+                f"regions:{len(regions)}",
+                f"paths:{int(trace.get('paths_started') or 1)}",
+                f"top_term:{','.join(name for name, _ in terminator_hist.most_common(2))}",
+                f"top_intent:{','.join(name for name, _ in intent_hist.most_common(2))}",
+            ]
+            signature = "|".join(signature_tokens)
+            function_signature_histogram[signature] += 1
+
+            top_aliases = [name for name, _ in alias_usage.most_common(6)]
+            function_rows.append(
+                {
+                    "function_name": function_name,
+                    "script_handle": f"0x{handle:08X}",
+                    "script_source": script.get("source"),
+                    "region_count": len(regions),
+                    "line_count": len(body_lines),
+                    "signature": signature,
+                    "signature_sha256": hashlib.sha256(signature.encode("utf-8")).hexdigest(),
+                    "body_head": body_lines,
+                    "body_head_sha256": hashlib.sha256("|".join(body_lines).encode("utf-8")).hexdigest(),
+                    "top_aliases": top_aliases,
+                    "top_aliases_sha256": hashlib.sha256("|".join(top_aliases).encode("utf-8")).hexdigest(),
+                }
+            )
+
+        function_rows = sorted(function_rows, key=lambda row: row["function_name"])
+        function_head = function_rows[:EMIT_FUNCTION_HEAD_LIMIT]
+        function_name_head = [row["function_name"] for row in function_head]
+        top_signatures = [sig for sig, _ in function_signature_histogram.most_common(16)]
+
+        out[scene_name] = {
+            "script_handles_found": len(scripts),
+            "scripts_emitted": scripts_emitted,
+            "function_count": len(function_rows),
+            "function_name_head": function_name_head,
+            "function_name_head_sha256": hashlib.sha256("|".join(function_name_head).encode("utf-8")).hexdigest(),
+            "top_function_signatures": top_signatures,
+            "top_function_signatures_sha256": hashlib.sha256("|".join(top_signatures).encode("utf-8")).hexdigest(),
+            "function_head": function_head,
+            "function_head_sha256": hashlib.sha256(
+                "|".join(row["function_name"] for row in function_head).encode("utf-8")
+            ).hexdigest(),
+            "emitted_line_digest": hashlib.sha256("|".join(emitted_line_fingerprint_tokens).encode("utf-8")).hexdigest(),
+            "pseudo_summary_head_sha256": pseudo_by_scene.get(scene_name, {}).get("pseudocode_summary_head_sha256", ""),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -2504,7 +2666,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -2518,7 +2680,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -2542,6 +2704,7 @@ def main() -> int:
         "symbols": repo_root / "tests" / "snapshots" / "pcode_symbol_recovery_snapshots.json",
         "canon": repo_root / "tests" / "snapshots" / "pcode_symbol_canonicalization_snapshots.json",
         "pseudo": repo_root / "tests" / "snapshots" / "pcode_pseudocode_quality_snapshots.json",
+        "emit": repo_root / "tests" / "snapshots" / "pcode_emitter_output_snapshots.json",
     }
 
     if args.check:
@@ -2725,6 +2888,16 @@ def main() -> int:
         else:
             _write_json(targets["pseudo"], payload)
             print("- updated pcode_pseudocode_quality_snapshots.json")
+
+    if "emit" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        payload = _build_pcode_emitter_output_snapshots(vm_mod, scanner_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["emit"], payload) and ok
+        else:
+            _write_json(targets["emit"], payload)
+            print("- updated pcode_emitter_output_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")

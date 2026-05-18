@@ -1,0 +1,1063 @@
+{
+  "BAR.SCN": {
+    "script_handles_found": 22,
+    "scripts_emitted": 22,
+    "function_count": 22,
+    "function_name_head": [
+      "bar_fn_2083BE6C",
+      "bar_fn_2083BFE8",
+      "bar_fn_2083C041",
+      "bar_fn_2083E53A",
+      "bar_fn_2083E6B8",
+      "bar_fn_2083E8A4",
+      "bar_fn_2083E8C2",
+      "bar_fn_2083E8E0",
+      "bar_fn_2083E8FE",
+      "bar_fn_2083E91C",
+      "bar_fn_2083E93A",
+      "bar_fn_2083E958",
+      "bar_fn_2083E976",
+      "bar_fn_2083E994",
+      "bar_fn_2083E9A1",
+      "bar_fn_2083E9BC",
+      "bar_fn_2083E9DE",
+      "bar_fn_2083EA03",
+      "bar_fn_2083EA20",
+      "bar_fn_2083EA42",
+      "bar_fn_2083EA80",
+      "bar_fn_2083EABE"
+    ],
+    "function_name_head_sha256": "7490bbe1b8182b18aeed27971b9916d9ebcecb156d1ef214468afb79aed17829",
+    "top_function_signatures": [
+      "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+      "regions:1|paths:1|top_term:halt|top_intent:playback",
+      "regions:6|paths:2|top_term:jump,conditional|top_intent:control,inventory",
+      "regions:30|paths:2|top_term:jump,conditional|top_intent:control,flow",
+      "regions:46|paths:2|top_term:jump,conditional|top_intent:control,flow",
+      "regions:3|paths:2|top_term:conditional,jump|top_intent:control,playback",
+      "regions:3|paths:2|top_term:conditional,jump|top_intent:flow,timing",
+      "regions:1|paths:1|top_term:halt|top_intent:flow",
+      "regions:16|paths:3|top_term:conditional,jump|top_intent:control,render"
+    ],
+    "top_function_signatures_sha256": "c0d47a9213d4d7b57610c5caa64588279013b7312ee2ac1a9e447a320bd5c5ca",
+    "function_head": [
+      {
+        "function_name": "bar_fn_2083BE6C",
+        "script_handle": "0x2083BE6C",
+        "script_source": "scene.hSceneScript",
+        "region_count": 16,
+        "line_count": 10,
+        "signature": "regions:16|paths:3|top_term:conditional,jump|top_intent:control,render",
+        "signature_sha256": "3fe26b581bc05c733c1ed2c2809b49e9318a1f6c372c0702c1fdd2d50cce57db",
+        "body_head": [
+          "if (state) then render::background,auxscale",
+          "if (state) then playback::play,play",
+          "if (state) then state::waittime,screenxpos",
+          "goto timing::waittime",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "if (state) then control::noop"
+        ],
+        "body_head_sha256": "dce2606b20f2457351a2dc5992749d0db7b90825185152325c1e0d47ccc290b2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083BFE8",
+        "script_handle": "0x2083BFE8",
+        "script_source": "entrance.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:flow,timing",
+        "signature_sha256": "318ff08228c17b0f70d61aeac973823ad680958e980ea2ae30fa5b496b973b5f",
+        "body_head": [
+          "if (state) then flow::offset,swalk",
+          "goto timing::waittime",
+          "return control::noop"
+        ],
+        "body_head_sha256": "2570d2bd85ae4230d4086459d793a76ef435bf39dd84a18a4cd1cc379d034b3c",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083C041",
+        "script_handle": "0x2083C041",
+        "script_source": "entrance.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:flow",
+        "signature_sha256": "82c468a8546f471a562e38fc7b161d0d54f2547c94af7deaebc144ad8ecf5bcc",
+        "body_head": [
+          "return flow::swalk,stand"
+        ],
+        "body_head_sha256": "b0dfefdd55b0bdf262f372e3de2824099adf10bf4bd4ca6d1e1f4a26b489471e",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E53A",
+        "script_handle": "0x2083E53A",
+        "script_source": "actor.script",
+        "region_count": 30,
+        "line_count": 10,
+        "signature": "regions:30|paths:2|top_term:jump,conditional|top_intent:control,flow",
+        "signature_sha256": "83d3a7b2ea752e91c51028a1f48563eb954fbc58d9dc52dab5bc952d274515e6",
+        "body_head": [
+          "if (state) then flow::event",
+          "goto inventory::inventory",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop"
+        ],
+        "body_head_sha256": "48edf68f8eada9414f1c3eefdc03605aec30065ac9fcd1af032c3d77e462e6cd",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E6B8",
+        "script_handle": "0x2083E6B8",
+        "script_source": "actor.script",
+        "region_count": 46,
+        "line_count": 10,
+        "signature": "regions:46|paths:2|top_term:jump,conditional|top_intent:control,flow",
+        "signature_sha256": "64fb8896ae7086a8dfa4cca2d08eb5327af8abd062664b8e788ab08a46f9c80f",
+        "body_head": [
+          "if (state) then flow::event",
+          "goto inventory::inventory",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop"
+        ],
+        "body_head_sha256": "48edf68f8eada9414f1c3eefdc03605aec30065ac9fcd1af032c3d77e462e6cd",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E8A4",
+        "script_handle": "0x2083E8A4",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E8C2",
+        "script_handle": "0x2083E8C2",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E8E0",
+        "script_handle": "0x2083E8E0",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E8FE",
+        "script_handle": "0x2083E8FE",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E91C",
+        "script_handle": "0x2083E91C",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E93A",
+        "script_handle": "0x2083E93A",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E958",
+        "script_handle": "0x2083E958",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E976",
+        "script_handle": "0x2083E976",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E994",
+        "script_handle": "0x2083E994",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E9A1",
+        "script_handle": "0x2083E9A1",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play,play"
+        ],
+        "body_head_sha256": "725a5a1f0f7e7c15a8bf2f66b04fc0719992c08d01d9f8529795b4e81b1b1f60",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E9BC",
+        "script_handle": "0x2083E9BC",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,playback",
+        "signature_sha256": "2bee7c7ac05cf22d5a645d5cfa6a5b9fe0a02d02e926ba0c1de9ceaa6d1c85b3",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto playback::play,settag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "81cd5b74fdaf1c801fe350729911b14a5249966209752b34fce6ca7dc4e1f1e7",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083E9DE",
+        "script_handle": "0x2083E9DE",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play,play"
+        ],
+        "body_head_sha256": "725a5a1f0f7e7c15a8bf2f66b04fc0719992c08d01d9f8529795b4e81b1b1f60",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083EA03",
+        "script_handle": "0x2083EA03",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083EA20",
+        "script_handle": "0x2083EA20",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "bar_fn_2083EA42",
+        "script_handle": "0x2083EA42",
+        "script_source": "actor.script",
+        "region_count": 6,
+        "line_count": 6,
+        "signature": "regions:6|paths:2|top_term:jump,conditional|top_intent:control,inventory",
+        "signature_sha256": "5c43a8f7b55ea45ddabe2064f9313588867361a51944eb0ef1b9e62a188ed2fa",
+        "body_head": [
+          "if (state) then control::noop",
+          "if (g_item_003) then inventory::ininventory",
+          "goto control::noop",
+          "goto control::noop",
+          "goto control::noop",
+          "return control::noop"
+        ],
+        "body_head_sha256": "2667287f0a6b689e3a3a5cce289ffa50ea2cd8fe87e56c005817b4152be73755",
+        "top_aliases": [
+          "g_item_003"
+        ],
+        "top_aliases_sha256": "50fc9043968b3a97289c60a72d66a72ecc47ff79fd64f68e7d463949295b7a27"
+      },
+      {
+        "function_name": "bar_fn_2083EA80",
+        "script_handle": "0x2083EA80",
+        "script_source": "actor.script",
+        "region_count": 6,
+        "line_count": 6,
+        "signature": "regions:6|paths:2|top_term:jump,conditional|top_intent:control,inventory",
+        "signature_sha256": "5c43a8f7b55ea45ddabe2064f9313588867361a51944eb0ef1b9e62a188ed2fa",
+        "body_head": [
+          "if (state) then control::noop",
+          "if (g_item_003) then inventory::ininventory",
+          "goto control::noop",
+          "goto control::noop",
+          "goto control::noop",
+          "return control::noop"
+        ],
+        "body_head_sha256": "2667287f0a6b689e3a3a5cce289ffa50ea2cd8fe87e56c005817b4152be73755",
+        "top_aliases": [
+          "g_item_003"
+        ],
+        "top_aliases_sha256": "50fc9043968b3a97289c60a72d66a72ecc47ff79fd64f68e7d463949295b7a27"
+      },
+      {
+        "function_name": "bar_fn_2083EABE",
+        "script_handle": "0x2083EABE",
+        "script_source": "actor.script",
+        "region_count": 6,
+        "line_count": 6,
+        "signature": "regions:6|paths:2|top_term:jump,conditional|top_intent:control,inventory",
+        "signature_sha256": "5c43a8f7b55ea45ddabe2064f9313588867361a51944eb0ef1b9e62a188ed2fa",
+        "body_head": [
+          "if (state) then control::noop",
+          "if (g_item_003) then inventory::ininventory",
+          "goto control::noop",
+          "goto control::noop",
+          "goto control::noop",
+          "return control::noop"
+        ],
+        "body_head_sha256": "2667287f0a6b689e3a3a5cce289ffa50ea2cd8fe87e56c005817b4152be73755",
+        "top_aliases": [
+          "g_item_003"
+        ],
+        "top_aliases_sha256": "50fc9043968b3a97289c60a72d66a72ecc47ff79fd64f68e7d463949295b7a27"
+      }
+    ],
+    "function_head_sha256": "7490bbe1b8182b18aeed27971b9916d9ebcecb156d1ef214468afb79aed17829",
+    "emitted_line_digest": "0d2c984886bab23178432c0191e806d4a7cf1daa6eb9bf22c95eb8546184805e",
+    "pseudo_summary_head_sha256": "a7fb08779e1616e2d005a2e515cfd774d45c8b8f4e71d6959046467478d36227"
+  },
+  "CLIMAX.SCN": {
+    "script_handles_found": 15,
+    "scripts_emitted": 15,
+    "function_count": 15,
+    "function_name_head": [
+      "climax_fn_0406C850",
+      "climax_fn_0406C85F",
+      "climax_fn_0406D06A",
+      "climax_fn_0406D1E8",
+      "climax_fn_0406D3D4",
+      "climax_fn_0406D3E1",
+      "climax_fn_0406D3EE",
+      "climax_fn_0406D3FB",
+      "climax_fn_0406D408",
+      "climax_fn_0406D415",
+      "climax_fn_0406D422",
+      "climax_fn_0406D42F",
+      "climax_fn_0406D43C",
+      "climax_fn_0406D449",
+      "climax_fn_0406D456"
+    ],
+    "function_name_head_sha256": "0a4b79379aaaae5d82c5cf76cf593bd695daa6f73997640e4c5332b0e5f70515",
+    "top_function_signatures": [
+      "regions:1|paths:1|top_term:halt|top_intent:playback",
+      "regions:30|paths:2|top_term:jump,conditional|top_intent:control,flow",
+      "regions:46|paths:2|top_term:jump,conditional|top_intent:control,flow",
+      "regions:1|paths:1|top_term:fallthrough|top_intent:audio"
+    ],
+    "top_function_signatures_sha256": "e7abfd2578a361d6399a1e5d91f099f3fbe5ca32ff4ed4bc533c0744420815c8",
+    "function_head": [
+      {
+        "function_name": "climax_fn_0406C850",
+        "script_handle": "0x0406C850",
+        "script_source": "scene.hSceneScript",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::background,playmidi"
+        ],
+        "body_head_sha256": "811aa6876f89866ee4cb3be1651b446fa9793fdf15b1b96cd239408ac1af2a40",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406C85F",
+        "script_handle": "0x0406C85F",
+        "script_source": "entrance.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:fallthrough|top_intent:audio",
+        "signature_sha256": "e0f62303e3141ee29784e0a8c60cc611e7cbc9fc353e77f8e07b67189861bf35",
+        "body_head": [
+          "step audio::playsample,swalk"
+        ],
+        "body_head_sha256": "b72339d33a42ad0cb102e6a2e967d768c44e3eed1f2717a93f39b6e42f6fc66f",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D06A",
+        "script_handle": "0x0406D06A",
+        "script_source": "actor.script",
+        "region_count": 30,
+        "line_count": 10,
+        "signature": "regions:30|paths:2|top_term:jump,conditional|top_intent:control,flow",
+        "signature_sha256": "83d3a7b2ea752e91c51028a1f48563eb954fbc58d9dc52dab5bc952d274515e6",
+        "body_head": [
+          "if (state) then flow::event",
+          "goto inventory::inventory",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop"
+        ],
+        "body_head_sha256": "48edf68f8eada9414f1c3eefdc03605aec30065ac9fcd1af032c3d77e462e6cd",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D1E8",
+        "script_handle": "0x0406D1E8",
+        "script_source": "actor.script",
+        "region_count": 46,
+        "line_count": 10,
+        "signature": "regions:46|paths:2|top_term:jump,conditional|top_intent:control,flow",
+        "signature_sha256": "64fb8896ae7086a8dfa4cca2d08eb5327af8abd062664b8e788ab08a46f9c80f",
+        "body_head": [
+          "if (state) then flow::event",
+          "goto inventory::inventory",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop"
+        ],
+        "body_head_sha256": "48edf68f8eada9414f1c3eefdc03605aec30065ac9fcd1af032c3d77e462e6cd",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D3D4",
+        "script_handle": "0x0406D3D4",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D3E1",
+        "script_handle": "0x0406D3E1",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D3EE",
+        "script_handle": "0x0406D3EE",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D3FB",
+        "script_handle": "0x0406D3FB",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D408",
+        "script_handle": "0x0406D408",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D415",
+        "script_handle": "0x0406D415",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D422",
+        "script_handle": "0x0406D422",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D42F",
+        "script_handle": "0x0406D42F",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D43C",
+        "script_handle": "0x0406D43C",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D449",
+        "script_handle": "0x0406D449",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "climax_fn_0406D456",
+        "script_handle": "0x0406D456",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "function_head_sha256": "0a4b79379aaaae5d82c5cf76cf593bd695daa6f73997640e4c5332b0e5f70515",
+    "emitted_line_digest": "41d2dc8ccf508dc4b5fb93fbf921d9cc6ac9956197e013b5520767e9b45b4613",
+    "pseudo_summary_head_sha256": "0bead95a880f0134375ca318f5e8480cc2d1985fffda6bb40bd9f0e7e6294aa4"
+  },
+  "FINALE.SCN": {
+    "script_handles_found": 17,
+    "scripts_emitted": 17,
+    "function_count": 17,
+    "function_name_head": [
+      "finale_fn_018555C0",
+      "finale_fn_018555CA",
+      "finale_fn_01855A36",
+      "finale_fn_01855B82",
+      "finale_fn_018563DC",
+      "finale_fn_0185655A",
+      "finale_fn_0185697A",
+      "finale_fn_01856987",
+      "finale_fn_01856994",
+      "finale_fn_018569A1",
+      "finale_fn_018569AE",
+      "finale_fn_018569BB",
+      "finale_fn_018569C8",
+      "finale_fn_018569D5",
+      "finale_fn_018569E2",
+      "finale_fn_018569EF",
+      "finale_fn_018569FC"
+    ],
+    "function_name_head_sha256": "3e1cdb3606681c3224532b291de0043717fac749afda4c95b346bc9cd7c436b5",
+    "top_function_signatures": [
+      "regions:1|paths:1|top_term:halt|top_intent:playback",
+      "regions:30|paths:2|top_term:jump,conditional|top_intent:control,flow",
+      "regions:91|paths:2|top_term:jump,conditional|top_intent:control,state",
+      "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+      "regions:22|paths:2|top_term:conditional,jump|top_intent:control,actor",
+      "regions:17|paths:1|top_term:conditional,jump|top_intent:control,flow",
+      "regions:1|paths:1|top_term:halt|top_intent:dialogue",
+      "regions:1|paths:1|top_term:halt|top_intent:render"
+    ],
+    "top_function_signatures_sha256": "c9a81ea4199320574f47f16d2393e16adf6b971f131ad796554f60a4ccec66c2",
+    "function_head": [
+      {
+        "function_name": "finale_fn_018555C0",
+        "script_handle": "0x018555C0",
+        "script_source": "scene.hSceneScript",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:render",
+        "signature_sha256": "dfea6949793fce4d2670726b1cc2d193b73c084f680666e1444fb5a6a0a78a35",
+        "body_head": [
+          "return render::background,noblocking"
+        ],
+        "body_head_sha256": "ec368548e371d7483db4d5e2d824ffddcab161f322bbad76fd2785baac47c88b",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018555CA",
+        "script_handle": "0x018555CA",
+        "script_source": "entrance.script",
+        "region_count": 22,
+        "line_count": 10,
+        "signature": "regions:22|paths:2|top_term:conditional,jump|top_intent:control,actor",
+        "signature_sha256": "f0d932076ecf307daaee492a415b8e7b5d6db3dff8425feee645453d79869f8f",
+        "body_head": [
+          "if (state) then actor::playmidi,swalk",
+          "if (state) then control::noop",
+          "goto timing::waittime",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "if (state) then control::noop"
+        ],
+        "body_head_sha256": "b54598813c7daa2d0f13033a324e064bd1747461976627270fa13277ba18643a",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_01855A36",
+        "script_handle": "0x01855A36",
+        "script_source": "entrance.script",
+        "region_count": 17,
+        "line_count": 10,
+        "signature": "regions:17|paths:1|top_term:conditional,jump|top_intent:control,flow",
+        "signature_sha256": "efa30ee848dadf74ef1e7d514ca95d7e76479ba842e7407a956302ee545bb165",
+        "body_head": [
+          "if (state) then flow::playmidi,swalk",
+          "if (state) then state::waittime,screenxpos",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "goto control::noop"
+        ],
+        "body_head_sha256": "1daef27503da63957a615d967fbd1280504477f61c7fcadac3705960ceaec98c",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_01855B82",
+        "script_handle": "0x01855B82",
+        "script_source": "entrance.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:dialogue",
+        "signature_sha256": "18a9251f83483d68df612f6d0b5ff59edc12be1903af901a331efd56d622374e",
+        "body_head": [
+          "return dialogue::playmidi,stand"
+        ],
+        "body_head_sha256": "bd9891f6551c569218c77231b51576c39a84ac6b7f3d9fdb5743858b7dadf0ff",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018563DC",
+        "script_handle": "0x018563DC",
+        "script_source": "actor.script",
+        "region_count": 30,
+        "line_count": 10,
+        "signature": "regions:30|paths:2|top_term:jump,conditional|top_intent:control,flow",
+        "signature_sha256": "83d3a7b2ea752e91c51028a1f48563eb954fbc58d9dc52dab5bc952d274515e6",
+        "body_head": [
+          "if (state) then flow::event",
+          "goto inventory::inventory",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop"
+        ],
+        "body_head_sha256": "48edf68f8eada9414f1c3eefdc03605aec30065ac9fcd1af032c3d77e462e6cd",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_0185655A",
+        "script_handle": "0x0185655A",
+        "script_source": "actor.script",
+        "region_count": 91,
+        "line_count": 10,
+        "signature": "regions:91|paths:2|top_term:jump,conditional|top_intent:control,state",
+        "signature_sha256": "4e5c21fc7c66dcaa3fe3c788c2d4965b9b6803895c231ec0bbf0216c83f60f9e",
+        "body_head": [
+          "if (state) then state::actorypos",
+          "if (state) then flow::event",
+          "goto inventory::inventory",
+          "if (state) then control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop",
+          "if (state) then control::noop",
+          "goto control::noop"
+        ],
+        "body_head_sha256": "46fef6f1284ac3a7622838e0d24acc5bd506993834d4f0e29ecbf4b44951b0c7",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_0185697A",
+        "script_handle": "0x0185697A",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_01856987",
+        "script_handle": "0x01856987",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_01856994",
+        "script_handle": "0x01856994",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018569A1",
+        "script_handle": "0x018569A1",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018569AE",
+        "script_handle": "0x018569AE",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018569BB",
+        "script_handle": "0x018569BB",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018569C8",
+        "script_handle": "0x018569C8",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018569D5",
+        "script_handle": "0x018569D5",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018569E2",
+        "script_handle": "0x018569E2",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018569EF",
+        "script_handle": "0x018569EF",
+        "script_source": "actor.script",
+        "region_count": 1,
+        "line_count": 1,
+        "signature": "regions:1|paths:1|top_term:halt|top_intent:playback",
+        "signature_sha256": "0ed18cc5b51f87f346d420b3d6246aaf1fae697a2692a3e55ad9744c082654b4",
+        "body_head": [
+          "return playback::play"
+        ],
+        "body_head_sha256": "d19882614c75616548cf91e68734fe8efdd7f1d8306705ae908cdf6b03b10ea2",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "function_name": "finale_fn_018569FC",
+        "script_handle": "0x018569FC",
+        "script_source": "actor.script",
+        "region_count": 3,
+        "line_count": 3,
+        "signature": "regions:3|paths:2|top_term:conditional,jump|top_intent:control,tag",
+        "signature_sha256": "f12a83925203bc9d1a6738e625832c7059f9cdaca4b93bbaa46789cae9359423",
+        "body_head": [
+          "if (state) then control::noop",
+          "goto tag::killtag",
+          "return control::noop"
+        ],
+        "body_head_sha256": "8f4e3f18f545de5283d37bfa2ea69a3faf2b96add74226de6015f105832937f0",
+        "top_aliases": [],
+        "top_aliases_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "function_head_sha256": "3e1cdb3606681c3224532b291de0043717fac749afda4c95b346bc9cd7c436b5",
+    "emitted_line_digest": "e076d3761e5887202e28a36f6a9a9543e1a0c40e6bd7d478d2036957fb4beaa2",
+    "pseudo_summary_head_sha256": "f5893284e1d6e8e53fc8b78ba0c1ff739f77b399856812a208d5586ea37c67dd"
+  }
+}
