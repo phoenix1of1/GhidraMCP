@@ -59,6 +59,7 @@ CANON_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 PSEUDO_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 EMIT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 BUNDLE_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+DELTA_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -166,6 +167,7 @@ BUNDLE_MAX_PATHS = 16
 BUNDLE_MAX_BODY_LINES = 32
 BUNDLE_FUNCTION_LIMIT = 40
 BUNDLE_TEXT_HEAD_LIMIT = 120
+DELTA_CHANGE_HEAD_LIMIT = 80
 SEMANTIC_BEHAVIOR_TAGS = {
     "WAITFRAME": ["timing"],
     "WAITTIME": ["timing"],
@@ -2603,6 +2605,93 @@ def _build_pcode_scene_decomp_bundle_snapshots(vm_mod, scanner_mod, dataset_dir:
     return out
 
 
+def _build_pcode_semantic_delta_report_snapshots(
+    previous_bundle: dict,
+    current_bundle: dict,
+) -> dict:
+    out = {}
+    for scene_name in DELTA_CONTRACT_SCENES:
+        previous_scene = previous_bundle.get(scene_name, {}) if isinstance(previous_bundle, dict) else {}
+        current_scene = current_bundle.get(scene_name, {}) if isinstance(current_bundle, dict) else {}
+
+        previous_names = set(previous_scene.get("function_names") or [])
+        current_names = set(current_scene.get("function_names") or [])
+        added_names = sorted(current_names - previous_names)
+        removed_names = sorted(previous_names - current_names)
+
+        previous_rows = {
+            row.get("function_name"): row
+            for row in (previous_scene.get("function_bundle_head") or [])
+            if isinstance(row, dict) and row.get("function_name")
+        }
+        current_rows = {
+            row.get("function_name"): row
+            for row in (current_scene.get("function_bundle_head") or [])
+            if isinstance(row, dict) and row.get("function_name")
+        }
+
+        changed_body = []
+        changed_signature = []
+        for name in sorted(previous_names & current_names):
+            prev_row = previous_rows.get(name, {})
+            cur_row = current_rows.get(name, {})
+            if str(prev_row.get("body_sha256") or "") != str(cur_row.get("body_sha256") or ""):
+                changed_body.append(name)
+            if str(prev_row.get("signature_sha256") or "") != str(cur_row.get("signature_sha256") or ""):
+                changed_signature.append(name)
+
+        previous_sig_hash = str(previous_scene.get("top_function_signatures_sha256") or "")
+        current_sig_hash = str(current_scene.get("top_function_signatures_sha256") or "")
+        previous_bundle_hash = str(previous_scene.get("bundle_text_digest") or "")
+        current_bundle_hash = str(current_scene.get("bundle_text_digest") or "")
+
+        change_head = []
+        change_head.extend(f"+fn:{name}" for name in added_names)
+        change_head.extend(f"-fn:{name}" for name in removed_names)
+        change_head.extend(f"~body:{name}" for name in changed_body)
+        change_head.extend(f"~sig:{name}" for name in changed_signature)
+        if previous_sig_hash != current_sig_hash:
+            change_head.append("~scene:top_signatures")
+        if previous_bundle_hash != current_bundle_hash:
+            change_head.append("~scene:bundle_text")
+        change_head = change_head[:DELTA_CHANGE_HEAD_LIMIT]
+
+        out[scene_name] = {
+            "previous_function_count": int(previous_scene.get("function_count") or 0),
+            "current_function_count": int(current_scene.get("function_count") or 0),
+            "added_function_count": len(added_names),
+            "removed_function_count": len(removed_names),
+            "changed_body_count": len(changed_body),
+            "changed_signature_count": len(changed_signature),
+            "has_scene_digest_change": previous_bundle_hash != current_bundle_hash,
+            "has_scene_signature_change": previous_sig_hash != current_sig_hash,
+            "added_functions": added_names,
+            "removed_functions": removed_names,
+            "changed_body_functions": changed_body,
+            "changed_signature_functions": changed_signature,
+            "change_head": change_head,
+            "change_head_sha256": hashlib.sha256("|".join(change_head).encode("utf-8")).hexdigest(),
+            "previous_bundle_text_digest": previous_bundle_hash,
+            "current_bundle_text_digest": current_bundle_hash,
+            "delta_token": hashlib.sha256(
+                "|".join(
+                    [
+                        previous_bundle_hash,
+                        current_bundle_hash,
+                        previous_sig_hash,
+                        current_sig_hash,
+                        str(len(added_names)),
+                        str(len(removed_names)),
+                        str(len(changed_body)),
+                        str(len(changed_signature)),
+                    ]
+                ).encode("utf-8")
+            ).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -2830,7 +2919,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -2844,7 +2933,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -2870,7 +2959,12 @@ def main() -> int:
         "pseudo": repo_root / "tests" / "snapshots" / "pcode_pseudocode_quality_snapshots.json",
         "emit": repo_root / "tests" / "snapshots" / "pcode_emitter_output_snapshots.json",
         "bundle": repo_root / "tests" / "snapshots" / "pcode_scene_decomp_bundle_snapshots.json",
+        "delta": repo_root / "tests" / "snapshots" / "pcode_semantic_delta_report_snapshots.json",
     }
+
+    previous_bundle_payload = {}
+    if targets["bundle"].exists():
+        previous_bundle_payload = _read_json(targets["bundle"])
 
     if args.check:
         print("Checking snapshot baselines (dry mode)")
@@ -3073,6 +3167,17 @@ def main() -> int:
         else:
             _write_json(targets["bundle"], payload)
             print("- updated pcode_scene_decomp_bundle_snapshots.json")
+
+    if "delta" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        current_bundle_payload = _build_pcode_scene_decomp_bundle_snapshots(vm_mod, scanner_mod, dataset_dir)
+        payload = _build_pcode_semantic_delta_report_snapshots(previous_bundle_payload, current_bundle_payload)
+        if args.check:
+            ok = _check_snapshot(targets["delta"], payload) and ok
+        else:
+            _write_json(targets["delta"], payload)
+            print("- updated pcode_semantic_delta_report_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")
