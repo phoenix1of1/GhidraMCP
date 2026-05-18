@@ -68,8 +68,10 @@ Planning and agent-context docs:
 - `scripts/refresh_snapshot_baselines.py` - Python utility to refresh snapshot JSON files.
 - `scripts/run_ci_verify.ps1` - CI-style verify: dry-check snapshot drift, then run regression tests.
 - `scripts/run_scene_decomp_emit.ps1` - PowerShell runner to emit deterministic scene pseudo-function artifacts.
+- `scripts/run_sprite_asset_extract.ps1` - PowerShell runner to extract full native-resolution sprite/image PNG assets.
 - `extractor/discworld_extract.py` - Core unified extractor and analysis CLI.
 - `scripts/run_scene_decomp_emit.py` - Python emitter for deterministic scene pseudo-function artifacts.
+- `scripts/run_sprite_asset_extract.py` - Python extractor for lossless sprite/image asset PNGs and manifests.
 
 ## One-Command Regression Test Run
 
@@ -109,6 +111,7 @@ Current regression coverage includes:
 - PCODE semantic delta report snapshots (normalized change summaries between previous and current scene bundles) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - PCODE regression digest snapshots (human-readable scene change digests with severity scoring) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - PCODE decomp delivery manifest snapshots (artifact file mapping and digest locks for emitted scene bundles) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
+- Lossless sprite/image contract snapshots (native dimensions, offsets, and pixel/hash integrity) for `BAR.SCN`, `LIBRARY.SCN`, `OBJECTS.SCN`, `DW.SCN`, and `CLIMAX.SCN`.
 
 ## Snapshot Refresh Utility
 
@@ -200,9 +203,17 @@ Refresh only PCODE decomp delivery manifest snapshots:
 
 `pwsh -File scripts/refresh_snapshot_baselines.ps1 --only deliver`
 
+Refresh only lossless sprite/image contract snapshots:
+
+`pwsh -File scripts/refresh_snapshot_baselines.ps1 --only sprite`
+
 Emit deterministic scene decomp artifacts for review:
 
 `pwsh -File scripts/run_scene_decomp_emit.ps1 --clean-output`
+
+Extract full native-resolution lossless sprite/image assets:
+
+`pwsh -File scripts/run_sprite_asset_extract.ps1 --clean-output --scenes BAR.SCN CLIMAX.SCN`
 
 Refresh from an explicit dataset path:
 

@@ -62,6 +62,8 @@ BUNDLE_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 DELTA_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 DIGEST_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 DELIVER_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+SPRITE_CONTRACT_SCENES = ["BAR.SCN", "LIBRARY.SCN", "OBJECTS.SCN", "DW.SCN", "CLIMAX.SCN"]
+SPRITE_IMAGES_PER_SCENE = 6
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -356,6 +358,61 @@ def _build_bitmap_checksum_snapshots(renderer_mod, dataset_dir: Path) -> dict:
             )
             if len(entries) >= 3:
                 break
+
+        out[scene_name] = entries
+
+    return out
+
+
+def _build_sprite_lossless_contract_snapshots(renderer_mod, dataset_dir: Path) -> dict:
+    out = {}
+    for scene_name in SPRITE_CONTRACT_SCENES:
+        scene = renderer_mod.Tinsel1Scene(dataset_dir / scene_name)
+        records = scene.image_records()
+
+        preferred = []
+        fallback = []
+        for rec in records:
+            if rec.width <= 0 or rec.height <= 0:
+                continue
+
+            entry = {
+                "index": rec.index,
+                "width": rec.width,
+                "height": rec.height,
+                "anim_x": rec.anim_x,
+                "anim_y": rec.anim_y,
+                "bitmap_offset": rec.bitmap_offset,
+                "palette_offset": rec.palette_offset,
+            }
+
+            fallback.append(entry)
+            if rec.width <= 256 and rec.height <= 256:
+                preferred.append(entry)
+
+        selected = preferred if preferred else fallback
+        selected = selected[:SPRITE_IMAGES_PER_SCENE]
+
+        entries = []
+        for descriptor in selected:
+            rec = records[descriptor["index"]]
+            indexed_pixels, stats = scene.render_wrt_nonzero(rec)
+            palette = scene.palette(rec.palette_offset)
+
+            rgba = bytearray()
+            for pixel_index in indexed_pixels:
+                rgba.extend(palette[pixel_index])
+
+            descriptor_payload = dict(descriptor)
+            descriptor_payload.update(
+                {
+                    "pixel_count": rec.width * rec.height,
+                    "indexed_sha256": hashlib.sha256(bytes(indexed_pixels)).hexdigest(),
+                    "rgba_sha256": hashlib.sha256(bytes(rgba)).hexdigest(),
+                    "consumed_index_bytes": stats.consumed_index_bytes,
+                }
+            )
+            entries.append(descriptor_payload)
 
         out[scene_name] = entries
 
@@ -3044,7 +3101,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest", "deliver", "all"],
+        choices=["scn", "pcode", "bitmap", "sprite", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest", "deliver", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -3058,7 +3115,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest", "deliver"}
+        refresh = {"scn", "pcode", "bitmap", "sprite", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest", "deliver"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -3066,6 +3123,7 @@ def main() -> int:
         "scn": repo_root / "tests" / "snapshots" / "scn_chunk_snapshots.json",
         "pcode": repo_root / "tests" / "snapshots" / "pcode_libcall_snapshots.json",
         "bitmap": repo_root / "tests" / "snapshots" / "bitmap_render_checksums.json",
+        "sprite": repo_root / "tests" / "snapshots" / "sprite_lossless_contract_snapshots.json",
         "scheduler": repo_root / "tests" / "snapshots" / "scheduler_event_snapshots.json",
         "placement": repo_root / "tests" / "snapshots" / "placement_convergence_snapshots.json",
         "contracts": repo_root / "tests" / "snapshots" / "scheduler_side_effect_contracts.json",
@@ -3130,6 +3188,15 @@ def main() -> int:
         else:
             _write_json(targets["bitmap"], payload)
             print("- updated bitmap_render_checksums.json")
+
+    if "sprite" in refresh:
+        renderer_mod = _load_module("tinsel1_renderer_module", repo_root / "extractor" / "tinsel1_renderer.py")
+        payload = _build_sprite_lossless_contract_snapshots(renderer_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["sprite"], payload) and ok
+        else:
+            _write_json(targets["sprite"], payload)
+            print("- updated sprite_lossless_contract_snapshots.json")
 
     if "scheduler" in refresh:
         vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
