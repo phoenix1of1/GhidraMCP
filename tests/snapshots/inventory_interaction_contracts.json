@@ -1,0 +1,86 @@
+{
+  "BAR.SCN": {
+    "scripts_traced": 22,
+    "inventory_script_handles_found": 0,
+    "scripts_with_inventory_events": 5,
+    "inventory_event_count": 5,
+    "inventory_libcall_histogram": {
+      "ININVENTORY": 3,
+      "INVENTORY": 2
+    },
+    "inventory_source_histogram": {
+      "actor.script": 5
+    },
+    "inventory_transition_histogram": {
+      "ININVENTORY->ININVENTORY": 2,
+      "INVENTORY->ININVENTORY": 1,
+      "INVENTORY->INVENTORY": 1
+    },
+    "stack_depth_min": 1,
+    "stack_depth_max": 2,
+    "max_path_depth_at_inventory_event": 0,
+    "max_paths_started_for_inventory_scripts": 2,
+    "inventory_sequence_head": [
+      "INVENTORY",
+      "INVENTORY",
+      "ININVENTORY",
+      "ININVENTORY",
+      "ININVENTORY"
+    ],
+    "inventory_sequence_head_sha256": "ede49b6528054a54f3a5eb514ee4cd4081646535f6fdf3ae66082bbb989c47c8"
+  },
+  "CLIMAX.SCN": {
+    "scripts_traced": 15,
+    "inventory_script_handles_found": 0,
+    "scripts_with_inventory_events": 2,
+    "inventory_event_count": 2,
+    "inventory_libcall_histogram": {
+      "INVENTORY": 2
+    },
+    "inventory_source_histogram": {
+      "actor.script": 2
+    },
+    "inventory_transition_histogram": {
+      "INVENTORY->INVENTORY": 1
+    },
+    "stack_depth_min": 1,
+    "stack_depth_max": 1,
+    "max_path_depth_at_inventory_event": 0,
+    "max_paths_started_for_inventory_scripts": 2,
+    "inventory_sequence_head": [
+      "INVENTORY",
+      "INVENTORY"
+    ],
+    "inventory_sequence_head_sha256": "cb6e96f63052101ca445e69fac49c93a17ba7f0d556343b4f0a518e81606185e"
+  },
+  "FINALE.SCN": {
+    "scripts_traced": 17,
+    "inventory_script_handles_found": 0,
+    "scripts_with_inventory_events": 3,
+    "inventory_event_count": 4,
+    "inventory_libcall_histogram": {
+      "DELINV": 2,
+      "INVENTORY": 2
+    },
+    "inventory_source_histogram": {
+      "actor.script": 2,
+      "entrance.script": 2
+    },
+    "inventory_transition_histogram": {
+      "DELINV->DELINV": 1,
+      "INVENTORY->DELINV": 1,
+      "INVENTORY->INVENTORY": 1
+    },
+    "stack_depth_min": 1,
+    "stack_depth_max": 22,
+    "max_path_depth_at_inventory_event": 0,
+    "max_paths_started_for_inventory_scripts": 2,
+    "inventory_sequence_head": [
+      "INVENTORY",
+      "INVENTORY",
+      "DELINV",
+      "DELINV"
+    ],
+    "inventory_sequence_head_sha256": "93c575ed3b845fc7d1955c41810ec7dc50a03a967d2ce803689096c7248b5c44"
+  }
+}

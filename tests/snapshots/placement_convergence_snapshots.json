@@ -1,0 +1,104 @@
+{
+  "BAR.SCN": {
+    "scene_has_block_polygons": false,
+    "block_polygon_count": 0,
+    "runtime_case_count": 2,
+    "runtime_cases": [
+      {
+        "event_ip": 256414,
+        "nominal_x": 0,
+        "nominal_y": 0,
+        "inside_block": false,
+        "candidate_count": 0,
+        "selected_polygon_index": 16,
+        "adjusted_x": 0,
+        "adjusted_y": 0,
+        "chosen_manhattan_distance": 0,
+        "candidate_source_block_index": null,
+        "candidate_corner": null
+      },
+      {
+        "event_ip": 256441,
+        "nominal_x": 320,
+        "nominal_y": 0,
+        "inside_block": false,
+        "candidate_count": 0,
+        "selected_polygon_index": null,
+        "adjusted_x": 320,
+        "adjusted_y": 0,
+        "chosen_manhattan_distance": 0,
+        "candidate_source_block_index": null,
+        "candidate_corner": null
+      }
+    ],
+    "block_probe_case": null
+  },
+  "CLIMAX.SCN": {
+    "scene_has_block_polygons": false,
+    "block_polygon_count": 0,
+    "runtime_case_count": 2,
+    "runtime_cases": [
+      {
+        "event_ip": 444744,
+        "nominal_x": 0,
+        "nominal_y": 0,
+        "inside_block": false,
+        "candidate_count": 0,
+        "selected_polygon_index": 1,
+        "adjusted_x": 0,
+        "adjusted_y": 0,
+        "chosen_manhattan_distance": 0,
+        "candidate_source_block_index": null,
+        "candidate_corner": null
+      },
+      {
+        "event_ip": 444784,
+        "nominal_x": 162,
+        "nominal_y": 184,
+        "inside_block": false,
+        "candidate_count": 0,
+        "selected_polygon_index": 0,
+        "adjusted_x": 162,
+        "adjusted_y": 184,
+        "chosen_manhattan_distance": 0,
+        "candidate_source_block_index": null,
+        "candidate_corner": null
+      }
+    ],
+    "block_probe_case": null
+  },
+  "FINALE.SCN": {
+    "scene_has_block_polygons": true,
+    "block_polygon_count": 1,
+    "runtime_case_count": 1,
+    "runtime_cases": [
+      {
+        "event_ip": 349818,
+        "nominal_x": 0,
+        "nominal_y": 0,
+        "inside_block": false,
+        "candidate_count": 0,
+        "selected_polygon_index": 4,
+        "adjusted_x": 0,
+        "adjusted_y": 0,
+        "chosen_manhattan_distance": 0,
+        "candidate_source_block_index": null,
+        "candidate_corner": null
+      }
+    ],
+    "block_probe_case": {
+      "source_block_index": 6,
+      "source": "block_centroid_probe",
+      "nominal_x": 486,
+      "nominal_y": 189,
+      "inside_block": true,
+      "candidate_count": 4,
+      "selected_polygon_index": 10,
+      "adjusted_x": 427,
+      "adjusted_y": 182,
+      "chosen_manhattan_distance": 66,
+      "candidate_source_block_index": 6,
+      "candidate_corner": 1
+    }
+  }
+}

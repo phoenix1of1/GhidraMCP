@@ -1,0 +1,81 @@
+{
+  "BAR.SCN": {
+    "script_handles_found": 22,
+    "scripts_traced": 22,
+    "libcall_events_total": 52,
+    "scheduler_event_count": 41,
+    "film_scheduler_events_with_film_args": 14,
+    "scheduler_histogram": {
+      "BACKGROUND": 1,
+      "CONTROL": 2,
+      "EVENT": 2,
+      "KILLTAG": 10,
+      "OFFSET": 1,
+      "PLAY": 13,
+      "SETTAG": 1,
+      "STAND": 4,
+      "SWALK": 3,
+      "WAITTIME": 4
+    }
+  },
+  "LIBRARY.SCN": {
+    "script_handles_found": 16,
+    "scripts_traced": 16,
+    "libcall_events_total": 52,
+    "scheduler_event_count": 47,
+    "film_scheduler_events_with_film_args": 21,
+    "scheduler_histogram": {
+      "BACKGROUND": 1,
+      "CONTROL": 3,
+      "EVENT": 2,
+      "KILLTAG": 5,
+      "OFFSET": 3,
+      "PLAY": 20,
+      "PLAYSAMPLE": 1,
+      "SETTAG": 1,
+      "STAND": 6,
+      "SWALK": 4,
+      "WAITTIME": 1
+    }
+  },
+  "OBJECTS.SCN": {
+    "script_handles_found": 151,
+    "scripts_traced": 60,
+    "libcall_events_total": 110,
+    "scheduler_event_count": 104,
+    "film_scheduler_events_with_film_args": 0,
+    "scheduler_histogram": {
+      "EVENT": 60,
+      "PRINTOBJ": 44
+    }
+  },
+  "DW.SCN": {
+    "script_handles_found": 0,
+    "scripts_traced": 0,
+    "libcall_events_total": 0,
+    "scheduler_event_count": 0,
+    "film_scheduler_events_with_film_args": 0,
+    "scheduler_histogram": {}
+  },
+  "CLIMAX.SCN": {
+    "script_handles_found": 15,
+    "scripts_traced": 15,
+    "libcall_events_total": 264,
+    "scheduler_event_count": 257,
+    "film_scheduler_events_with_film_args": 58,
+    "scheduler_histogram": {
+      "BACKGROUND": 1,
+      "EVENT": 2,
+      "OFFSET": 36,
+      "PLAY": 57,
+      "PLAYSAMPLE": 35,
+      "SCROLL": 6,
+      "STAND": 3,
+      "SWALK": 2,
+      "TALK": 40,
+      "TALKAT": 28,
+      "WAITFRAME": 35,
+      "WAITTIME": 12
+    }
+  }
+}

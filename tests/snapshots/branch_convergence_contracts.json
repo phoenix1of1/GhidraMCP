@@ -1,0 +1,59 @@
+{
+  "BAR.SCN": {
+    "scripts_traced": 22,
+    "max_branch_fanout": 2,
+    "max_path_depth": 1,
+    "truncated_paths": {
+      "max_steps": 0,
+      "max_paths": 0,
+      "total": 0
+    },
+    "branch_opcode_histogram": {
+      "JMPFALSE": 23,
+      "JUMP": 15
+    },
+    "top_branch_opcodes": [
+      "JMPFALSE",
+      "JUMP"
+    ],
+    "top_branch_opcodes_sha256": "269847dcfa514245540d650805da0f45fd94ca91cdb020a691316975f4f08ee3"
+  },
+  "CLIMAX.SCN": {
+    "scripts_traced": 15,
+    "max_branch_fanout": 2,
+    "max_path_depth": 1,
+    "truncated_paths": {
+      "max_steps": 0,
+      "max_paths": 0,
+      "total": 0
+    },
+    "branch_opcode_histogram": {
+      "JMPFALSE": 2,
+      "JUMP": 2
+    },
+    "top_branch_opcodes": [
+      "JMPFALSE",
+      "JUMP"
+    ],
+    "top_branch_opcodes_sha256": "269847dcfa514245540d650805da0f45fd94ca91cdb020a691316975f4f08ee3"
+  },
+  "FINALE.SCN": {
+    "scripts_traced": 17,
+    "max_branch_fanout": 2,
+    "max_path_depth": 1,
+    "truncated_paths": {
+      "max_steps": 0,
+      "max_paths": 0,
+      "total": 0
+    },
+    "branch_opcode_histogram": {
+      "JMPFALSE": 8,
+      "JUMP": 4
+    },
+    "top_branch_opcodes": [
+      "JMPFALSE",
+      "JUMP"
+    ],
+    "top_branch_opcodes_sha256": "269847dcfa514245540d650805da0f45fd94ca91cdb020a691316975f4f08ee3"
+  }
+}

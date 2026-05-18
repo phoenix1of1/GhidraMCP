@@ -1,0 +1,127 @@
+{
+  "BAR.SCN": {
+    "scripts_traced": 22,
+    "scripts_with_dialogue_events": 0,
+    "dialogue_event_count": 0,
+    "dialogue_libcall_histogram": {},
+    "dialogue_source_histogram": {},
+    "dialogue_transition_histogram": {},
+    "hotspot_to_dialogue_transition_histogram": {},
+    "inventory_to_dialogue_transition_histogram": {},
+    "dialogue_to_action_transition_histogram": {},
+    "stack_depth_min": 0,
+    "stack_depth_max": 0,
+    "max_path_depth_at_dialogue_event": 0,
+    "max_paths_started_for_dialogue_scripts": 0,
+    "dialogue_sequence_head": [],
+    "dialogue_sequence_head_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "CLIMAX.SCN": {
+    "scripts_traced": 15,
+    "scripts_with_dialogue_events": 1,
+    "dialogue_event_count": 68,
+    "dialogue_libcall_histogram": {
+      "TALK": 40,
+      "TALKAT": 28
+    },
+    "dialogue_source_histogram": {
+      "entrance.script": 68
+    },
+    "dialogue_transition_histogram": {
+      "TALK->TALK": 26,
+      "TALK->TALKAT": 14,
+      "TALKAT->TALK": 13,
+      "TALKAT->TALKAT": 14
+    },
+    "hotspot_to_dialogue_transition_histogram": {
+      "TALK->TALK": 9,
+      "TALKAT->TALK": 1,
+      "TALKAT->TALKAT": 10
+    },
+    "inventory_to_dialogue_transition_histogram": {},
+    "dialogue_to_action_transition_histogram": {
+      "TALK->PLAY": 8,
+      "TALK->WAITTIME": 1,
+      "TALKAT->PLAY": 13,
+      "TALKAT->WAITTIME": 2
+    },
+    "stack_depth_min": 18,
+    "stack_depth_max": 36,
+    "max_path_depth_at_dialogue_event": 0,
+    "max_paths_started_for_dialogue_scripts": 1,
+    "dialogue_sequence_head": [
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALKAT",
+      "TALK",
+      "TALKAT",
+      "TALKAT",
+      "TALKAT",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALKAT"
+    ],
+    "dialogue_sequence_head_sha256": "2542d58ac4665a6e50cb2e3299b815a0113b296f37940cd3e706291889bd4bf9"
+  },
+  "FINALE.SCN": {
+    "scripts_traced": 17,
+    "scripts_with_dialogue_events": 2,
+    "dialogue_event_count": 13,
+    "dialogue_libcall_histogram": {
+      "TALK": 13
+    },
+    "dialogue_source_histogram": {
+      "entrance.script": 13
+    },
+    "dialogue_transition_histogram": {
+      "TALK->TALK": 12
+    },
+    "hotspot_to_dialogue_transition_histogram": {
+      "TALK->TALK": 2
+    },
+    "inventory_to_dialogue_transition_histogram": {},
+    "dialogue_to_action_transition_histogram": {
+      "TALK->WAITTIME": 5
+    },
+    "stack_depth_min": 15,
+    "stack_depth_max": 34,
+    "max_path_depth_at_dialogue_event": 0,
+    "max_paths_started_for_dialogue_scripts": 2,
+    "dialogue_sequence_head": [
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK"
+    ],
+    "dialogue_sequence_head_sha256": "95edd1d23eb573e7055d146b88029f9cb7c7d50e5c3101746d10b193f825ad81"
+  }
+}

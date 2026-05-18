@@ -1,0 +1,132 @@
+{
+  "BAR.SCN": [
+    {
+      "index": 0,
+      "width": 9,
+      "height": 9,
+      "indexed_sha256": "18aa08f368750ce3aea371377ddf12438374f19c573c53bcbd6a18703761e045",
+      "rgba_sha256": "eca03a60e410ec4a01ab25342a0fc54bb139899b97f781c6164370c61e6f2c61",
+      "consumed_index_bytes": 18
+    },
+    {
+      "index": 1,
+      "width": 20,
+      "height": 60,
+      "indexed_sha256": "0b44995d1e4392028bb3b67262b3f5be40f653f7cea50ab1bb1032b1b5a40b34",
+      "rgba_sha256": "029cee38f48a55a9055e8a04068e58b600473c8bc75f997762c9cf125e2e161a",
+      "consumed_index_bytes": 150
+    },
+    {
+      "index": 2,
+      "width": 20,
+      "height": 60,
+      "indexed_sha256": "0b44995d1e4392028bb3b67262b3f5be40f653f7cea50ab1bb1032b1b5a40b34",
+      "rgba_sha256": "029cee38f48a55a9055e8a04068e58b600473c8bc75f997762c9cf125e2e161a",
+      "consumed_index_bytes": 150
+    }
+  ],
+  "LIBRARY.SCN": [
+    {
+      "index": 0,
+      "width": 45,
+      "height": 47,
+      "indexed_sha256": "fa21946f92225cb2e965bcf0710903e6ef0ec2a7b125bd7a0ea2ac738a20b3e2",
+      "rgba_sha256": "743b7a626e7382ac9df93d756095d4ae9ba0949eb7457d2a849fbebad4aa450f",
+      "consumed_index_bytes": 288
+    },
+    {
+      "index": 1,
+      "width": 45,
+      "height": 46,
+      "indexed_sha256": "8834e9678e512dba6295f50e4ef069ef3ebf4e62b9baafa737b0772406548cba",
+      "rgba_sha256": "8fbf8e567ffac41f21e9515b53d9728ecb9f22e164a866a6df1e48abb4582ba6",
+      "consumed_index_bytes": 288
+    },
+    {
+      "index": 2,
+      "width": 46,
+      "height": 47,
+      "indexed_sha256": "0d1f0f61401c3ad1ce568cf83e086230c4d1cdfef12e66a97032ba5560dbc965",
+      "rgba_sha256": "05acb2bb850cd5a25bfc1c431bf08c3b8e20637f44c81fbbe5d2df2b9d168d47",
+      "consumed_index_bytes": 288
+    }
+  ],
+  "OBJECTS.SCN": [
+    {
+      "index": 0,
+      "width": 22,
+      "height": 20,
+      "indexed_sha256": "cfea29f3f59da0edbae6c123b706d0fd5c6a72189b5eb27feaf3b0a5fed051f6",
+      "rgba_sha256": "ddd6595de652524c8d3e6fd1a3c1c72ea5b2b6e4378d1c669df9eebcf7ac5f29",
+      "consumed_index_bytes": 60
+    },
+    {
+      "index": 1,
+      "width": 67,
+      "height": 34,
+      "indexed_sha256": "cd631a5f0be8f7022dd69fd8ffd2e923adfec1d5905cc02fbe5950f9846755ea",
+      "rgba_sha256": "c876017f7a3f41c339709ab9e582a92416f0f210097ad643765a0a0a9b88566f",
+      "consumed_index_bytes": 306
+    },
+    {
+      "index": 2,
+      "width": 67,
+      "height": 37,
+      "indexed_sha256": "23d0ab5936bf3040d37e295bc96d46067031e6beeea86fd3434a227cccc8dafb",
+      "rgba_sha256": "0c88055cac93c9059fcc2ec74f300f33e2f3773fcd1fcd69de5b9370a78ecbab",
+      "consumed_index_bytes": 340
+    }
+  ],
+  "DW.SCN": [
+    {
+      "index": 0,
+      "width": 7,
+      "height": 11,
+      "indexed_sha256": "815e18fa43c24e8b61f1988afd24552f279f5d97d5ce67a0f78397f33e9fc27b",
+      "rgba_sha256": "30485522cce6e7ca31f5c5fe9177272e6b6829f3651b670a7004a253cf4cf758",
+      "consumed_index_bytes": 12
+    },
+    {
+      "index": 1,
+      "width": 7,
+      "height": 5,
+      "indexed_sha256": "c66ddd16e02a1d25a9105734156798aa690444f1e230630315b37011b14a39cd",
+      "rgba_sha256": "33761da7f3ee39a238f0e70a748f9a6a685d047cbe45b779c814717270b2d020",
+      "consumed_index_bytes": 8
+    },
+    {
+      "index": 2,
+      "width": 11,
+      "height": 7,
+      "indexed_sha256": "a79f400d474cda0ad331028ff433932f4fb1dab2346cb1e1c75a25012bc9691a",
+      "rgba_sha256": "0ef83f483c844ff0a2c2fe14f5df9c3fbafe79fd4fb366504dc2d1b74ae34c74",
+      "consumed_index_bytes": 12
+    }
+  ],
+  "CLIMAX.SCN": [
+    {
+      "index": 0,
+      "width": 1600,
+      "height": 200,
+      "indexed_sha256": "8fb0417c424cd829f1533ad8a40fbbe9bfa4a29ba42704cb64ff1e70c1a0b2c7",
+      "rgba_sha256": "262173dd9944d6cdea2999ebeb085731bfa2780de21c60b7f49fe416f368637a",
+      "consumed_index_bytes": 40000
+    },
+    {
+      "index": 1,
+      "width": 48,
+      "height": 77,
+      "indexed_sha256": "4b1e5dba310c0c5dba06c3c7b95cd091434a786f541be2e6271a8edd038e59f0",
+      "rgba_sha256": "bb31fc3b821ce3f4e9e1a422191c4980c4a4de9f7047d2cc23f9e7964440299f",
+      "consumed_index_bytes": 480
+    },
+    {
+      "index": 2,
+      "width": 48,
+      "height": 77,
+      "indexed_sha256": "24ee89bbdc29d5450426f104efff6802be105a50a70f0d61e08933cf4ce67b78",
+      "rgba_sha256": "9c727720cd7edfab44b575d6acda35c75f36bd09dbd3bc337850389292626b89",
+      "consumed_index_bytes": 480
+    }
+  ]
+}

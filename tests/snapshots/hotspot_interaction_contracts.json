@@ -1,0 +1,204 @@
+{
+  "BAR.SCN": {
+    "scripts_traced": 22,
+    "scripts_with_hotspot_events": 11,
+    "hotspot_event_count": 11,
+    "hotspot_polygon_count": 22,
+    "hotspot_polygon_histogram": {
+      "EXIT": 2,
+      "TAG": 20
+    },
+    "hotspot_with_tagtext_count": 22,
+    "hotspot_with_id_count": 22,
+    "hotspot_bounds": {
+      "min_x": 0,
+      "max_x": 570,
+      "min_y": 5,
+      "max_y": 160
+    },
+    "hotspot_libcall_histogram": {
+      "KILLTAG": 10,
+      "SETTAG": 1
+    },
+    "hotspot_source_histogram": {
+      "actor.script": 11
+    },
+    "hotspot_transition_histogram": {
+      "KILLTAG->KILLTAG": 8,
+      "KILLTAG->SETTAG": 1,
+      "SETTAG->KILLTAG": 1
+    },
+    "hotspot_to_dispatch_transition_histogram": {
+      "KILLTAG->ININVENTORY": 1,
+      "KILLTAG->PLAY": 1,
+      "SETTAG->PLAY": 1
+    },
+    "stack_depth_min": 1,
+    "stack_depth_max": 7,
+    "max_path_depth_at_hotspot_event": 0,
+    "max_paths_started_for_hotspot_scripts": 2,
+    "hotspot_sequence_head": [
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "SETTAG",
+      "KILLTAG",
+      "KILLTAG"
+    ],
+    "hotspot_sequence_head_sha256": "9ba4a794eb83db2bcbee8448416f5ff67ed896551585d62ba6a9f66a9cae1d7f"
+  },
+  "CLIMAX.SCN": {
+    "scripts_traced": 15,
+    "scripts_with_hotspot_events": 1,
+    "hotspot_event_count": 68,
+    "hotspot_polygon_count": 0,
+    "hotspot_polygon_histogram": {},
+    "hotspot_with_tagtext_count": 0,
+    "hotspot_with_id_count": 0,
+    "hotspot_bounds": {
+      "min_x": null,
+      "max_x": null,
+      "min_y": null,
+      "max_y": null
+    },
+    "hotspot_libcall_histogram": {
+      "TALK": 40,
+      "TALKAT": 28
+    },
+    "hotspot_source_histogram": {
+      "entrance.script": 68
+    },
+    "hotspot_transition_histogram": {
+      "TALK->TALK": 26,
+      "TALK->TALKAT": 14,
+      "TALKAT->TALK": 13,
+      "TALKAT->TALKAT": 14
+    },
+    "hotspot_to_dispatch_transition_histogram": {
+      "TALK->PLAY": 8,
+      "TALK->TALK": 9,
+      "TALKAT->PLAY": 13,
+      "TALKAT->TALK": 1,
+      "TALKAT->TALKAT": 10
+    },
+    "stack_depth_min": 18,
+    "stack_depth_max": 36,
+    "max_path_depth_at_hotspot_event": 0,
+    "max_paths_started_for_hotspot_scripts": 1,
+    "hotspot_sequence_head": [
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALKAT",
+      "TALK",
+      "TALKAT",
+      "TALKAT",
+      "TALKAT",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALKAT"
+    ],
+    "hotspot_sequence_head_sha256": "2542d58ac4665a6e50cb2e3299b815a0113b296f37940cd3e706291889bd4bf9"
+  },
+  "FINALE.SCN": {
+    "scripts_traced": 17,
+    "scripts_with_hotspot_events": 4,
+    "hotspot_event_count": 27,
+    "hotspot_polygon_count": 11,
+    "hotspot_polygon_histogram": {
+      "EXIT": 1,
+      "TAG": 10
+    },
+    "hotspot_with_tagtext_count": 11,
+    "hotspot_with_id_count": 11,
+    "hotspot_bounds": {
+      "min_x": 0,
+      "max_x": 960,
+      "min_y": 0,
+      "max_y": 203
+    },
+    "hotspot_libcall_histogram": {
+      "KILLTAG": 4,
+      "SETTAG": 9,
+      "TAGACTOR": 1,
+      "TALK": 13
+    },
+    "hotspot_source_histogram": {
+      "actor.script": 1,
+      "entrance.script": 26
+    },
+    "hotspot_transition_histogram": {
+      "KILLTAG->KILLTAG": 2,
+      "KILLTAG->SETTAG": 1,
+      "KILLTAG->TALK": 1,
+      "SETTAG->KILLTAG": 1,
+      "SETTAG->SETTAG": 7,
+      "SETTAG->TALK": 1,
+      "TAGACTOR->SETTAG": 1,
+      "TALK->TAGACTOR": 1,
+      "TALK->TALK": 11
+    },
+    "hotspot_to_dispatch_transition_histogram": {
+      "SETTAG->PLAY": 1,
+      "TALK->TALK": 2
+    },
+    "stack_depth_min": 1,
+    "stack_depth_max": 34,
+    "max_path_depth_at_hotspot_event": 0,
+    "max_paths_started_for_hotspot_scripts": 2,
+    "hotspot_sequence_head": [
+      "KILLTAG",
+      "SETTAG",
+      "SETTAG",
+      "SETTAG",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TALK",
+      "TAGACTOR",
+      "SETTAG",
+      "SETTAG",
+      "SETTAG",
+      "SETTAG",
+      "SETTAG",
+      "SETTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "TALK",
+      "TALK"
+    ],
+    "hotspot_sequence_head_sha256": "915eb8d58f9c35f649a776b2fd0688227b4d95db0e310bb93dafa2adda16a186"
+  }
+}

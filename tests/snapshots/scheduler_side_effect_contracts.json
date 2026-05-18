@@ -1,0 +1,532 @@
+{
+  "BAR.SCN": {
+    "scripts_traced": 22,
+    "scripts_with_scheduler_events": 19,
+    "scheduler_event_count": 41,
+    "core_call_counts": {
+      "PLAY": 13,
+      "WAITFRAME": 0,
+      "WAITTIME": 4,
+      "CONTROL": 2,
+      "TALK": 0,
+      "PLAYSAMPLE": 0
+    },
+    "libcall_contracts": {
+      "BACKGROUND": {
+        "count": 1,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "film_args_nonempty_count": 1
+      },
+      "CONTROL": {
+        "count": 2,
+        "stack_depth_min": 13,
+        "stack_depth_max": 15,
+        "film_args_nonempty_count": 0
+      },
+      "EVENT": {
+        "count": 2,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "film_args_nonempty_count": 0
+      },
+      "KILLTAG": {
+        "count": 10,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "film_args_nonempty_count": 0
+      },
+      "OFFSET": {
+        "count": 1,
+        "stack_depth_min": 2,
+        "stack_depth_max": 2,
+        "film_args_nonempty_count": 0
+      },
+      "PLAY": {
+        "count": 13,
+        "stack_depth_min": 6,
+        "stack_depth_max": 35,
+        "film_args_nonempty_count": 13
+      },
+      "PLAYSAMPLE": {
+        "count": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "film_args_nonempty_count": 0
+      },
+      "SETTAG": {
+        "count": 1,
+        "stack_depth_min": 7,
+        "stack_depth_max": 7,
+        "film_args_nonempty_count": 1
+      },
+      "STAND": {
+        "count": 4,
+        "stack_depth_min": 10,
+        "stack_depth_max": 23,
+        "film_args_nonempty_count": 0
+      },
+      "SWALK": {
+        "count": 3,
+        "stack_depth_min": 6,
+        "stack_depth_max": 19,
+        "film_args_nonempty_count": 0
+      },
+      "TALK": {
+        "count": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "film_args_nonempty_count": 0
+      },
+      "WAITFRAME": {
+        "count": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "film_args_nonempty_count": 0
+      },
+      "WAITTIME": {
+        "count": 4,
+        "stack_depth_min": 17,
+        "stack_depth_max": 33,
+        "film_args_nonempty_count": 2
+      }
+    },
+    "transition_histogram": {
+      "BACKGROUND->PLAY": 1,
+      "CONTROL->BACKGROUND": 1,
+      "CONTROL->SWALK": 1,
+      "EVENT->EVENT": 1,
+      "EVENT->KILLTAG": 1,
+      "KILLTAG->KILLTAG": 8,
+      "KILLTAG->OFFSET": 1,
+      "KILLTAG->PLAY": 1,
+      "OFFSET->SWALK": 1,
+      "PLAY->KILLTAG": 1,
+      "PLAY->PLAY": 10,
+      "PLAY->SETTAG": 1,
+      "PLAY->WAITTIME": 1,
+      "SETTAG->PLAY": 1,
+      "STAND->CONTROL": 2,
+      "STAND->STAND": 1,
+      "STAND->WAITTIME": 1,
+      "SWALK->STAND": 3,
+      "WAITTIME->SWALK": 1,
+      "WAITTIME->WAITTIME": 2
+    },
+    "sequence_head": [
+      "EVENT",
+      "EVENT",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "SETTAG",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "KILLTAG",
+      "KILLTAG",
+      "OFFSET",
+      "SWALK",
+      "STAND",
+      "CONTROL",
+      "SWALK",
+      "STAND",
+      "WAITTIME",
+      "WAITTIME",
+      "SWALK",
+      "STAND"
+    ],
+    "sequence_head_sha256": "c51897d2e9a4c7357908203673b3b6df993f38fa2abfa4ce901b70ebf356fd0e"
+  },
+  "CLIMAX.SCN": {
+    "scripts_traced": 15,
+    "scripts_with_scheduler_events": 15,
+    "scheduler_event_count": 257,
+    "core_call_counts": {
+      "PLAY": 57,
+      "WAITFRAME": 35,
+      "WAITTIME": 12,
+      "CONTROL": 0,
+      "TALK": 40,
+      "PLAYSAMPLE": 35
+    },
+    "libcall_contracts": {
+      "BACKGROUND": {
+        "count": 1,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "film_args_nonempty_count": 1
+      },
+      "CONTROL": {
+        "count": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "film_args_nonempty_count": 0
+      },
+      "EVENT": {
+        "count": 2,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "film_args_nonempty_count": 0
+      },
+      "OFFSET": {
+        "count": 36,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "film_args_nonempty_count": 35
+      },
+      "PLAY": {
+        "count": 57,
+        "stack_depth_min": 6,
+        "stack_depth_max": 38,
+        "film_args_nonempty_count": 57
+      },
+      "PLAYSAMPLE": {
+        "count": 35,
+        "stack_depth_min": 2,
+        "stack_depth_max": 34,
+        "film_args_nonempty_count": 14
+      },
+      "SCROLL": {
+        "count": 6,
+        "stack_depth_min": 24,
+        "stack_depth_max": 36,
+        "film_args_nonempty_count": 2
+      },
+      "STAND": {
+        "count": 3,
+        "stack_depth_min": 12,
+        "stack_depth_max": 22,
+        "film_args_nonempty_count": 1
+      },
+      "SWALK": {
+        "count": 2,
+        "stack_depth_min": 8,
+        "stack_depth_max": 18,
+        "film_args_nonempty_count": 0
+      },
+      "TALK": {
+        "count": 40,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "film_args_nonempty_count": 39
+      },
+      "TALKAT": {
+        "count": 28,
+        "stack_depth_min": 20,
+        "stack_depth_max": 36,
+        "film_args_nonempty_count": 20
+      },
+      "WAITFRAME": {
+        "count": 35,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "film_args_nonempty_count": 13
+      },
+      "WAITTIME": {
+        "count": 12,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "film_args_nonempty_count": 8
+      }
+    },
+    "transition_histogram": {
+      "EVENT->EVENT": 1,
+      "EVENT->PLAY": 1,
+      "OFFSET->OFFSET": 1,
+      "OFFSET->PLAY": 9,
+      "OFFSET->TALK": 23,
+      "OFFSET->WAITTIME": 3,
+      "PLAY->OFFSET": 13,
+      "PLAY->PLAY": 15,
+      "PLAY->PLAYSAMPLE": 3,
+      "PLAY->SCROLL": 1,
+      "PLAY->STAND": 1,
+      "PLAY->TALK": 2,
+      "PLAY->TALKAT": 15,
+      "PLAY->WAITFRAME": 3,
+      "PLAY->WAITTIME": 4,
+      "PLAYSAMPLE->PLAY": 1,
+      "PLAYSAMPLE->PLAYSAMPLE": 2,
+      "PLAYSAMPLE->SCROLL": 1,
+      "PLAYSAMPLE->SWALK": 1,
+      "PLAYSAMPLE->WAITFRAME": 29,
+      "PLAYSAMPLE->WAITTIME": 1,
+      "SCROLL->PLAY": 1,
+      "SCROLL->PLAYSAMPLE": 1,
+      "SCROLL->TALK": 2,
+      "SCROLL->WAITFRAME": 2,
+      "STAND->OFFSET": 1,
+      "STAND->SWALK": 1,
+      "STAND->WAITTIME": 1,
+      "SWALK->STAND": 2,
+      "TALK->OFFSET": 20,
+      "TALK->PLAY": 8,
+      "TALK->SCROLL": 2,
+      "TALK->TALK": 9,
+      "TALK->WAITTIME": 1,
+      "TALKAT->PLAY": 13,
+      "TALKAT->PLAYSAMPLE": 1,
+      "TALKAT->TALK": 1,
+      "TALKAT->TALKAT": 11,
+      "TALKAT->WAITTIME": 2,
+      "WAITFRAME->OFFSET": 1,
+      "WAITFRAME->PLAY": 4,
+      "WAITFRAME->PLAYSAMPLE": 28,
+      "WAITFRAME->SCROLL": 1,
+      "WAITFRAME->WAITFRAME": 1,
+      "WAITTIME->BACKGROUND": 1,
+      "WAITTIME->PLAY": 5,
+      "WAITTIME->SCROLL": 1,
+      "WAITTIME->TALK": 3,
+      "WAITTIME->TALKAT": 2
+    },
+    "sequence_head": [
+      "EVENT",
+      "EVENT",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAYSAMPLE",
+      "SWALK",
+      "STAND",
+      "SWALK",
+      "STAND",
+      "WAITTIME",
+      "TALK",
+      "SCROLL",
+      "TALK",
+      "SCROLL",
+      "TALK",
+      "TALK",
+      "OFFSET",
+      "TALK",
+      "OFFSET",
+      "TALK",
+      "OFFSET"
+    ],
+    "sequence_head_sha256": "0b3a053bbc60713c1238528b288815977c93a3990a0f94f731589a45f0932857"
+  },
+  "FINALE.SCN": {
+    "scripts_traced": 17,
+    "scripts_with_scheduler_events": 17,
+    "scheduler_event_count": 143,
+    "core_call_counts": {
+      "PLAY": 27,
+      "WAITFRAME": 25,
+      "WAITTIME": 12,
+      "CONTROL": 2,
+      "TALK": 13,
+      "PLAYSAMPLE": 21
+    },
+    "libcall_contracts": {
+      "BACKGROUND": {
+        "count": 1,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "film_args_nonempty_count": 1
+      },
+      "CONTROL": {
+        "count": 2,
+        "stack_depth_min": 24,
+        "stack_depth_max": 25,
+        "film_args_nonempty_count": 0
+      },
+      "EVENT": {
+        "count": 2,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "film_args_nonempty_count": 0
+      },
+      "KILLTAG": {
+        "count": 4,
+        "stack_depth_min": 1,
+        "stack_depth_max": 33,
+        "film_args_nonempty_count": 0
+      },
+      "OFFSET": {
+        "count": 11,
+        "stack_depth_min": 18,
+        "stack_depth_max": 32,
+        "film_args_nonempty_count": 9
+      },
+      "PLAY": {
+        "count": 27,
+        "stack_depth_min": 6,
+        "stack_depth_max": 38,
+        "film_args_nonempty_count": 27
+      },
+      "PLAYSAMPLE": {
+        "count": 21,
+        "stack_depth_min": 15,
+        "stack_depth_max": 34,
+        "film_args_nonempty_count": 16
+      },
+      "SCROLL": {
+        "count": 1,
+        "stack_depth_min": 29,
+        "stack_depth_max": 29,
+        "film_args_nonempty_count": 1
+      },
+      "SETTAG": {
+        "count": 9,
+        "stack_depth_min": 17,
+        "stack_depth_max": 30,
+        "film_args_nonempty_count": 1
+      },
+      "STAND": {
+        "count": 7,
+        "stack_depth_min": 7,
+        "stack_depth_max": 25,
+        "film_args_nonempty_count": 1
+      },
+      "STOPSAMPLE": {
+        "count": 1,
+        "stack_depth_min": 16,
+        "stack_depth_max": 16,
+        "film_args_nonempty_count": 0
+      },
+      "SWALK": {
+        "count": 5,
+        "stack_depth_min": 9,
+        "stack_depth_max": 28,
+        "film_args_nonempty_count": 1
+      },
+      "TAGACTOR": {
+        "count": 1,
+        "stack_depth_min": 21,
+        "stack_depth_max": 21,
+        "film_args_nonempty_count": 1
+      },
+      "TALK": {
+        "count": 13,
+        "stack_depth_min": 15,
+        "stack_depth_max": 34,
+        "film_args_nonempty_count": 13
+      },
+      "WAITFRAME": {
+        "count": 25,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "film_args_nonempty_count": 13
+      },
+      "WAITTIME": {
+        "count": 12,
+        "stack_depth_min": 13,
+        "stack_depth_max": 34,
+        "film_args_nonempty_count": 7
+      },
+      "WALK": {
+        "count": 1,
+        "stack_depth_min": 22,
+        "stack_depth_max": 22,
+        "film_args_nonempty_count": 1
+      }
+    },
+    "transition_histogram": {
+      "CONTROL->SETTAG": 1,
+      "CONTROL->WAITTIME": 1,
+      "EVENT->EVENT": 1,
+      "EVENT->PLAY": 1,
+      "KILLTAG->KILLTAG": 2,
+      "KILLTAG->SWALK": 1,
+      "KILLTAG->WAITTIME": 1,
+      "OFFSET->PLAY": 2,
+      "OFFSET->PLAYSAMPLE": 1,
+      "OFFSET->TAGACTOR": 1,
+      "OFFSET->TALK": 3,
+      "OFFSET->WAITFRAME": 4,
+      "PLAY->KILLTAG": 1,
+      "PLAY->OFFSET": 1,
+      "PLAY->PLAY": 15,
+      "PLAY->PLAYSAMPLE": 5,
+      "PLAY->SCROLL": 1,
+      "PLAY->SETTAG": 1,
+      "PLAY->TALK": 1,
+      "PLAY->WAITFRAME": 1,
+      "PLAY->WAITTIME": 1,
+      "PLAYSAMPLE->STAND": 1,
+      "PLAYSAMPLE->SWALK": 1,
+      "PLAYSAMPLE->WAITFRAME": 19,
+      "SCROLL->TALK": 1,
+      "SETTAG->KILLTAG": 1,
+      "SETTAG->PLAY": 2,
+      "SETTAG->SETTAG": 6,
+      "STAND->CONTROL": 1,
+      "STAND->PLAY": 1,
+      "STAND->PLAYSAMPLE": 1,
+      "STAND->SETTAG": 1,
+      "STAND->STAND": 1,
+      "STAND->SWALK": 1,
+      "STAND->WAITTIME": 1,
+      "STOPSAMPLE->WAITFRAME": 1,
+      "SWALK->BACKGROUND": 1,
+      "SWALK->STAND": 4,
+      "TAGACTOR->CONTROL": 1,
+      "TALK->OFFSET": 5,
+      "TALK->TALK": 2,
+      "TALK->WAITTIME": 5,
+      "TALK->WALK": 1,
+      "WAITFRAME->OFFSET": 4,
+      "WAITFRAME->PLAY": 6,
+      "WAITFRAME->PLAYSAMPLE": 14,
+      "WAITFRAME->STOPSAMPLE": 1,
+      "WAITTIME->OFFSET": 1,
+      "WAITTIME->STAND": 1,
+      "WAITTIME->SWALK": 1,
+      "WAITTIME->TALK": 6,
+      "WAITTIME->WAITTIME": 3,
+      "WALK->SWALK": 1
+    },
+    "sequence_head": [
+      "EVENT",
+      "EVENT",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "KILLTAG",
+      "SWALK",
+      "STAND",
+      "PLAYSAMPLE",
+      "SWALK",
+      "STAND",
+      "SETTAG",
+      "SETTAG",
+      "PLAY",
+      "SETTAG",
+      "PLAY",
+      "SCROLL",
+      "TALK",
+      "TALK",
+      "OFFSET",
+      "PLAYSAMPLE",
+      "STAND",
+      "PLAY"
+    ],
+    "sequence_head_sha256": "282687cb590d1810993bfa104c48e33c0d4b39a6fddd0d62419a7489b2a681f4"
+  }
+}
