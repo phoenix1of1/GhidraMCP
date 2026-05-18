@@ -1,0 +1,170 @@
+{
+  "BAR.SCN": {
+    "scripts_traced": 22,
+    "scripts_with_timing_events": 4,
+    "timing_event_count": 6,
+    "scheduler_event_count": 41,
+    "wait_density_per_million": 146341,
+    "timing_wait_histogram": {
+      "EVENT": 2,
+      "WAITTIME": 4
+    },
+    "timing_wait_transition_histogram": {
+      "EVENT->EVENT": 1,
+      "EVENT->WAITTIME": 1,
+      "WAITTIME->WAITTIME": 3
+    },
+    "dialogue_to_wait_transition_histogram": {},
+    "play_to_wait_transition_histogram": {
+      "PLAY->WAITTIME": 1,
+      "STAND->WAITTIME": 1
+    },
+    "wait_to_event_transition_histogram": {},
+    "stack_depth_min": 0,
+    "stack_depth_max": 33,
+    "max_path_depth_at_timing_event": 0,
+    "max_paths_started_for_timing_scripts": 3,
+    "timing_sequence_head": [
+      "EVENT",
+      "EVENT",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITTIME"
+    ],
+    "timing_sequence_head_sha256": "078db38be77cbe913f49558c89b333f8ef2a7652515a29ca99e09089dba47fe4"
+  },
+  "CLIMAX.SCN": {
+    "scripts_traced": 15,
+    "scripts_with_timing_events": 3,
+    "timing_event_count": 49,
+    "scheduler_event_count": 257,
+    "wait_density_per_million": 190661,
+    "timing_wait_histogram": {
+      "EVENT": 2,
+      "WAITFRAME": 35,
+      "WAITTIME": 12
+    },
+    "timing_wait_transition_histogram": {
+      "EVENT->EVENT": 1,
+      "EVENT->WAITTIME": 1,
+      "WAITFRAME->WAITFRAME": 32,
+      "WAITFRAME->WAITTIME": 3,
+      "WAITTIME->WAITFRAME": 3,
+      "WAITTIME->WAITTIME": 8
+    },
+    "dialogue_to_wait_transition_histogram": {
+      "TALK->WAITTIME": 1,
+      "TALKAT->WAITTIME": 2
+    },
+    "play_to_wait_transition_histogram": {
+      "PLAY->WAITFRAME": 3,
+      "PLAY->WAITTIME": 4,
+      "STAND->WAITTIME": 1
+    },
+    "wait_to_event_transition_histogram": {},
+    "stack_depth_min": 0,
+    "stack_depth_max": 34,
+    "max_path_depth_at_timing_event": 0,
+    "max_paths_started_for_timing_scripts": 2,
+    "timing_sequence_head": [
+      "EVENT",
+      "EVENT",
+      "WAITTIME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME"
+    ],
+    "timing_sequence_head_sha256": "189233efd4632c2c0d99ad810ef0e861a93a6e8cd32ce6558918fd774fd8b678"
+  },
+  "FINALE.SCN": {
+    "scripts_traced": 17,
+    "scripts_with_timing_events": 5,
+    "timing_event_count": 39,
+    "scheduler_event_count": 143,
+    "wait_density_per_million": 272727,
+    "timing_wait_histogram": {
+      "EVENT": 2,
+      "WAITFRAME": 25,
+      "WAITTIME": 12
+    },
+    "timing_wait_transition_histogram": {
+      "EVENT->EVENT": 1,
+      "EVENT->WAITFRAME": 1,
+      "WAITFRAME->WAITFRAME": 23,
+      "WAITFRAME->WAITTIME": 2,
+      "WAITTIME->WAITFRAME": 1,
+      "WAITTIME->WAITTIME": 10
+    },
+    "dialogue_to_wait_transition_histogram": {
+      "TALK->WAITTIME": 5
+    },
+    "play_to_wait_transition_histogram": {
+      "PLAY->WAITFRAME": 1,
+      "PLAY->WAITTIME": 1,
+      "STAND->WAITTIME": 1
+    },
+    "wait_to_event_transition_histogram": {},
+    "stack_depth_min": 0,
+    "stack_depth_max": 34,
+    "max_path_depth_at_timing_event": 0,
+    "max_paths_started_for_timing_scripts": 2,
+    "timing_sequence_head": [
+      "EVENT",
+      "EVENT",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITTIME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME",
+      "WAITFRAME"
+    ],
+    "timing_sequence_head_sha256": "5fae78a706e190dfd8e7d931c3950794a7e59271849e0467ce7946bd8afa9d00"
+  }
+}
