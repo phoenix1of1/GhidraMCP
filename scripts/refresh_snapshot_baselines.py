@@ -50,6 +50,7 @@ HOTSPOT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 DIALOGUE_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 TIMING_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 CFG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+LIBSIG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -128,6 +129,10 @@ TIMING_MAX_PATHS = 16
 CFG_EVENT_NAMES = {"jump", "conditional_jump"}
 CFG_MAX_STEPS = 1200
 CFG_MAX_PATHS = 16
+LIBSIG_MAX_STEPS = 1200
+LIBSIG_MAX_PATHS = 16
+LIBSIG_MAX_CALLS = 30
+LIBSIG_ARG_SHAPE_WINDOW = 6
 
 
 def _load_module(name: str, module_path: Path):
@@ -396,6 +401,30 @@ def _event_path_depth(event: dict) -> int:
 
 def _state_path_depth(state: dict) -> int:
     return _path_depth(state.get("path"))
+
+
+def _stack_token_kind(token: str) -> str:
+    token = str(token or "")
+    if token.startswith("imm:"):
+        return "imm"
+    if token.startswith("global:"):
+        return "global"
+    if token.startswith("local:"):
+        return "local"
+    if token.startswith("film:"):
+        return "film"
+    if token.startswith("cdfilm:"):
+        return "cdfilm"
+    if token.startswith("underflow"):
+        return "underflow"
+    return "expr"
+
+
+def _arg_shape(stack_top: list, window: int = LIBSIG_ARG_SHAPE_WINDOW) -> str:
+    if not stack_top:
+        return "empty"
+    suffix = stack_top[-window:]
+    return ">".join(_stack_token_kind(token) for token in suffix)
 
 
 def _build_branch_convergence_contract_snapshots(vm_mod, dataset_dir: Path) -> dict:
@@ -986,6 +1015,118 @@ def _build_pcode_cfg_invariant_snapshots(vm_mod, dataset_dir: Path) -> dict:
     return out
 
 
+def _build_pcode_libcall_signature_contract_snapshots(vm_mod, dataset_dir: Path) -> dict:
+    idx_rows = vm_mod.read_index(dataset_dir / "INDEX")
+    idx_by_name = {row["filename"].lower(): row["index"] for row in idx_rows}
+
+    out = {}
+    for scene_name in LIBSIG_CONTRACT_SCENES:
+        scene_path = dataset_dir / scene_name
+        data = scene_path.read_bytes()
+        scripts = vm_mod.collect_script_handles(scene_path, idx_by_name)
+        scripts = sorted(scripts, key=lambda s: (s.get("source", ""), s.get("handle", 0)))[:60]
+
+        signatures: dict[str, dict] = {}
+        predecessor_hist = collections.Counter()
+        libcall_sequence: list[str] = []
+
+        scripts_with_libcalls = 0
+        max_path_depth_at_libcall = 0
+        max_paths_started_for_libcall_scripts = 0
+
+        for script in scripts:
+            handle = script["handle"]
+            file_index, offset = vm_mod.split_handle(handle)
+            if file_index != idx_by_name.get(scene_name.lower(), -1) or offset >= len(data):
+                continue
+
+            trace = vm_mod.execute_script(data, offset, max_steps=LIBSIG_MAX_STEPS, max_paths=LIBSIG_MAX_PATHS)
+            local_sequence: list[str] = []
+
+            for event in trace.get("events", []):
+                if event.get("event") != "libcall":
+                    continue
+
+                name = event.get("libcall_name")
+                if not name:
+                    continue
+
+                local_sequence.append(name)
+                libcall_sequence.append(name)
+                max_path_depth_at_libcall = max(max_path_depth_at_libcall, _event_path_depth(event))
+
+                signature = signatures.setdefault(
+                    name,
+                    {
+                        "occurrence_count": 0,
+                        "stack_depth_min": None,
+                        "stack_depth_max": 0,
+                        "observed_arg_count_histogram": collections.Counter(),
+                        "arg_shape_histogram": collections.Counter(),
+                    },
+                )
+
+                signature["occurrence_count"] += 1
+                depth = int(event.get("stack_depth") or 0)
+                signature["stack_depth_min"] = (
+                    depth if signature["stack_depth_min"] is None else min(signature["stack_depth_min"], depth)
+                )
+                signature["stack_depth_max"] = max(signature["stack_depth_max"], depth)
+
+                stack_top = event.get("stack_top") or []
+                arg_count_candidate = len(stack_top)
+                signature["observed_arg_count_histogram"][str(arg_count_candidate)] += 1
+                signature["arg_shape_histogram"][_arg_shape(stack_top)] += 1
+
+            if local_sequence:
+                scripts_with_libcalls += 1
+                max_paths_started_for_libcall_scripts = max(
+                    max_paths_started_for_libcall_scripts,
+                    int(trace.get("paths_started") or 1),
+                )
+
+            for i in range(1, len(local_sequence)):
+                predecessor_hist[f"{local_sequence[i - 1]}->{local_sequence[i]}"] += 1
+
+        ranked_calls = sorted(
+            signatures.keys(),
+            key=lambda name: (-signatures[name]["occurrence_count"], name),
+        )[:LIBSIG_MAX_CALLS]
+
+        libcall_contracts = {}
+        for name in ranked_calls:
+            signature = signatures[name]
+            top_shapes = [shape for shape, _ in signature["arg_shape_histogram"].most_common(6)]
+            libcall_contracts[name] = {
+                "occurrence_count": signature["occurrence_count"],
+                "stack_depth_min": 0 if signature["stack_depth_min"] is None else signature["stack_depth_min"],
+                "stack_depth_max": signature["stack_depth_max"],
+                "observed_arg_count_histogram": {
+                    key: signature["observed_arg_count_histogram"][key]
+                    for key in sorted(signature["observed_arg_count_histogram"].keys(), key=int)
+                },
+                "top_arg_shapes": top_shapes,
+                "top_arg_shapes_sha256": hashlib.sha256("|".join(top_shapes).encode("utf-8")).hexdigest(),
+            }
+
+        sequence_head = libcall_sequence[:30]
+        out[scene_name] = {
+            "scripts_traced": len(scripts),
+            "scripts_with_libcalls": scripts_with_libcalls,
+            "libcall_event_count": len(libcall_sequence),
+            "unique_libcall_count": len(signatures),
+            "max_path_depth_at_libcall": max_path_depth_at_libcall,
+            "max_paths_started_for_libcall_scripts": max_paths_started_for_libcall_scripts,
+            "libcalls_ranked": ranked_calls,
+            "libcall_signatures": {name: libcall_contracts[name] for name in sorted(libcall_contracts.keys())},
+            "libcall_predecessor_transition_histogram": dict(sorted(predecessor_hist.items())),
+            "libcall_sequence_head": sequence_head,
+            "libcall_sequence_head_sha256": hashlib.sha256("|".join(sequence_head).encode("utf-8")).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -1213,7 +1354,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -1227,7 +1368,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -1244,6 +1385,7 @@ def main() -> int:
         "dialogue": repo_root / "tests" / "snapshots" / "dialogue_topic_routing_contracts.json",
         "timing": repo_root / "tests" / "snapshots" / "timing_wait_semantics_contracts.json",
         "cfg": repo_root / "tests" / "snapshots" / "pcode_cfg_invariant_snapshots.json",
+        "libsig": repo_root / "tests" / "snapshots" / "pcode_libcall_signature_contracts.json",
     }
 
     if args.check:
@@ -1360,6 +1502,15 @@ def main() -> int:
         else:
             _write_json(targets["cfg"], payload)
             print("- updated pcode_cfg_invariant_snapshots.json")
+
+    if "libsig" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        payload = _build_pcode_libcall_signature_contract_snapshots(vm_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["libsig"], payload) and ok
+        else:
+            _write_json(targets["libsig"], payload)
+            print("- updated pcode_libcall_signature_contracts.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")

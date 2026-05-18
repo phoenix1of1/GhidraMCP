@@ -1,0 +1,1111 @@
+{
+  "BAR.SCN": {
+    "scripts_traced": 22,
+    "scripts_with_libcalls": 22,
+    "libcall_event_count": 52,
+    "unique_libcall_count": 16,
+    "max_path_depth_at_libcall": 0,
+    "max_paths_started_for_libcall_scripts": 3,
+    "libcalls_ranked": [
+      "PLAY",
+      "KILLTAG",
+      "STAND",
+      "WAITTIME",
+      "ININVENTORY",
+      "SWALK",
+      "ACTORXPOS",
+      "AUXSCALE",
+      "CONTROL",
+      "EVENT",
+      "INVENTORY",
+      "BACKGROUND",
+      "OFFSET",
+      "PLAYMIDI",
+      "SCREENXPOS",
+      "SETTAG"
+    ],
+    "libcall_signatures": {
+      "ACTORXPOS": {
+        "occurrence_count": 2,
+        "stack_depth_min": 26,
+        "stack_depth_max": 26,
+        "observed_arg_count_histogram": {
+          "10": 2
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "AUXSCALE": {
+        "occurrence_count": 2,
+        "stack_depth_min": 15,
+        "stack_depth_max": 29,
+        "observed_arg_count_histogram": {
+          "10": 2
+        },
+        "top_arg_shapes": [
+          "film>film>film>film>film>film"
+        ],
+        "top_arg_shapes_sha256": "aeacb7d18f456b392c98351c8b38ce914b4330a3556516261d1afa650dee8485"
+      },
+      "BACKGROUND": {
+        "occurrence_count": 1,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "observed_arg_count_histogram": {
+          "1": 1
+        },
+        "top_arg_shapes": [
+          "film"
+        ],
+        "top_arg_shapes_sha256": "d0607f7ad2628b2af9158dfba06ce87166e66b15bf68f8f358f9aa27ccb7c321"
+      },
+      "CONTROL": {
+        "occurrence_count": 2,
+        "stack_depth_min": 13,
+        "stack_depth_max": 15,
+        "observed_arg_count_histogram": {
+          "10": 2
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "EVENT": {
+        "occurrence_count": 2,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "observed_arg_count_histogram": {
+          "0": 2
+        },
+        "top_arg_shapes": [
+          "empty"
+        ],
+        "top_arg_shapes_sha256": "2e1cfa82b035c26cbbbdae632cea070514eb8b773f616aaeaf668e2f0be8f10d"
+      },
+      "ININVENTORY": {
+        "occurrence_count": 3,
+        "stack_depth_min": 2,
+        "stack_depth_max": 2,
+        "observed_arg_count_histogram": {
+          "2": 3
+        },
+        "top_arg_shapes": [
+          "global>imm"
+        ],
+        "top_arg_shapes_sha256": "310d102acd672e2331f1d0897633930dff6ec90d188270336a6ee2b68595ae5c"
+      },
+      "INVENTORY": {
+        "occurrence_count": 2,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "observed_arg_count_histogram": {
+          "1": 2
+        },
+        "top_arg_shapes": [
+          "imm"
+        ],
+        "top_arg_shapes_sha256": "ddc575987968a30fe433322900287733913d2817fcaac70d766f59fdf3c79d97"
+      },
+      "KILLTAG": {
+        "occurrence_count": 10,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "observed_arg_count_histogram": {
+          "1": 10
+        },
+        "top_arg_shapes": [
+          "imm"
+        ],
+        "top_arg_shapes_sha256": "ddc575987968a30fe433322900287733913d2817fcaac70d766f59fdf3c79d97"
+      },
+      "OFFSET": {
+        "occurrence_count": 1,
+        "stack_depth_min": 2,
+        "stack_depth_max": 2,
+        "observed_arg_count_histogram": {
+          "2": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm"
+        ],
+        "top_arg_shapes_sha256": "d0bd23d4cb8a47473e8e15c5092059f04049f199a8d43b88cc7e9965213a22ad"
+      },
+      "PLAY": {
+        "occurrence_count": 13,
+        "stack_depth_min": 6,
+        "stack_depth_max": 35,
+        "observed_arg_count_histogram": {
+          "6": 4,
+          "10": 9
+        },
+        "top_arg_shapes": [
+          "film>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "330c3bd1afe95fb739a6228e308601d7446566bf4b6c7e58dca86a1bed7ba253"
+      },
+      "PLAYMIDI": {
+        "occurrence_count": 1,
+        "stack_depth_min": 31,
+        "stack_depth_max": 31,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "SCREENXPOS": {
+        "occurrence_count": 1,
+        "stack_depth_min": 16,
+        "stack_depth_max": 16,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "SETTAG": {
+        "occurrence_count": 1,
+        "stack_depth_min": 7,
+        "stack_depth_max": 7,
+        "observed_arg_count_histogram": {
+          "7": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "STAND": {
+        "occurrence_count": 4,
+        "stack_depth_min": 10,
+        "stack_depth_max": 23,
+        "observed_arg_count_histogram": {
+          "10": 4
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "SWALK": {
+        "occurrence_count": 3,
+        "stack_depth_min": 6,
+        "stack_depth_max": 19,
+        "observed_arg_count_histogram": {
+          "6": 1,
+          "8": 1,
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "WAITTIME": {
+        "occurrence_count": 4,
+        "stack_depth_min": 17,
+        "stack_depth_max": 33,
+        "observed_arg_count_histogram": {
+          "10": 4
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      }
+    },
+    "libcall_predecessor_transition_histogram": {
+      "ACTORXPOS->ACTORXPOS": 1,
+      "ACTORXPOS->WAITTIME": 1,
+      "AUXSCALE->AUXSCALE": 1,
+      "AUXSCALE->PLAY": 1,
+      "BACKGROUND->AUXSCALE": 1,
+      "CONTROL->SWALK": 1,
+      "EVENT->INVENTORY": 2,
+      "OFFSET->SWALK": 1,
+      "PLAY->PLAY": 8,
+      "PLAY->PLAYMIDI": 1,
+      "PLAY->SETTAG": 1,
+      "PLAYMIDI->WAITTIME": 1,
+      "SCREENXPOS->WAITTIME": 1,
+      "STAND->CONTROL": 2,
+      "STAND->STAND": 1,
+      "STAND->WAITTIME": 1,
+      "SWALK->STAND": 3,
+      "WAITTIME->ACTORXPOS": 1,
+      "WAITTIME->SCREENXPOS": 1
+    },
+    "libcall_sequence_head": [
+      "EVENT",
+      "INVENTORY",
+      "EVENT",
+      "INVENTORY",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "KILLTAG",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "SETTAG",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "KILLTAG",
+      "KILLTAG",
+      "ININVENTORY",
+      "ININVENTORY",
+      "ININVENTORY",
+      "OFFSET",
+      "SWALK",
+      "STAND",
+      "CONTROL",
+      "SWALK"
+    ],
+    "libcall_sequence_head_sha256": "c4fdf3e66a3c815bbedaac076d087aa14d7e18fb834c9c557944a58ce31b6690"
+  },
+  "CLIMAX.SCN": {
+    "scripts_traced": 15,
+    "scripts_with_libcalls": 15,
+    "libcall_event_count": 264,
+    "unique_libcall_count": 16,
+    "max_path_depth_at_libcall": 0,
+    "max_paths_started_for_libcall_scripts": 2,
+    "libcalls_ranked": [
+      "PLAY",
+      "TALK",
+      "OFFSET",
+      "PLAYSAMPLE",
+      "WAITFRAME",
+      "TALKAT",
+      "WAITTIME",
+      "SCROLL",
+      "STAND",
+      "EVENT",
+      "INVENTORY",
+      "NEWSCENE",
+      "PLAYMIDI",
+      "SWALK",
+      "BACKGROUND",
+      "SAVESCENE"
+    ],
+    "libcall_signatures": {
+      "BACKGROUND": {
+        "occurrence_count": 1,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "observed_arg_count_histogram": {
+          "1": 1
+        },
+        "top_arg_shapes": [
+          "film"
+        ],
+        "top_arg_shapes_sha256": "d0607f7ad2628b2af9158dfba06ce87166e66b15bf68f8f358f9aa27ccb7c321"
+      },
+      "EVENT": {
+        "occurrence_count": 2,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "observed_arg_count_histogram": {
+          "0": 2
+        },
+        "top_arg_shapes": [
+          "empty"
+        ],
+        "top_arg_shapes_sha256": "2e1cfa82b035c26cbbbdae632cea070514eb8b773f616aaeaf668e2f0be8f10d"
+      },
+      "INVENTORY": {
+        "occurrence_count": 2,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "observed_arg_count_histogram": {
+          "1": 2
+        },
+        "top_arg_shapes": [
+          "imm"
+        ],
+        "top_arg_shapes_sha256": "ddc575987968a30fe433322900287733913d2817fcaac70d766f59fdf3c79d97"
+      },
+      "NEWSCENE": {
+        "occurrence_count": 2,
+        "stack_depth_min": 19,
+        "stack_depth_max": 23,
+        "observed_arg_count_histogram": {
+          "10": 2
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "OFFSET": {
+        "occurrence_count": 36,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "observed_arg_count_histogram": {
+          "10": 36
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm",
+          "imm>imm>film>imm>imm>imm",
+          "film>imm>film>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "0ce359691f505d84a289c01261e47e2a9687227d287e9c9f80bddc3ca1baa945"
+      },
+      "PLAY": {
+        "occurrence_count": 57,
+        "stack_depth_min": 6,
+        "stack_depth_max": 38,
+        "observed_arg_count_histogram": {
+          "6": 11,
+          "10": 46
+        },
+        "top_arg_shapes": [
+          "film>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "330c3bd1afe95fb739a6228e308601d7446566bf4b6c7e58dca86a1bed7ba253"
+      },
+      "PLAYMIDI": {
+        "occurrence_count": 2,
+        "stack_depth_min": 4,
+        "stack_depth_max": 31,
+        "observed_arg_count_histogram": {
+          "4": 1,
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm",
+          "film>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "d28c56494081c688df2f357ecd33ae952b02a4105477abe18b386168b27064d8"
+      },
+      "PLAYSAMPLE": {
+        "occurrence_count": 35,
+        "stack_depth_min": 2,
+        "stack_depth_max": 34,
+        "observed_arg_count_histogram": {
+          "2": 1,
+          "10": 34
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm",
+          "imm>imm"
+        ],
+        "top_arg_shapes_sha256": "8e60b73d18c45970b64b5246cf03444103dc52173e5551f10426d87f5c0dc72c"
+      },
+      "SAVESCENE": {
+        "occurrence_count": 1,
+        "stack_depth_min": 20,
+        "stack_depth_max": 20,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "SCROLL": {
+        "occurrence_count": 6,
+        "stack_depth_min": 24,
+        "stack_depth_max": 36,
+        "observed_arg_count_histogram": {
+          "10": 6
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm",
+          "film>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "9eb957c33044902b7697078d255eda74099b3d4849b139413a093e1e92e3bcb0"
+      },
+      "STAND": {
+        "occurrence_count": 3,
+        "stack_depth_min": 12,
+        "stack_depth_max": 22,
+        "observed_arg_count_histogram": {
+          "10": 3
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "SWALK": {
+        "occurrence_count": 2,
+        "stack_depth_min": 8,
+        "stack_depth_max": 18,
+        "observed_arg_count_histogram": {
+          "8": 1,
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "TALK": {
+        "occurrence_count": 40,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "observed_arg_count_histogram": {
+          "10": 40
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>film>imm",
+          "film>imm>imm>imm>imm>imm",
+          "imm>imm>imm>imm>imm>imm",
+          "imm>imm>film>imm>film>imm",
+          "imm>imm>film>imm>imm>imm",
+          "film>imm>imm>imm>film>imm"
+        ],
+        "top_arg_shapes_sha256": "f9a4d3b0c8d4d02d103c33f9a38d7d55ba42fb2e029ac460a3494211a7fdad46"
+      },
+      "TALKAT": {
+        "occurrence_count": 28,
+        "stack_depth_min": 20,
+        "stack_depth_max": 36,
+        "observed_arg_count_histogram": {
+          "10": 28
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "WAITFRAME": {
+        "occurrence_count": 35,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "observed_arg_count_histogram": {
+          "10": 35
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "WAITTIME": {
+        "occurrence_count": 12,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "observed_arg_count_histogram": {
+          "10": 12
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm",
+          "film>imm>imm>imm>imm>imm",
+          "imm>imm>film>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "14c6f83d649caa5deae5940d23535e53399931bff7b0a5db1411e2cb6d572055"
+      }
+    },
+    "libcall_predecessor_transition_histogram": {
+      "BACKGROUND->PLAYMIDI": 1,
+      "EVENT->INVENTORY": 2,
+      "NEWSCENE->PLAY": 1,
+      "OFFSET->OFFSET": 1,
+      "OFFSET->PLAY": 9,
+      "OFFSET->TALK": 23,
+      "OFFSET->WAITTIME": 3,
+      "PLAY->OFFSET": 13,
+      "PLAY->PLAY": 5,
+      "PLAY->PLAYSAMPLE": 2,
+      "PLAY->SCROLL": 1,
+      "PLAY->STAND": 1,
+      "PLAY->TALK": 2,
+      "PLAY->TALKAT": 15,
+      "PLAY->WAITFRAME": 3,
+      "PLAY->WAITTIME": 4,
+      "PLAYMIDI->TALKAT": 1,
+      "PLAYSAMPLE->PLAY": 1,
+      "PLAYSAMPLE->PLAYSAMPLE": 2,
+      "PLAYSAMPLE->SCROLL": 1,
+      "PLAYSAMPLE->SWALK": 1,
+      "PLAYSAMPLE->WAITFRAME": 29,
+      "PLAYSAMPLE->WAITTIME": 1,
+      "SAVESCENE->NEWSCENE": 1,
+      "SCROLL->PLAY": 1,
+      "SCROLL->PLAYSAMPLE": 1,
+      "SCROLL->TALK": 2,
+      "SCROLL->WAITFRAME": 2,
+      "STAND->OFFSET": 1,
+      "STAND->SWALK": 1,
+      "STAND->WAITTIME": 1,
+      "SWALK->STAND": 2,
+      "TALK->OFFSET": 20,
+      "TALK->PLAY": 8,
+      "TALK->SCROLL": 2,
+      "TALK->TALK": 9,
+      "TALK->WAITTIME": 1,
+      "TALKAT->PLAY": 13,
+      "TALKAT->PLAYMIDI": 1,
+      "TALKAT->PLAYSAMPLE": 1,
+      "TALKAT->TALK": 1,
+      "TALKAT->TALKAT": 10,
+      "TALKAT->WAITTIME": 2,
+      "WAITFRAME->OFFSET": 1,
+      "WAITFRAME->PLAY": 4,
+      "WAITFRAME->PLAYSAMPLE": 28,
+      "WAITFRAME->SCROLL": 1,
+      "WAITFRAME->WAITFRAME": 1,
+      "WAITTIME->NEWSCENE": 1,
+      "WAITTIME->PLAY": 4,
+      "WAITTIME->SAVESCENE": 1,
+      "WAITTIME->SCROLL": 1,
+      "WAITTIME->TALK": 3,
+      "WAITTIME->TALKAT": 2
+    },
+    "libcall_sequence_head": [
+      "EVENT",
+      "INVENTORY",
+      "EVENT",
+      "INVENTORY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAYSAMPLE",
+      "SWALK",
+      "STAND",
+      "SWALK",
+      "STAND",
+      "WAITTIME",
+      "TALK",
+      "SCROLL",
+      "TALK",
+      "SCROLL",
+      "TALK",
+      "TALK",
+      "OFFSET",
+      "TALK",
+      "OFFSET"
+    ],
+    "libcall_sequence_head_sha256": "e96d2831ac966da15f618a89c5bea91060ea1058f750d9ffb4244e104388e59d"
+  },
+  "FINALE.SCN": {
+    "scripts_traced": 17,
+    "scripts_with_libcalls": 17,
+    "libcall_event_count": 161,
+    "unique_libcall_count": 29,
+    "max_path_depth_at_libcall": 0,
+    "max_paths_started_for_libcall_scripts": 2,
+    "libcalls_ranked": [
+      "PLAY",
+      "WAITFRAME",
+      "PLAYSAMPLE",
+      "TALK",
+      "WAITTIME",
+      "OFFSET",
+      "SETTAG",
+      "STAND",
+      "SWALK",
+      "KILLTAG",
+      "PLAYMIDI",
+      "ACTORYPOS",
+      "CONTROL",
+      "DELINV",
+      "EVENT",
+      "INVENTORY",
+      "ACTORATTR",
+      "ACTORDIRECTION",
+      "ACTORXPOS",
+      "BACKGROUND",
+      "KILLEXIT",
+      "MOVECURSOR",
+      "NEWSCENE",
+      "NOBLOCKING",
+      "SCREENXPOS",
+      "SCROLL",
+      "STOPSAMPLE",
+      "TAGACTOR",
+      "WALK"
+    ],
+    "libcall_signatures": {
+      "ACTORATTR": {
+        "occurrence_count": 1,
+        "stack_depth_min": 21,
+        "stack_depth_max": 21,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "ACTORDIRECTION": {
+        "occurrence_count": 1,
+        "stack_depth_min": 23,
+        "stack_depth_max": 23,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "ACTORXPOS": {
+        "occurrence_count": 1,
+        "stack_depth_min": 19,
+        "stack_depth_max": 19,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "ACTORYPOS": {
+        "occurrence_count": 2,
+        "stack_depth_min": 1,
+        "stack_depth_max": 19,
+        "observed_arg_count_histogram": {
+          "1": 1,
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm",
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "88506f6919ae44b695928e0623395f9ea8f53659f79fc727c46e1f9924c751ad"
+      },
+      "BACKGROUND": {
+        "occurrence_count": 1,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "observed_arg_count_histogram": {
+          "1": 1
+        },
+        "top_arg_shapes": [
+          "film"
+        ],
+        "top_arg_shapes_sha256": "d0607f7ad2628b2af9158dfba06ce87166e66b15bf68f8f358f9aa27ccb7c321"
+      },
+      "CONTROL": {
+        "occurrence_count": 2,
+        "stack_depth_min": 24,
+        "stack_depth_max": 25,
+        "observed_arg_count_histogram": {
+          "10": 2
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "DELINV": {
+        "occurrence_count": 2,
+        "stack_depth_min": 19,
+        "stack_depth_max": 22,
+        "observed_arg_count_histogram": {
+          "10": 2
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "EVENT": {
+        "occurrence_count": 2,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "observed_arg_count_histogram": {
+          "0": 2
+        },
+        "top_arg_shapes": [
+          "empty"
+        ],
+        "top_arg_shapes_sha256": "2e1cfa82b035c26cbbbdae632cea070514eb8b773f616aaeaf668e2f0be8f10d"
+      },
+      "INVENTORY": {
+        "occurrence_count": 2,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "observed_arg_count_histogram": {
+          "1": 2
+        },
+        "top_arg_shapes": [
+          "imm"
+        ],
+        "top_arg_shapes_sha256": "ddc575987968a30fe433322900287733913d2817fcaac70d766f59fdf3c79d97"
+      },
+      "KILLEXIT": {
+        "occurrence_count": 1,
+        "stack_depth_min": 18,
+        "stack_depth_max": 18,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "KILLTAG": {
+        "occurrence_count": 4,
+        "stack_depth_min": 1,
+        "stack_depth_max": 33,
+        "observed_arg_count_histogram": {
+          "1": 1,
+          "10": 3
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm",
+          "imm"
+        ],
+        "top_arg_shapes_sha256": "212919a9810edbd48bb09d539ec345e3815ba6d8620e82055dd5d6f3b4ce0772"
+      },
+      "MOVECURSOR": {
+        "occurrence_count": 1,
+        "stack_depth_min": 24,
+        "stack_depth_max": 24,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "NEWSCENE": {
+        "occurrence_count": 1,
+        "stack_depth_min": 31,
+        "stack_depth_max": 31,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "NOBLOCKING": {
+        "occurrence_count": 1,
+        "stack_depth_min": 1,
+        "stack_depth_max": 1,
+        "observed_arg_count_histogram": {
+          "1": 1
+        },
+        "top_arg_shapes": [
+          "film"
+        ],
+        "top_arg_shapes_sha256": "d0607f7ad2628b2af9158dfba06ce87166e66b15bf68f8f358f9aa27ccb7c321"
+      },
+      "OFFSET": {
+        "occurrence_count": 11,
+        "stack_depth_min": 18,
+        "stack_depth_max": 32,
+        "observed_arg_count_histogram": {
+          "10": 11
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm",
+          "imm>imm>film>imm>imm>imm",
+          "film>imm>film>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "0ce359691f505d84a289c01261e47e2a9687227d287e9c9f80bddc3ca1baa945"
+      },
+      "PLAY": {
+        "occurrence_count": 27,
+        "stack_depth_min": 6,
+        "stack_depth_max": 38,
+        "observed_arg_count_histogram": {
+          "6": 10,
+          "10": 17
+        },
+        "top_arg_shapes": [
+          "film>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "330c3bd1afe95fb739a6228e308601d7446566bf4b6c7e58dca86a1bed7ba253"
+      },
+      "PLAYMIDI": {
+        "occurrence_count": 4,
+        "stack_depth_min": 3,
+        "stack_depth_max": 33,
+        "observed_arg_count_histogram": {
+          "3": 3,
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm",
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "3689132242e65a992729f07d44ee40a5bb83eb8d67ae70a666edfe0ce4274a79"
+      },
+      "PLAYSAMPLE": {
+        "occurrence_count": 21,
+        "stack_depth_min": 15,
+        "stack_depth_max": 34,
+        "observed_arg_count_histogram": {
+          "10": 21
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm",
+          "film>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "9eb957c33044902b7697078d255eda74099b3d4849b139413a093e1e92e3bcb0"
+      },
+      "SCREENXPOS": {
+        "occurrence_count": 1,
+        "stack_depth_min": 20,
+        "stack_depth_max": 20,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "SCROLL": {
+        "occurrence_count": 1,
+        "stack_depth_min": 29,
+        "stack_depth_max": 29,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "SETTAG": {
+        "occurrence_count": 9,
+        "stack_depth_min": 17,
+        "stack_depth_max": 30,
+        "observed_arg_count_histogram": {
+          "10": 9
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "STAND": {
+        "occurrence_count": 7,
+        "stack_depth_min": 7,
+        "stack_depth_max": 25,
+        "observed_arg_count_histogram": {
+          "7": 1,
+          "10": 6
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "STOPSAMPLE": {
+        "occurrence_count": 1,
+        "stack_depth_min": 16,
+        "stack_depth_max": 16,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "SWALK": {
+        "occurrence_count": 5,
+        "stack_depth_min": 9,
+        "stack_depth_max": 28,
+        "observed_arg_count_histogram": {
+          "9": 2,
+          "10": 3
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "TAGACTOR": {
+        "occurrence_count": 1,
+        "stack_depth_min": 21,
+        "stack_depth_max": 21,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "TALK": {
+        "occurrence_count": 13,
+        "stack_depth_min": 15,
+        "stack_depth_max": 34,
+        "observed_arg_count_histogram": {
+          "10": 13
+        },
+        "top_arg_shapes": [
+          "film>imm>imm>imm>film>imm",
+          "imm>imm>imm>imm>film>imm",
+          "imm>imm>film>imm>film>imm",
+          "imm>imm>film>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "9abb8c146f997adc127d99bd08c2aa06cf008414094ef09803fb5a38b2a34e37"
+      },
+      "WAITFRAME": {
+        "occurrence_count": 25,
+        "stack_depth_min": 18,
+        "stack_depth_max": 34,
+        "observed_arg_count_histogram": {
+          "10": 25
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      },
+      "WAITTIME": {
+        "occurrence_count": 12,
+        "stack_depth_min": 13,
+        "stack_depth_max": 34,
+        "observed_arg_count_histogram": {
+          "10": 12
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm",
+          "imm>imm>film>imm>imm>imm",
+          "film>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "ca28283eef2b8bc3607dacdf6d76d2e3003bb7d72578591f055c6a4c991e3e4d"
+      },
+      "WALK": {
+        "occurrence_count": 1,
+        "stack_depth_min": 22,
+        "stack_depth_max": 22,
+        "observed_arg_count_histogram": {
+          "10": 1
+        },
+        "top_arg_shapes": [
+          "imm>imm>imm>imm>imm>imm"
+        ],
+        "top_arg_shapes_sha256": "34e98b8e0f4c28a2bf9ab20c1618e0b4ad6981cb4d34cadaa8dba4ae9ea972e1"
+      }
+    },
+    "libcall_predecessor_transition_histogram": {
+      "ACTORDIRECTION->ACTORATTR": 1,
+      "ACTORXPOS->ACTORYPOS": 1,
+      "ACTORYPOS->EVENT": 1,
+      "ACTORYPOS->WAITTIME": 1,
+      "BACKGROUND->NOBLOCKING": 1,
+      "CONTROL->SETTAG": 1,
+      "CONTROL->WAITTIME": 1,
+      "DELINV->MOVECURSOR": 1,
+      "DELINV->PLAY": 1,
+      "EVENT->INVENTORY": 2,
+      "KILLEXIT->DELINV": 1,
+      "KILLTAG->KILLTAG": 2,
+      "KILLTAG->WAITTIME": 1,
+      "MOVECURSOR->CONTROL": 1,
+      "OFFSET->PLAY": 1,
+      "OFFSET->PLAYMIDI": 1,
+      "OFFSET->PLAYSAMPLE": 1,
+      "OFFSET->TAGACTOR": 1,
+      "OFFSET->TALK": 3,
+      "OFFSET->WAITFRAME": 4,
+      "PLAY->OFFSET": 1,
+      "PLAY->PLAY": 6,
+      "PLAY->PLAYSAMPLE": 5,
+      "PLAY->SCROLL": 1,
+      "PLAY->SETTAG": 1,
+      "PLAY->TALK": 1,
+      "PLAY->WAITFRAME": 1,
+      "PLAY->WAITTIME": 1,
+      "PLAYMIDI->PLAY": 1,
+      "PLAYMIDI->STAND": 1,
+      "PLAYMIDI->SWALK": 2,
+      "PLAYSAMPLE->STAND": 1,
+      "PLAYSAMPLE->SWALK": 1,
+      "PLAYSAMPLE->WAITFRAME": 19,
+      "SCREENXPOS->WAITTIME": 1,
+      "SCROLL->TALK": 1,
+      "SETTAG->KILLEXIT": 1,
+      "SETTAG->KILLTAG": 1,
+      "SETTAG->PLAY": 1,
+      "SETTAG->SETTAG": 6,
+      "STAND->CONTROL": 1,
+      "STAND->PLAY": 1,
+      "STAND->PLAYSAMPLE": 1,
+      "STAND->SETTAG": 1,
+      "STAND->STAND": 1,
+      "STAND->SWALK": 1,
+      "STAND->WAITTIME": 1,
+      "STOPSAMPLE->WAITFRAME": 1,
+      "SWALK->NEWSCENE": 1,
+      "SWALK->STAND": 4,
+      "TAGACTOR->DELINV": 1,
+      "TALK->OFFSET": 5,
+      "TALK->TALK": 2,
+      "TALK->WAITTIME": 5,
+      "TALK->WALK": 1,
+      "WAITFRAME->OFFSET": 4,
+      "WAITFRAME->PLAY": 6,
+      "WAITFRAME->PLAYSAMPLE": 14,
+      "WAITFRAME->STOPSAMPLE": 1,
+      "WAITTIME->ACTORDIRECTION": 1,
+      "WAITTIME->ACTORXPOS": 1,
+      "WAITTIME->OFFSET": 1,
+      "WAITTIME->SCREENXPOS": 1,
+      "WAITTIME->TALK": 6,
+      "WAITTIME->WAITTIME": 1,
+      "WALK->SWALK": 1
+    },
+    "libcall_sequence_head": [
+      "EVENT",
+      "INVENTORY",
+      "ACTORYPOS",
+      "EVENT",
+      "INVENTORY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "PLAY",
+      "KILLTAG",
+      "PLAYMIDI",
+      "SWALK",
+      "STAND",
+      "PLAYSAMPLE",
+      "SWALK",
+      "STAND",
+      "SETTAG",
+      "SETTAG",
+      "PLAY",
+      "SETTAG",
+      "KILLEXIT",
+      "DELINV",
+      "PLAY",
+      "SCROLL"
+    ],
+    "libcall_sequence_head_sha256": "09848aad34624ce64c1b734e074f9d0c9c77da200dceaa6c77d637bf51d19159"
+  }
+}
