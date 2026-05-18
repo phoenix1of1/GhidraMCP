@@ -99,6 +99,7 @@ Current regression coverage includes:
 - PCODE IR lift snapshots (node-kind/opcode/block-shape histograms and terminator fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - PCODE structuring snapshots (region terminator/loop/conditional metrics and structural fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - PCODE semantic annotation snapshots (libcall behavior tags, argument labels, region semantics, and pseudocode summary fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
+- PCODE symbol recovery snapshots (local/global symbol names, role/type hints, and symbol-transition fingerprints) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 
 ## Snapshot Refresh Utility
 
@@ -157,6 +158,10 @@ Refresh only PCODE structuring snapshots:
 Refresh only PCODE semantic annotation snapshots:
 
 `pwsh -File scripts/refresh_snapshot_baselines.ps1 --only semantic`
+
+Refresh only PCODE symbol recovery snapshots:
+
+`pwsh -File scripts/refresh_snapshot_baselines.ps1 --only symbols`
 
 Refresh from an explicit dataset path:
 

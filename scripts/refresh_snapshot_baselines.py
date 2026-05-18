@@ -54,6 +54,7 @@ LIBSIG_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 IR_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 STRUCT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 SEMANTIC_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+SYMBOL_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -143,6 +144,10 @@ SEMANTIC_MAX_STEPS = 1200
 SEMANTIC_MAX_PATHS = 16
 SEMANTIC_MAX_CALLS = 30
 SEMANTIC_PSEUDOCODE_LINE_LIMIT = 48
+SYMBOL_MAX_STEPS = 1200
+SYMBOL_MAX_PATHS = 16
+SYMBOL_MAX_SYMBOLS_PER_KIND = 40
+SYMBOL_SUMMARY_HEAD_LIMIT = 60
 SEMANTIC_BEHAVIOR_TAGS = {
     "WAITFRAME": ["timing"],
     "WAITTIME": ["timing"],
@@ -1770,6 +1775,239 @@ def _build_pcode_semantic_annotation_snapshots(vm_mod, scanner_mod, dataset_dir:
     return out
 
 
+def _parse_symbol_token(token: str) -> tuple[str, int] | None:
+    text = str(token or "")
+    if text.startswith("local:"):
+        try:
+            return "local", int(text.split(":", 1)[1])
+        except ValueError:
+            return None
+    if text.startswith("global:"):
+        try:
+            return "global", int(text.split(":", 1)[1])
+        except ValueError:
+            return None
+    return None
+
+
+def _symbol_primary_role(tags: set[str], reads: int, writes: int) -> str:
+    if "inventory" in tags:
+        return "item"
+    if "dialogue" in tags:
+        return "dialogue"
+    if "timing" in tags:
+        return "timer"
+    if "playback" in tags:
+        return "playback"
+    if "tag" in tags:
+        return "tag"
+    if "audio" in tags:
+        return "audio"
+    if reads == 0 and writes > 0:
+        return "output"
+    if writes == 0 and reads > 0:
+        return "input"
+    return "state"
+
+
+def _symbol_type_hint(role: str, kind: str) -> str:
+    if role == "item":
+        return "item_id"
+    if role == "dialogue":
+        return "topic_id"
+    if role == "timer":
+        return "counter"
+    if role == "playback":
+        return "handle_or_coord"
+    if role == "tag":
+        return "tag_id"
+    if role == "audio":
+        return "sample_id"
+    if role == "input":
+        return "input_value"
+    if role == "output":
+        return "output_value"
+    if kind == "global":
+        return "state_value"
+    return "temp_value"
+
+
+def _build_pcode_symbol_recovery_snapshots(vm_mod, scanner_mod, dataset_dir: Path) -> dict:
+    idx_rows = vm_mod.read_index(dataset_dir / "INDEX")
+    idx_by_name = {row["filename"].lower(): row["index"] for row in idx_rows}
+
+    out = {}
+    for scene_name in SYMBOL_CONTRACT_SCENES:
+        scene_path = dataset_dir / scene_name
+        data = scene_path.read_bytes()
+        scripts = vm_mod.collect_script_handles(scene_path, idx_by_name)
+        scripts = sorted(scripts, key=lambda s: (s.get("source", ""), s.get("handle", 0)))[:60]
+
+        symbols: dict[str, dict] = {}
+        symbol_transition_histogram = collections.Counter()
+        symbol_summary_head: list[str] = []
+        scripts_with_symbol_activity = 0
+
+        for script in scripts:
+            handle = script["handle"]
+            file_index, offset = vm_mod.split_handle(handle)
+            if file_index != idx_by_name.get(scene_name.lower(), -1) or offset >= len(data):
+                continue
+
+            trace = vm_mod.execute_script(data, offset, max_steps=SYMBOL_MAX_STEPS, max_paths=SYMBOL_MAX_PATHS)
+            disassembly = scanner_mod.disassemble(data, offset, max_ins=STRUCT_MAX_INS)
+            instructions = disassembly.get("instructions", [])
+            local_sequence: list[str] = []
+            had_activity = False
+
+            for ins in instructions:
+                name = str(ins.get("name") or "")
+                operand = ins.get("operand")
+                if not isinstance(operand, int):
+                    continue
+                if name not in {"LOAD", "GLOAD", "STORE", "GSTORE"}:
+                    continue
+
+                if name in {"LOAD", "STORE"}:
+                    kind = "local"
+                    index = operand
+                else:
+                    kind = "global"
+                    index = operand
+
+                key = f"{kind}:{index}"
+                entry = symbols.setdefault(
+                    key,
+                    {
+                        "kind": kind,
+                        "index": index,
+                        "reads": 0,
+                        "writes": 0,
+                        "refs": 0,
+                        "libcall_context_histogram": collections.Counter(),
+                        "behavior_tags": set(),
+                        "stack_depth_min": None,
+                        "stack_depth_max": 0,
+                    },
+                )
+                if name in {"LOAD", "GLOAD"}:
+                    entry["reads"] += 1
+                else:
+                    entry["writes"] += 1
+
+            for event in trace.get("events", []):
+                if event.get("event") != "libcall":
+                    continue
+                libcall_name = event.get("libcall_name")
+                if not libcall_name:
+                    continue
+
+                depth = int(event.get("stack_depth") or 0)
+                stack_top = event.get("stack_top") or []
+                event_symbols: list[str] = []
+
+                for token in stack_top:
+                    parsed = _parse_symbol_token(str(token))
+                    if parsed is None:
+                        continue
+                    kind, index = parsed
+                    key = f"{kind}:{index}"
+                    entry = symbols.setdefault(
+                        key,
+                        {
+                            "kind": kind,
+                            "index": index,
+                            "reads": 0,
+                            "writes": 0,
+                            "refs": 0,
+                            "libcall_context_histogram": collections.Counter(),
+                            "behavior_tags": set(),
+                            "stack_depth_min": None,
+                            "stack_depth_max": 0,
+                        },
+                    )
+                    entry["refs"] += 1
+                    entry["libcall_context_histogram"][libcall_name] += 1
+                    entry["behavior_tags"].update(_semantic_behavior_tags(libcall_name))
+                    entry["stack_depth_min"] = depth if entry["stack_depth_min"] is None else min(entry["stack_depth_min"], depth)
+                    entry["stack_depth_max"] = max(entry["stack_depth_max"], depth)
+                    event_symbols.append(key)
+                    had_activity = True
+
+                event_symbols = sorted(set(event_symbols))
+                local_sequence.extend(event_symbols)
+
+            if had_activity:
+                scripts_with_symbol_activity += 1
+
+            for i in range(1, len(local_sequence)):
+                symbol_transition_histogram[f"{local_sequence[i - 1]}->{local_sequence[i]}"] += 1
+
+        locals_ranked = sorted(
+            [key for key, val in symbols.items() if val["kind"] == "local"],
+            key=lambda key: (-(symbols[key]["refs"] + symbols[key]["reads"] + symbols[key]["writes"]), key),
+        )[:SYMBOL_MAX_SYMBOLS_PER_KIND]
+        globals_ranked = sorted(
+            [key for key, val in symbols.items() if val["kind"] == "global"],
+            key=lambda key: (-(symbols[key]["refs"] + symbols[key]["reads"] + symbols[key]["writes"]), key),
+        )[:SYMBOL_MAX_SYMBOLS_PER_KIND]
+        ranked_symbols = locals_ranked + globals_ranked
+
+        symbol_table = {}
+        role_histogram = collections.Counter()
+        type_histogram = collections.Counter()
+        for key in ranked_symbols:
+            entry = symbols[key]
+            role = _symbol_primary_role(set(entry["behavior_tags"]), int(entry["reads"]), int(entry["writes"]))
+            type_hint = _symbol_type_hint(role, str(entry["kind"]))
+            role_histogram[role] += 1
+            type_histogram[type_hint] += 1
+            label_prefix = "l" if entry["kind"] == "local" else "g"
+            recovered_name = f"{label_prefix}{entry['index']}_{role}"
+            top_libcalls = [name for name, _ in entry["libcall_context_histogram"].most_common(6)]
+
+            symbol_table[key] = {
+                "kind": entry["kind"],
+                "index": int(entry["index"]),
+                "recovered_name": recovered_name,
+                "role": role,
+                "type_hint": type_hint,
+                "reads": int(entry["reads"]),
+                "writes": int(entry["writes"]),
+                "refs": int(entry["refs"]),
+                "stack_depth_min": 0 if entry["stack_depth_min"] is None else int(entry["stack_depth_min"]),
+                "stack_depth_max": int(entry["stack_depth_max"]),
+                "top_libcalls": top_libcalls,
+                "top_libcalls_sha256": hashlib.sha256("|".join(top_libcalls).encode("utf-8")).hexdigest(),
+                "behavior_tags": sorted(entry["behavior_tags"]),
+                "behavior_tags_sha256": hashlib.sha256("|".join(sorted(entry["behavior_tags"])).encode("utf-8")).hexdigest(),
+            }
+
+            summary_line = (
+                f"{recovered_name}:{type_hint}:r{entry['reads']}:w{entry['writes']}:"
+                f"x{entry['refs']}"
+            )
+            symbol_summary_head.append(summary_line)
+
+        symbol_summary_head = symbol_summary_head[:SYMBOL_SUMMARY_HEAD_LIMIT]
+        out[scene_name] = {
+            "script_handles_found": len(scripts),
+            "scripts_with_symbol_activity": scripts_with_symbol_activity,
+            "local_symbol_count": sum(1 for val in symbols.values() if val["kind"] == "local"),
+            "global_symbol_count": sum(1 for val in symbols.values() if val["kind"] == "global"),
+            "locals_ranked": locals_ranked,
+            "globals_ranked": globals_ranked,
+            "symbol_table": {name: symbol_table[name] for name in sorted(symbol_table.keys())},
+            "symbol_role_histogram": dict(sorted(role_histogram.items())),
+            "symbol_type_histogram": dict(sorted(type_histogram.items())),
+            "symbol_transition_histogram": dict(sorted(symbol_transition_histogram.items())),
+            "symbol_summary_head": symbol_summary_head,
+            "symbol_summary_head_sha256": hashlib.sha256("|".join(symbol_summary_head).encode("utf-8")).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -1997,7 +2235,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -2011,7 +2249,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -2032,6 +2270,7 @@ def main() -> int:
         "ir": repo_root / "tests" / "snapshots" / "pcode_ir_lift_snapshots.json",
         "struct": repo_root / "tests" / "snapshots" / "pcode_structuring_snapshots.json",
         "semantic": repo_root / "tests" / "snapshots" / "pcode_semantic_annotation_snapshots.json",
+        "symbols": repo_root / "tests" / "snapshots" / "pcode_symbol_recovery_snapshots.json",
     }
 
     if args.check:
@@ -2185,6 +2424,16 @@ def main() -> int:
         else:
             _write_json(targets["semantic"], payload)
             print("- updated pcode_semantic_annotation_snapshots.json")
+
+    if "symbols" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        payload = _build_pcode_symbol_recovery_snapshots(vm_mod, scanner_mod, dataset_dir)
+        if args.check:
+            ok = _check_snapshot(targets["symbols"], payload) and ok
+        else:
+            _write_json(targets["symbols"], payload)
+            print("- updated pcode_symbol_recovery_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")

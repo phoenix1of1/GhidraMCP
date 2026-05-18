@@ -1,0 +1,366 @@
+{
+  "BAR.SCN": {
+    "script_handles_found": 22,
+    "scripts_with_symbol_activity": 3,
+    "local_symbol_count": 0,
+    "global_symbol_count": 11,
+    "locals_ranked": [],
+    "globals_ranked": [
+      "global:281",
+      "global:101",
+      "global:296",
+      "global:246",
+      "global:247",
+      "global:248",
+      "global:298",
+      "global:143",
+      "global:163",
+      "global:240",
+      "global:241"
+    ],
+    "symbol_table": {
+      "global:101": {
+        "kind": "global",
+        "index": 101,
+        "recovered_name": "g101_state",
+        "role": "state",
+        "type_hint": "state_value",
+        "reads": 1,
+        "writes": 3,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:143": {
+        "kind": "global",
+        "index": 143,
+        "recovered_name": "g143_input",
+        "role": "input",
+        "type_hint": "input_value",
+        "reads": 1,
+        "writes": 0,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:163": {
+        "kind": "global",
+        "index": 163,
+        "recovered_name": "g163_output",
+        "role": "output",
+        "type_hint": "output_value",
+        "reads": 0,
+        "writes": 1,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:240": {
+        "kind": "global",
+        "index": 240,
+        "recovered_name": "g240_input",
+        "role": "input",
+        "type_hint": "input_value",
+        "reads": 1,
+        "writes": 0,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:241": {
+        "kind": "global",
+        "index": 241,
+        "recovered_name": "g241_input",
+        "role": "input",
+        "type_hint": "input_value",
+        "reads": 1,
+        "writes": 0,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:246": {
+        "kind": "global",
+        "index": 246,
+        "recovered_name": "g246_item",
+        "role": "item",
+        "type_hint": "item_id",
+        "reads": 1,
+        "writes": 1,
+        "refs": 1,
+        "stack_depth_min": 2,
+        "stack_depth_max": 2,
+        "top_libcalls": [
+          "ININVENTORY"
+        ],
+        "top_libcalls_sha256": "10459d772133090a9f152dc3e8dcb8a5b8d0156ce47461d162708583f0741031",
+        "behavior_tags": [
+          "inventory"
+        ],
+        "behavior_tags_sha256": "b11a85b296a90afc460430434a504e7acb04b064575b7277724688af0e59d189"
+      },
+      "global:247": {
+        "kind": "global",
+        "index": 247,
+        "recovered_name": "g247_item",
+        "role": "item",
+        "type_hint": "item_id",
+        "reads": 1,
+        "writes": 1,
+        "refs": 1,
+        "stack_depth_min": 2,
+        "stack_depth_max": 2,
+        "top_libcalls": [
+          "ININVENTORY"
+        ],
+        "top_libcalls_sha256": "10459d772133090a9f152dc3e8dcb8a5b8d0156ce47461d162708583f0741031",
+        "behavior_tags": [
+          "inventory"
+        ],
+        "behavior_tags_sha256": "b11a85b296a90afc460430434a504e7acb04b064575b7277724688af0e59d189"
+      },
+      "global:248": {
+        "kind": "global",
+        "index": 248,
+        "recovered_name": "g248_item",
+        "role": "item",
+        "type_hint": "item_id",
+        "reads": 1,
+        "writes": 1,
+        "refs": 1,
+        "stack_depth_min": 2,
+        "stack_depth_max": 2,
+        "top_libcalls": [
+          "ININVENTORY"
+        ],
+        "top_libcalls_sha256": "10459d772133090a9f152dc3e8dcb8a5b8d0156ce47461d162708583f0741031",
+        "behavior_tags": [
+          "inventory"
+        ],
+        "behavior_tags_sha256": "b11a85b296a90afc460430434a504e7acb04b064575b7277724688af0e59d189"
+      },
+      "global:281": {
+        "kind": "global",
+        "index": 281,
+        "recovered_name": "g281_input",
+        "role": "input",
+        "type_hint": "input_value",
+        "reads": 9,
+        "writes": 0,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:296": {
+        "kind": "global",
+        "index": 296,
+        "recovered_name": "g296_state",
+        "role": "state",
+        "type_hint": "state_value",
+        "reads": 2,
+        "writes": 2,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:298": {
+        "kind": "global",
+        "index": 298,
+        "recovered_name": "g298_state",
+        "role": "state",
+        "type_hint": "state_value",
+        "reads": 1,
+        "writes": 1,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "symbol_role_histogram": {
+      "input": 4,
+      "item": 3,
+      "output": 1,
+      "state": 3
+    },
+    "symbol_type_histogram": {
+      "input_value": 4,
+      "item_id": 3,
+      "output_value": 1,
+      "state_value": 3
+    },
+    "symbol_transition_histogram": {},
+    "symbol_summary_head": [
+      "g281_input:input_value:r9:w0:x0",
+      "g101_state:state_value:r1:w3:x0",
+      "g296_state:state_value:r2:w2:x0",
+      "g246_item:item_id:r1:w1:x1",
+      "g247_item:item_id:r1:w1:x1",
+      "g248_item:item_id:r1:w1:x1",
+      "g298_state:state_value:r1:w1:x0",
+      "g143_input:input_value:r1:w0:x0",
+      "g163_output:output_value:r0:w1:x0",
+      "g240_input:input_value:r1:w0:x0",
+      "g241_input:input_value:r1:w0:x0"
+    ],
+    "symbol_summary_head_sha256": "3054f03f740f9aa7d6e629eae00a5d704cdd3f776a484b5ae37d4d99044ab3a6"
+  },
+  "CLIMAX.SCN": {
+    "script_handles_found": 15,
+    "scripts_with_symbol_activity": 0,
+    "local_symbol_count": 0,
+    "global_symbol_count": 0,
+    "locals_ranked": [],
+    "globals_ranked": [],
+    "symbol_table": {},
+    "symbol_role_histogram": {},
+    "symbol_type_histogram": {},
+    "symbol_transition_histogram": {},
+    "symbol_summary_head": [],
+    "symbol_summary_head_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "FINALE.SCN": {
+    "script_handles_found": 17,
+    "scripts_with_symbol_activity": 0,
+    "local_symbol_count": 0,
+    "global_symbol_count": 5,
+    "locals_ranked": [],
+    "globals_ranked": [
+      "global:271",
+      "global:298",
+      "global:296",
+      "global:297",
+      "global:257"
+    ],
+    "symbol_table": {
+      "global:257": {
+        "kind": "global",
+        "index": 257,
+        "recovered_name": "g257_input",
+        "role": "input",
+        "type_hint": "input_value",
+        "reads": 1,
+        "writes": 0,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:271": {
+        "kind": "global",
+        "index": 271,
+        "recovered_name": "g271_state",
+        "role": "state",
+        "type_hint": "state_value",
+        "reads": 18,
+        "writes": 1,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:296": {
+        "kind": "global",
+        "index": 296,
+        "recovered_name": "g296_state",
+        "role": "state",
+        "type_hint": "state_value",
+        "reads": 3,
+        "writes": 2,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:297": {
+        "kind": "global",
+        "index": 297,
+        "recovered_name": "g297_state",
+        "role": "state",
+        "type_hint": "state_value",
+        "reads": 1,
+        "writes": 2,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "global:298": {
+        "kind": "global",
+        "index": 298,
+        "recovered_name": "g298_state",
+        "role": "state",
+        "type_hint": "state_value",
+        "reads": 3,
+        "writes": 4,
+        "refs": 0,
+        "stack_depth_min": 0,
+        "stack_depth_max": 0,
+        "top_libcalls": [],
+        "top_libcalls_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "behavior_tags": [],
+        "behavior_tags_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "symbol_role_histogram": {
+      "input": 1,
+      "state": 4
+    },
+    "symbol_type_histogram": {
+      "input_value": 1,
+      "state_value": 4
+    },
+    "symbol_transition_histogram": {},
+    "symbol_summary_head": [
+      "g271_state:state_value:r18:w1:x0",
+      "g298_state:state_value:r3:w4:x0",
+      "g296_state:state_value:r3:w2:x0",
+      "g297_state:state_value:r1:w2:x0",
+      "g257_input:input_value:r1:w0:x0"
+    ],
+    "symbol_summary_head_sha256": "ce05a881dc9bf5fca13c5ee9e71e04c5c599d5b8ed8842975e9ac6931bebc166"
+  }
+}
