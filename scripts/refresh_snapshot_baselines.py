@@ -61,6 +61,7 @@ EMIT_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 BUNDLE_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 DELTA_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 DIGEST_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
+DELIVER_CONTRACT_SCENES = ["BAR.SCN", "CLIMAX.SCN", "FINALE.SCN"]
 POLY_RECORD_SIZE_T1 = 104
 CONTRACT_CORE_CALLS = ["PLAY", "WAITFRAME", "WAITTIME", "CONTROL", "TALK", "PLAYSAMPLE"]
 BRANCH_MAX_STEPS = 1200
@@ -170,6 +171,7 @@ BUNDLE_FUNCTION_LIMIT = 40
 BUNDLE_TEXT_HEAD_LIMIT = 120
 DELTA_CHANGE_HEAD_LIMIT = 80
 DIGEST_HEAD_LIMIT = 80
+DELIVER_TEXT_HEAD_LIMIT = 80
 SEMANTIC_BEHAVIOR_TAGS = {
     "WAITFRAME": ["timing"],
     "WAITTIME": ["timing"],
@@ -2772,6 +2774,49 @@ def _build_pcode_regression_digest_snapshots(
     return out
 
 
+def _render_bundle_text(scene_name: str, scene_bundle: dict) -> list[str]:
+    function_rows = scene_bundle.get("function_bundle_head") or []
+    out = [f"# Scene Decomp Bundle: {scene_name}"]
+    for row in function_rows:
+        if not isinstance(row, dict):
+            continue
+        function_name = str(row.get("function_name") or "unknown_function")
+        signature = str(row.get("signature") or "")
+        out.append("")
+        out.append(f"function {function_name}() {{")
+        if signature:
+            out.append(f"  ; signature: {signature}")
+        for line in row.get("body") or []:
+            out.append(f"  {str(line)}")
+        out.append("}")
+    return out
+
+
+def _build_pcode_decomp_delivery_manifest_snapshots(bundle_payload: dict) -> dict:
+    out = {}
+    for scene_name in DELIVER_CONTRACT_SCENES:
+        scene_bundle = bundle_payload.get(scene_name, {}) if isinstance(bundle_payload, dict) else {}
+        text_lines = _render_bundle_text(scene_name, scene_bundle)
+        file_name = f"{scene_name.split('.', 1)[0].lower()}_decomp.pseudo"
+
+        function_names = scene_bundle.get("function_names") or []
+        out[scene_name] = {
+            "artifact_file": file_name,
+            "function_count": int(scene_bundle.get("function_count") or 0),
+            "function_names": function_names,
+            "function_names_sha256": hashlib.sha256("|".join(function_names).encode("utf-8")).hexdigest(),
+            "bundle_text_digest": str(scene_bundle.get("bundle_text_digest") or ""),
+            "artifact_line_count": len(text_lines),
+            "artifact_text_head": text_lines[:DELIVER_TEXT_HEAD_LIMIT],
+            "artifact_text_head_sha256": hashlib.sha256(
+                "|".join(text_lines[:DELIVER_TEXT_HEAD_LIMIT]).encode("utf-8")
+            ).hexdigest(),
+            "artifact_full_sha256": hashlib.sha256("\n".join(text_lines).encode("utf-8")).hexdigest(),
+        }
+
+    return out
+
+
 def _read_chunks(data: bytes) -> dict[int, tuple[int, int]]:
     out: dict[int, tuple[int, int]] = {}
     off = 0
@@ -2999,7 +3044,7 @@ def main() -> int:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest", "all"],
+        choices=["scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest", "deliver", "all"],
         default=["all"],
         help="Refresh only selected snapshot groups",
     )
@@ -3013,7 +3058,7 @@ def main() -> int:
 
     refresh = set(args.only)
     if "all" in refresh:
-        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest"}
+        refresh = {"scn", "pcode", "bitmap", "scheduler", "placement", "contracts", "branch", "inventory", "hotspot", "dialogue", "timing", "cfg", "libsig", "ir", "struct", "semantic", "symbols", "canon", "pseudo", "emit", "bundle", "delta", "digest", "deliver"}
 
     extractor_mod = _load_module("discworld_extract_module", repo_root / "extractor" / "discworld_extract.py")
 
@@ -3041,6 +3086,7 @@ def main() -> int:
         "bundle": repo_root / "tests" / "snapshots" / "pcode_scene_decomp_bundle_snapshots.json",
         "delta": repo_root / "tests" / "snapshots" / "pcode_semantic_delta_report_snapshots.json",
         "digest": repo_root / "tests" / "snapshots" / "pcode_regression_digest_snapshots.json",
+        "deliver": repo_root / "tests" / "snapshots" / "pcode_decomp_delivery_manifest_snapshots.json",
     }
 
     previous_bundle_payload = {}
@@ -3278,6 +3324,17 @@ def main() -> int:
         else:
             _write_json(targets["digest"], payload)
             print("- updated pcode_regression_digest_snapshots.json")
+
+    if "deliver" in refresh:
+        vm_mod = _load_module("tinsel1_vm_lite_module", repo_root / "runtime" / "tinsel1_vm_lite.py")
+        scanner_mod = _load_module("tinsel1_pcode_scanner_module", repo_root / "runtime" / "tinsel1_pcode_scanner.py")
+        current_bundle_payload = _build_pcode_scene_decomp_bundle_snapshots(vm_mod, scanner_mod, dataset_dir)
+        payload = _build_pcode_decomp_delivery_manifest_snapshots(current_bundle_payload)
+        if args.check:
+            ok = _check_snapshot(targets["deliver"], payload) and ok
+        else:
+            _write_json(targets["deliver"], payload)
+            print("- updated pcode_decomp_delivery_manifest_snapshots.json")
 
     if args.check and not ok:
         print("Snapshot drift detected. Run refresh_snapshot_baselines.ps1 intentionally to update baselines.")

@@ -67,7 +67,9 @@ Planning and agent-context docs:
 - `scripts/refresh_snapshot_baselines.ps1` - PowerShell runner to regenerate snapshot baselines.
 - `scripts/refresh_snapshot_baselines.py` - Python utility to refresh snapshot JSON files.
 - `scripts/run_ci_verify.ps1` - CI-style verify: dry-check snapshot drift, then run regression tests.
+- `scripts/run_scene_decomp_emit.ps1` - PowerShell runner to emit deterministic scene pseudo-function artifacts.
 - `extractor/discworld_extract.py` - Core unified extractor and analysis CLI.
+- `scripts/run_scene_decomp_emit.py` - Python emitter for deterministic scene pseudo-function artifacts.
 
 ## One-Command Regression Test Run
 
@@ -106,6 +108,7 @@ Current regression coverage includes:
 - PCODE scene decomp bundle snapshots (full normalized pseudo-function bundles, function ordering, and bundle text digests) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - PCODE semantic delta report snapshots (normalized change summaries between previous and current scene bundles) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 - PCODE regression digest snapshots (human-readable scene change digests with severity scoring) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
+- PCODE decomp delivery manifest snapshots (artifact file mapping and digest locks for emitted scene bundles) for `BAR.SCN`, `CLIMAX.SCN`, and `FINALE.SCN`.
 
 ## Snapshot Refresh Utility
 
@@ -192,6 +195,14 @@ Refresh only PCODE semantic delta report snapshots:
 Refresh only PCODE regression digest snapshots:
 
 `pwsh -File scripts/refresh_snapshot_baselines.ps1 --only digest`
+
+Refresh only PCODE decomp delivery manifest snapshots:
+
+`pwsh -File scripts/refresh_snapshot_baselines.ps1 --only deliver`
+
+Emit deterministic scene decomp artifacts for review:
+
+`pwsh -File scripts/run_scene_decomp_emit.ps1 --clean-output`
 
 Refresh from an explicit dataset path:
 
