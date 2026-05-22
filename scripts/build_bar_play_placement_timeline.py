@@ -29,6 +29,11 @@ SCENE_ROOT = REPO_ROOT.parent / "clean-game" / "DISCWLD"
 POLY_RECORD_SIZE_T1 = 104
 TALKAT_ANCHOR_MAX_AGE = 12
 TALK_ANCHOR_MAX_AGE = 12
+EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_ENV = "DISCWORLD_EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP"
+EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_MAX_AGE = 13
+EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_KEYS = {
+    ("CLIMAX.SCN", "0X0406D43C", 447558),
+}
 EXPERIMENT_CLIMAX_TALKAT_AGE_ENV = "DISCWORLD_EXPERIMENT_CLIMAX_TALKAT_AGE15"
 EXPERIMENT_CLIMAX_TALKAT_MAX_AGE = 15
 EXPERIMENT_CLIMAX_TALKAT_EXTENSION_KEYS = {
@@ -346,15 +351,22 @@ def _extract_talk_anchor_from_visible_stack(stack_top: str) -> tuple[int, int] |
 def _dialogue_anchor_age_limit(scene_name: str, row: dict[str, str], dialogue_source: str) -> int:
     if dialogue_source != "timeline_talkat_anchor":
         return TALK_ANCHOR_MAX_AGE
-    if os.environ.get(EXPERIMENT_CLIMAX_TALKAT_AGE_ENV, "") != "1":
-        return TALK_ANCHOR_MAX_AGE
 
     ip_text = row.get("ip") or ""
     ip = int(ip_text) if ip_text.isdigit() else -1
     script = (row.get("script_handle") or "").strip().upper()
-    if (scene_name.upper(), script, ip) in EXPERIMENT_CLIMAX_TALKAT_EXTENSION_KEYS:
-        return max(TALK_ANCHOR_MAX_AGE, EXPERIMENT_CLIMAX_TALKAT_MAX_AGE)
-    return TALK_ANCHOR_MAX_AGE
+    key = (scene_name.upper(), script, ip)
+
+    max_age = TALK_ANCHOR_MAX_AGE
+    if os.environ.get(EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_ENV, "") == "1":
+        if key in EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_KEYS:
+            max_age = max(max_age, EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_MAX_AGE)
+
+    if os.environ.get(EXPERIMENT_CLIMAX_TALKAT_AGE_ENV, "") == "1":
+        if key in EXPERIMENT_CLIMAX_TALKAT_EXTENSION_KEYS:
+            max_age = max(max_age, EXPERIMENT_CLIMAX_TALKAT_MAX_AGE)
+
+    return max_age
 
 
 def _load_scheduler_talk_anchors(

@@ -16,24 +16,74 @@ spec.loader.exec_module(BUILDER)
 class ClimaxTalkatExperimentalGateTests(unittest.TestCase):
     def test_default_off_keeps_baseline_age_limit(self) -> None:
         row = {"script_handle": "0x0406d43c", "ip": "447558"}
-        with patch.dict(os.environ, {BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE_ENV: "0"}, clear=False):
+        with patch.dict(
+            os.environ,
+            {
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_ENV: "0",
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE_ENV: "0",
+            },
+            clear=False,
+        ):
             limit = BUILDER._dialogue_anchor_age_limit("CLIMAX.SCN", row, "timeline_talkat_anchor")
         self.assertEqual(limit, BUILDER.TALK_ANCHOR_MAX_AGE)
 
+    def test_age13_one_ip_opt_in_extends_only_target_ip(self) -> None:
+        target = {"script_handle": "0x0406d43c", "ip": "447558"}
+        non_target = {"script_handle": "0x0406d449", "ip": "447571"}
+        with patch.dict(
+            os.environ,
+            {
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_ENV: "1",
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE_ENV: "0",
+            },
+            clear=False,
+        ):
+            target_limit = BUILDER._dialogue_anchor_age_limit("CLIMAX.SCN", target, "timeline_talkat_anchor")
+            non_target_limit = BUILDER._dialogue_anchor_age_limit("CLIMAX.SCN", non_target, "timeline_talkat_anchor")
+        self.assertEqual(target_limit, BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_MAX_AGE)
+        self.assertEqual(non_target_limit, BUILDER.TALK_ANCHOR_MAX_AGE)
+
     def test_opt_in_extends_allowlisted_climax_keys_only(self) -> None:
         row = {"script_handle": "0x0406d43c", "ip": "447558"}
-        with patch.dict(os.environ, {BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE_ENV: "1"}, clear=False):
+        with patch.dict(
+            os.environ,
+            {
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_ENV: "0",
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE_ENV: "1",
+            },
+            clear=False,
+        ):
             limit = BUILDER._dialogue_anchor_age_limit("CLIMAX.SCN", row, "timeline_talkat_anchor")
         self.assertEqual(limit, BUILDER.EXPERIMENT_CLIMAX_TALKAT_MAX_AGE)
 
     def test_opt_in_does_not_extend_non_allowlisted_or_talk(self) -> None:
         non_allowlisted = {"script_handle": "0x0406d43c", "ip": "447559"}
         allowlisted = {"script_handle": "0x0406d43c", "ip": "447558"}
-        with patch.dict(os.environ, {BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE_ENV: "1"}, clear=False):
+        with patch.dict(
+            os.environ,
+            {
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_ENV: "0",
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE_ENV: "1",
+            },
+            clear=False,
+        ):
             talkat_limit = BUILDER._dialogue_anchor_age_limit("CLIMAX.SCN", non_allowlisted, "timeline_talkat_anchor")
             talk_limit = BUILDER._dialogue_anchor_age_limit("CLIMAX.SCN", allowlisted, "timeline_talk_anchor")
         self.assertEqual(talkat_limit, BUILDER.TALK_ANCHOR_MAX_AGE)
         self.assertEqual(talk_limit, BUILDER.TALK_ANCHOR_MAX_AGE)
+
+    def test_when_both_flags_enabled_age15_takes_precedence(self) -> None:
+        row = {"script_handle": "0x0406d43c", "ip": "447558"}
+        with patch.dict(
+            os.environ,
+            {
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE13_ONE_IP_ENV: "1",
+                BUILDER.EXPERIMENT_CLIMAX_TALKAT_AGE_ENV: "1",
+            },
+            clear=False,
+        ):
+            limit = BUILDER._dialogue_anchor_age_limit("CLIMAX.SCN", row, "timeline_talkat_anchor")
+        self.assertEqual(limit, BUILDER.EXPERIMENT_CLIMAX_TALKAT_MAX_AGE)
 
 
 if __name__ == "__main__":
