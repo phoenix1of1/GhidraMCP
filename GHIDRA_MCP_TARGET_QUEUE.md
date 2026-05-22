@@ -765,3 +765,33 @@ Any of the following is a good outcome:
    - baseline validator failure, or
    - non-empty safe triage candidate set, or
    - new trusted provenance edge.
+
+## Cycle Log 2026-05-22 (Controlled Token-Broadening Probe)
+
+### Probe Setup
+
+- Command:
+   - `python scripts/run_safe_waittime_cycle.py --require-tokens TALK,TALKAT,PLAY --select smallest`
+- Scope control remained unchanged:
+   - triage-first
+   - one-family diagnostic maximum
+   - no trust-policy relaxation
+
+### Probe Result
+
+- Selected family: `tail1=PLAYSAMPLE|stack_prefix_imm=2`
+- Scene/count: `scene_count=1`, `rows_analyzed=1`
+- Diagnostic outcome:
+   - `carry_viability_counts: { carry_not_viable: 1 }`
+   - `nearest_anchor_type_counts: { none: 1 }`
+- Decision: `NO-GO` for promotion from this probe.
+
+### Safety Verification
+
+- `validate_static_progress_baseline.py`: `all_checks_pass: true`
+- `run_ci_verify.ps1`: dry snapshot drift check passed; regression suite passed (`Ran 51 tests ... OK`).
+
+### Follow-On Guidance
+
+- Keep default token gate (`TALK,TALKAT`) for routine cycles.
+- Reserve broader-token probes for explicit, one-off diagnostics with full gate reruns.
