@@ -70,6 +70,7 @@ def triage(
     candidates: list[dict[str, Any]] = []
     rejected_counts = defaultdict(int)
     rejected_examples: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    one_off_probe_candidates: list[dict[str, Any]] = []
 
     def _record_rejection(reason: str, bucket: dict[str, Any], scene_count: int) -> None:
         rejected_counts[reason] += 1
@@ -99,6 +100,17 @@ def triage(
             continue
         if norm_tokens and not any(token in signature_upper for token in norm_tokens):
             _record_rejection("missing_required_anchor_token", bucket, scene_count)
+            if scene_count <= max_scene_count and any(token in signature_upper for token in ("PLAY", "WAITTIME", "WAITFRAME")):
+                one_off_probe_candidates.append(
+                    {
+                        "family_kind": bucket["family_kind"],
+                        "family_signature": signature,
+                        "count": bucket["count"],
+                        "scene_count": scene_count,
+                        "scenes": sorted(bucket["scenes"]),
+                        "reason": "missing_required_anchor_token",
+                    }
+                )
             continue
 
         candidates.append(
@@ -113,6 +125,7 @@ def triage(
         )
 
     candidates.sort(key=lambda item: (item["scene_count"], item["count"], item["family_kind"]), reverse=False)
+    one_off_probe_candidates.sort(key=lambda item: (item["scene_count"], item["count"], item["family_kind"], item["family_signature"]))
 
     summary = {
         "base": str(base),
@@ -124,6 +137,7 @@ def triage(
         "candidate_count": len(candidates),
         "rejected_counts": dict(rejected_counts),
         "rejected_examples": dict(rejected_examples),
+        "recommended_one_off_probes": one_off_probe_candidates[:10],
         "top_candidates": candidates[:10],
     }
     return candidates, summary

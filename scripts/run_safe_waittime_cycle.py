@@ -136,6 +136,7 @@ def main() -> int:
                     "candidate_count": int(summary.get("candidate_count", 0)),
                     "rejected_counts": summary.get("rejected_counts", {}),
                     "rejected_examples": summary.get("rejected_examples", {}),
+                    "recommended_one_off_probes": summary.get("recommended_one_off_probes", []),
                     "action": "diagnostics_skipped",
                 },
                 indent=2,
