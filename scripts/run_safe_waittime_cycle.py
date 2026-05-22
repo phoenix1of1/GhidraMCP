@@ -134,6 +134,8 @@ def main() -> int:
                     "status": "no_safe_candidate",
                     "triage_summary": str(summary_path),
                     "candidate_count": int(summary.get("candidate_count", 0)),
+                    "rejected_counts": summary.get("rejected_counts", {}),
+                    "rejected_examples": summary.get("rejected_examples", {}),
                     "action": "diagnostics_skipped",
                 },
                 indent=2,

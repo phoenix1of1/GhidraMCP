@@ -69,6 +69,22 @@ def triage(
     norm_tokens = [token.upper() for token in require_tokens]
     candidates: list[dict[str, Any]] = []
     rejected_counts = defaultdict(int)
+    rejected_examples: dict[str, list[dict[str, Any]]] = defaultdict(list)
+
+    def _record_rejection(reason: str, bucket: dict[str, Any], scene_count: int) -> None:
+        rejected_counts[reason] += 1
+        examples = rejected_examples[reason]
+        if len(examples) >= 5:
+            return
+        examples.append(
+            {
+                "family_kind": bucket["family_kind"],
+                "family_signature": bucket["family_signature"],
+                "count": bucket["count"],
+                "scene_count": scene_count,
+                "scenes": sorted(bucket["scenes"]),
+            }
+        )
 
     for (_kind, _sig), bucket in grouped.items():
         signature = bucket["family_signature"]
@@ -76,13 +92,13 @@ def triage(
         signature_upper = signature.upper()
 
         if signature in exclude_families:
-            rejected_counts["excluded_already_tested"] += 1
+            _record_rejection("excluded_already_tested", bucket, scene_count)
             continue
         if scene_count > max_scene_count:
-            rejected_counts["too_broad_scene_count"] += 1
+            _record_rejection("too_broad_scene_count", bucket, scene_count)
             continue
         if norm_tokens and not any(token in signature_upper for token in norm_tokens):
-            rejected_counts["missing_required_anchor_token"] += 1
+            _record_rejection("missing_required_anchor_token", bucket, scene_count)
             continue
 
         candidates.append(
@@ -107,6 +123,7 @@ def triage(
         "excluded_families_count": len(exclude_families),
         "candidate_count": len(candidates),
         "rejected_counts": dict(rejected_counts),
+        "rejected_examples": dict(rejected_examples),
         "top_candidates": candidates[:10],
     }
     return candidates, summary
