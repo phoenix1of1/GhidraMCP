@@ -914,3 +914,23 @@ Any of the following is a good outcome:
 
 - triage_summary: `C:\Users\James\Desktop\Decompile\discworld_full_repo_package\outputs\full_playcomposite_pipeline\play_composite_export\waittime_frontier_candidate_summary.json`
 - diagnostic_summary: `C:\Users\James\Desktop\Decompile\discworld_full_repo_package\outputs\full_playcomposite_pipeline\play_composite_export\waittime_family_diagnostic_summary.json`
+
+## Cycle Log 2026-05-22T12:13:58+00:00 (Automated)
+
+### Outcome
+
+- status: `diagnostic_ran`
+- selected_source: `one_off_probe`
+- selected_family: `tail2=EVENT>PLAY|stack_prefix_imm=4`
+- diagnostic_exit_code: `0`
+- rows_analyzed: `1`
+
+### Signals
+
+- carry_viability_counts: `{"carry_not_viable": 1}`
+- nearest_anchor_type_counts: `{"none": 1}`
+
+### Artifacts
+
+- triage_summary: `C:\Users\James\Desktop\Decompile\discworld_full_repo_package\outputs\full_playcomposite_pipeline\play_composite_export\waittime_frontier_candidate_summary.json`
+- diagnostic_summary: `C:\Users\James\Desktop\Decompile\discworld_full_repo_package\outputs\full_playcomposite_pipeline\play_composite_export\waittime_family_diagnostic_summary.json`
