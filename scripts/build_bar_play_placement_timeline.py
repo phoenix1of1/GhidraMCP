@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import re
 import struct
 from collections import Counter
@@ -28,6 +29,13 @@ SCENE_ROOT = REPO_ROOT.parent / "clean-game" / "DISCWLD"
 POLY_RECORD_SIZE_T1 = 104
 TALKAT_ANCHOR_MAX_AGE = 12
 TALK_ANCHOR_MAX_AGE = 12
+EXPERIMENT_CLIMAX_TALKAT_AGE_ENV = "DISCWORLD_EXPERIMENT_CLIMAX_TALKAT_AGE15"
+EXPERIMENT_CLIMAX_TALKAT_MAX_AGE = 15
+EXPERIMENT_CLIMAX_TALKAT_EXTENSION_KEYS = {
+    ("CLIMAX.SCN", "0X0406D43C", 447558),
+    ("CLIMAX.SCN", "0X0406D449", 447571),
+    ("CLIMAX.SCN", "0X0406D456", 447584),
+}
 SCROLL_PREFIX_MAX_AGE = 10
 CUTBARN_SCROLL_PREFIX_SCENE = "CUTBARN.SCN"
 CUTBARN_SCROLL_PREFIX_SCRIPT = "0X23847917"
@@ -335,6 +343,20 @@ def _extract_talk_anchor_from_visible_stack(stack_top: str) -> tuple[int, int] |
     return anchor_x, anchor_y
 
 
+def _dialogue_anchor_age_limit(scene_name: str, row: dict[str, str], dialogue_source: str) -> int:
+    if dialogue_source != "timeline_talkat_anchor":
+        return TALK_ANCHOR_MAX_AGE
+    if os.environ.get(EXPERIMENT_CLIMAX_TALKAT_AGE_ENV, "") != "1":
+        return TALK_ANCHOR_MAX_AGE
+
+    ip_text = row.get("ip") or ""
+    ip = int(ip_text) if ip_text.isdigit() else -1
+    script = (row.get("script_handle") or "").strip().upper()
+    if (scene_name.upper(), script, ip) in EXPERIMENT_CLIMAX_TALKAT_EXTENSION_KEYS:
+        return max(TALK_ANCHOR_MAX_AGE, EXPERIMENT_CLIMAX_TALKAT_MAX_AGE)
+    return TALK_ANCHOR_MAX_AGE
+
+
 def _load_scheduler_talk_anchors(
     scheduler_csv: Path | None,
     scene_name: str,
@@ -565,7 +587,9 @@ def _load_timeline_play_candidates_with_motion(
                 elif current_motion is not None and (idx - current_motion_idx) <= 24:
                     use_xy = current_motion
                     source = "timeline_motion"
-                elif current_dialogue_anchor is not None and (idx - current_dialogue_idx) <= TALK_ANCHOR_MAX_AGE:
+                elif current_dialogue_anchor is not None and (
+                    idx - current_dialogue_idx
+                ) <= _dialogue_anchor_age_limit(scene_name, row, current_dialogue_source):
                     use_xy = current_dialogue_anchor
                     source = current_dialogue_source
                 elif (
