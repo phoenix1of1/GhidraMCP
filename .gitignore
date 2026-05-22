@@ -1,2 +1,11 @@
 __pycache__/
 *.pyc
+
+# Generated pipeline outputs and local export artifacts
+outputs/
+*_character_asset_pack/
+*_composited_sprite_preview_outputs/
+*_composited_sprite_preview_outputs.zip
+
+# Local extractor runtime logs
+extractor/discworld_extract_last_helper.log
