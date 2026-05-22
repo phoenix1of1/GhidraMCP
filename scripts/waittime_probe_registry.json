@@ -25,6 +25,19 @@
       "last_rows_analyzed": 1,
       "last_run_utc": "2026-05-22T11:45:32.891105+00:00",
       "last_status": "diagnostic_ran"
+    },
+    "tail1=WAITFRAME|stack_prefix_imm=0": {
+      "attempts": 1,
+      "last_carry_viability_counts": {
+        "carry_viable": 1
+      },
+      "last_exit_code": 0,
+      "last_nearest_anchor_type_counts": {
+        "none": 1
+      },
+      "last_rows_analyzed": 1,
+      "last_run_utc": "2026-05-22T12:07:00.088784+00:00",
+      "last_status": "diagnostic_ran"
     }
   },
   "version": 1
