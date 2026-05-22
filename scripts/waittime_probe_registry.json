@@ -90,6 +90,19 @@
       "last_rows_analyzed": 1,
       "last_run_utc": "2026-05-22T12:13:58.334235+00:00",
       "last_status": "diagnostic_ran"
+    },
+    "tail2=KILLTAG>PLAY|stack_prefix_imm=0": {
+      "attempts": 1,
+      "last_carry_viability_counts": {
+        "carry_viable": 1
+      },
+      "last_exit_code": 0,
+      "last_nearest_anchor_type_counts": {
+        "TALK": 1
+      },
+      "last_rows_analyzed": 1,
+      "last_run_utc": "2026-05-22T12:14:42.183472+00:00",
+      "last_status": "diagnostic_ran"
     }
   },
   "version": 1
