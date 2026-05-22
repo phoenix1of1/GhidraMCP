@@ -12,6 +12,7 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE = REPO_ROOT / "outputs" / "full_playcomposite_pipeline"
 DEFAULT_PROBE_REGISTRY = REPO_ROOT / "scripts" / "waittime_probe_registry.json"
+DEFAULT_QUEUE_LOG = REPO_ROOT / "GHIDRA_MCP_TARGET_QUEUE.md"
 
 
 def _parse_csv(raw: str) -> list[str]:
@@ -82,6 +83,52 @@ def _record_one_off_probe_result(registry: dict[str, Any], family: str, result: 
     }
 
 
+def _append_queue_log_entry(path: Path, payload: dict[str, Any]) -> None:
+    timestamp = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    header = f"## Cycle Log {timestamp} (Automated)"
+
+    lines = [
+        "",
+        header,
+        "",
+        "### Outcome",
+        "",
+        f"- status: `{payload.get('status', '')}`",
+        f"- selected_source: `{payload.get('selected_source', 'none')}`",
+        f"- selected_family: `{payload.get('selected_family', 'none')}`",
+        f"- diagnostic_exit_code: `{payload.get('diagnostic_exit_code', '')}`",
+        f"- rows_analyzed: `{payload.get('rows_analyzed', 0)}`",
+        "",
+        "### Signals",
+        "",
+        f"- carry_viability_counts: `{json.dumps(payload.get('carry_viability_counts', {}), sort_keys=True)}`",
+        f"- nearest_anchor_type_counts: `{json.dumps(payload.get('nearest_anchor_type_counts', {}), sort_keys=True)}`",
+    ]
+
+    if payload.get("status") == "no_safe_candidate":
+        lines.extend(
+            [
+                f"- candidate_count: `{payload.get('candidate_count', 0)}`",
+                f"- one_off_probe_enabled: `{payload.get('one_off_probe_enabled', False)}`",
+                f"- one_off_probe_skip_reason: `{payload.get('one_off_probe_skip_reason', 'none')}`",
+            ]
+        )
+
+    lines.extend(
+        [
+            "",
+            "### Artifacts",
+            "",
+            f"- triage_summary: `{payload.get('triage_summary', '')}`",
+            f"- diagnostic_summary: `{payload.get('diagnostic_summary', 'none')}`",
+        ]
+    )
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write("\n".join(lines) + "\n")
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
@@ -148,6 +195,17 @@ def _build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=DEFAULT_PROBE_REGISTRY,
         help="Path to persistent one-off probe registry JSON.",
+    )
+    parser.add_argument(
+        "--log-queue-entry",
+        action="store_true",
+        help="Append an automated cycle summary entry to the queue log document.",
+    )
+    parser.add_argument(
+        "--queue-log",
+        type=Path,
+        default=DEFAULT_QUEUE_LOG,
+        help="Queue log markdown file for automated cycle entries.",
     )
     return parser
 
@@ -225,23 +283,29 @@ def main() -> int:
         if args.allow_one_off_probe:
             recommendations = summary.get("recommended_one_off_probes", [])
             skipped_reason = "no_recommended_one_off_probe" if not recommendations else "all_recommended_one_off_probes_already_tested"
-        print(
-            json.dumps(
-                {
-                    "status": "no_safe_candidate",
-                    "triage_summary": str(summary_path),
-                    "candidate_count": int(summary.get("candidate_count", 0)),
-                    "rejected_counts": summary.get("rejected_counts", {}),
-                    "rejected_examples": summary.get("rejected_examples", {}),
-                    "recommended_one_off_probes": summary.get("recommended_one_off_probes", []),
-                    "one_off_probe_enabled": bool(args.allow_one_off_probe),
-                    "one_off_probe_skip_reason": skipped_reason,
-                    "probe_registry": str(registry_path),
-                    "action": "diagnostics_skipped",
-                },
-                indent=2,
-            )
-        )
+        no_candidate_result = {
+            "status": "no_safe_candidate",
+            "selected_source": "none",
+            "selected_family": "none",
+            "diagnostic_exit_code": 0,
+            "rows_analyzed": 0,
+            "carry_viability_counts": {},
+            "nearest_anchor_type_counts": {},
+            "triage_summary": str(summary_path),
+            "candidate_count": int(summary.get("candidate_count", 0)),
+            "rejected_counts": summary.get("rejected_counts", {}),
+            "rejected_examples": summary.get("rejected_examples", {}),
+            "recommended_one_off_probes": summary.get("recommended_one_off_probes", []),
+            "one_off_probe_enabled": bool(args.allow_one_off_probe),
+            "one_off_probe_skip_reason": skipped_reason,
+            "probe_registry": str(registry_path),
+            "action": "diagnostics_skipped",
+        }
+        if args.log_queue_entry:
+            _append_queue_log_entry(args.queue_log.resolve(), no_candidate_result)
+            no_candidate_result["queue_log_updated"] = str(args.queue_log.resolve())
+
+        print(json.dumps(no_candidate_result, indent=2))
         return 0
 
     candidates = _select_candidate(candidates, args.select)
@@ -290,6 +354,10 @@ def main() -> int:
     if source == "one_off_probe":
         _record_one_off_probe_result(probe_registry, family, result)
         _save_probe_registry(registry_path, probe_registry)
+
+    if args.log_queue_entry:
+        _append_queue_log_entry(args.queue_log.resolve(), result)
+        result["queue_log_updated"] = str(args.queue_log.resolve())
 
     print(json.dumps(result, indent=2))
     return 0 if diag_rc == 0 else diag_rc

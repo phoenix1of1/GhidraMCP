@@ -72,6 +72,32 @@ class RunSafeWaittimeCycleHelpersTest(unittest.TestCase):
             payload = json.loads(registry_path.read_text(encoding="utf-8"))
             self.assertIn("one_off_probes", payload)
 
+    def test_queue_log_append_writes_structured_entry(self):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            queue_log = Path(tmp_dir) / "QUEUE.md"
+            queue_log.write_text("# Queue\n", encoding="utf-8")
+
+            MODULE._append_queue_log_entry(
+                queue_log,
+                {
+                    "status": "diagnostic_ran",
+                    "selected_source": "one_off_probe",
+                    "selected_family": "tail1=PLAY|stack_prefix_imm=2",
+                    "diagnostic_exit_code": 0,
+                    "rows_analyzed": 1,
+                    "carry_viability_counts": {"carry_not_viable": 1},
+                    "nearest_anchor_type_counts": {"none": 1},
+                    "triage_summary": "C:/tmp/triage.json",
+                    "diagnostic_summary": "C:/tmp/diag.json",
+                },
+            )
+
+            text = queue_log.read_text(encoding="utf-8")
+            self.assertIn("## Cycle Log", text)
+            self.assertIn("### Outcome", text)
+            self.assertIn("selected_source", text)
+            self.assertIn("tail1=PLAY|stack_prefix_imm=2", text)
+
 
 if __name__ == "__main__":
     unittest.main()
