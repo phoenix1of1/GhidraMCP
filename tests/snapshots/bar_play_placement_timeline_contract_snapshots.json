@@ -1,0 +1,75 @@
+{
+  "BAR.SCN": {
+    "event_count_total": 14,
+    "background_events": 1,
+    "play_events": 13,
+    "nominal_seeded_events": 2,
+    "fallback_events": 11,
+    "decoded_nonzero_events": 2,
+    "decoded_zero_events": 11,
+    "block_snap_applied_events": 0,
+    "play_unique_films": 13,
+    "play_film_handles": [
+      "0x20836F6C",
+      "0x20836FB4",
+      "0x20836FE8",
+      "0x208374D4",
+      "0x20837570",
+      "0x208375A4",
+      "0x208375D8",
+      "0x2083760C",
+      "0x20837640",
+      "0x20837674",
+      "0x208376A8",
+      "0x2083A470",
+      "0x2083A4A4"
+    ],
+    "first_events": [
+      {
+        "output_frame": 0,
+        "event_seq": 0,
+        "libcall": "BACKGROUND",
+        "film": "0x20834B24",
+        "x_used": 0,
+        "y_used": 0,
+        "position_source": "background"
+      },
+      {
+        "output_frame": 1,
+        "event_seq": 1,
+        "libcall": "PLAY",
+        "film": "0x208374D4",
+        "x_used": 80,
+        "y_used": 180,
+        "position_source": "fallback_visual_validation"
+      },
+      {
+        "output_frame": 2,
+        "event_seq": 2,
+        "libcall": "PLAY",
+        "film": "0x20837570",
+        "x_used": 170,
+        "y_used": 180,
+        "position_source": "fallback_visual_validation"
+      },
+      {
+        "output_frame": 3,
+        "event_seq": 3,
+        "libcall": "PLAY",
+        "film": "0x208375A4",
+        "x_used": 260,
+        "y_used": 180,
+        "position_source": "fallback_visual_validation"
+      },
+      {
+        "output_frame": 4,
+        "event_seq": 4,
+        "libcall": "PLAY",
+        "film": "0x208375D8",
+        "x_used": 350,
+        "y_used": 180,
+        "position_source": "fallback_visual_validation"
+      }
+    ]
+  }
+}

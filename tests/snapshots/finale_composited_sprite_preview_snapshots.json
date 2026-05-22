@@ -1,0 +1,15 @@
+{
+  "FINALE.SCN": {
+    "events_composited": 27,
+    "character_assets_available": true,
+    "rendered_sprite_count": 27,
+    "missing_asset_count": 0,
+    "position_source_counts": {
+      "fallback_visual_validation": 12,
+      "timeline_actor_state": 12,
+      "timeline_offset": 2,
+      "trace_stack_top": 1
+    },
+    "output_preview": "finale_composited_sprite_preview.png"
+  }
+}

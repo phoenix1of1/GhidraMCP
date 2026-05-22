@@ -1,0 +1,15 @@
+{
+  "BAR.SCN": {
+    "composited_sprite_preview": true,
+    "events_composited": "auto-counted by script",
+    "limitations": [
+      "Uses first frame of each PLAY event; does not animate.",
+      "Z-order is event order; not true runtime layering.",
+      "No palette/effect logic applied (not yet decoded for BAR).",
+      "No runtime BLOCK snap; uses nominal/fallback positions."
+    ],
+    "outputs": {
+      "preview": "bar_composited_sprite_preview.png"
+    }
+  }
+}
