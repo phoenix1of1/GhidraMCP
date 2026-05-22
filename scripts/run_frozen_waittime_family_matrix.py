@@ -5,6 +5,7 @@ import argparse
 import json
 import subprocess
 import sys
+import time
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any
@@ -41,7 +42,16 @@ def _diag_signals(base: Path) -> tuple[int, int, int]:
     summary_path = base / "play_composite_export" / "waittime_family_diagnostic_summary.json"
     if not summary_path.exists():
         return 0, 0, 0
-    payload = _read_json(summary_path)
+    payload: dict[str, Any] | None = None
+    for _ in range(10):
+        try:
+            payload = _read_json(summary_path)
+            break
+        except json.JSONDecodeError:
+            # Diagnostic writer is occasionally observed between truncate/write.
+            time.sleep(0.1)
+    if payload is None:
+        return 0, 0, 0
     rows = int(payload.get("rows_analyzed") or 0)
     carry = int((payload.get("carry_viability_counts") or {}).get("carry_viable") or 0)
     talk = int((payload.get("nearest_anchor_type_counts") or {}).get("TALK") or 0)
