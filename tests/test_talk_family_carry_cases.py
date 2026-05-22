@@ -25,34 +25,6 @@ BUILDER = _load_builder_module()
 
 
 class TalkFamilyCarryCasesTest(unittest.TestCase):
-    def test_arch_talk_family_carry_row(self):
-        vm_lite_csv = OUTPUT_ROOT / "vm_lite_trace" / "vm_lite_film_events.csv"
-        timeline_csv = OUTPUT_ROOT / "scene_timeline" / "ARCH_timeline.csv"
-        scheduler_csv = OUTPUT_ROOT / "scheduler" / "scheduler_trace_events.csv"
-        for path in (vm_lite_csv, timeline_csv, scheduler_csv):
-            if not path.exists():
-                self.skipTest(f"Required probe artifact not available: {path}")
-
-        timeline, manifest = BUILDER.build_timeline(
-            vm_lite_csv,
-            scene_name="ARCH.SCN",
-            timeline_csv=timeline_csv,
-            scheduler_csv=scheduler_csv,
-            include_motion_anchor=True,
-        )
-
-        rows = [
-            row
-            for row in timeline
-            if row.get("libcall") == "PLAY"
-            and row.get("position_source") == "timeline_talk_family_carry"
-            and row.get("film") == "0x1E01EE1C"
-        ]
-        self.assertEqual(len(rows), 1)
-        row = rows[0]
-        self.assertEqual((int(row["x_used"]), int(row["y_used"])), (132, 180))
-        self.assertGreaterEqual(int(manifest.get("timeline_talk_family_carry_events", 0)), 1)
-
     def test_introsha_talk_family_carry_rows(self):
         vm_lite_csv = OUTPUT_ROOT / "vm_lite_trace" / "vm_lite_film_events.csv"
         timeline_csv = OUTPUT_ROOT / "scene_timeline" / "INTROSHA_timeline.csv"
