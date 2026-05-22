@@ -60,6 +60,36 @@ def _parse_families(raw: str) -> list[str]:
     return ordered
 
 
+def _load_top_families_from_shortlist(base: Path, limit: int, family_kind: str) -> list[str]:
+    if limit <= 0:
+        return []
+
+    shortlist_json = base / "play_composite_export" / "residual_signature_shortlist.json"
+    if not shortlist_json.exists():
+        return []
+
+    try:
+        payload = _read_json(shortlist_json)
+    except Exception:
+        return []
+
+    top = payload.get("top_family_signatures") or []
+    out: list[str] = []
+    for row in top:
+        if not isinstance(row, dict):
+            continue
+        kind = str(row.get("family_kind") or "")
+        sig = str(row.get("family_signature") or "").strip()
+        if not sig:
+            continue
+        if family_kind != "any" and kind != family_kind:
+            continue
+        out.append(sig)
+        if len(out) >= limit:
+            break
+    return out
+
+
 def _run_one(
     python_exe: str,
     frozen_base: Path,
@@ -113,8 +143,23 @@ def _build_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--families",
         type=str,
-        required=True,
+        default="",
         help="Comma-separated family signatures to evaluate on the same frozen base.",
+    )
+    p.add_argument(
+        "--auto-top-families",
+        type=int,
+        default=0,
+        help=(
+            "Opt-in: also include top family signatures from residual_signature_shortlist.json "
+            "up to this count. Default 0 keeps behavior unchanged."
+        ),
+    )
+    p.add_argument(
+        "--auto-family-kind",
+        choices=["any", "tail1", "tail2"],
+        default="any",
+        help="When --auto-top-families is used, filter imported signatures by family kind.",
     )
     p.add_argument("--iterations", type=int, default=10, help="Iterations per family.")
     return p
@@ -129,8 +174,26 @@ def main() -> int:
         return 2
 
     families = _parse_families(args.families)
+    auto_families = _load_top_families_from_shortlist(
+        frozen_base,
+        limit=max(args.auto_top_families, 0),
+        family_kind=args.auto_family_kind,
+    )
+    for fam in auto_families:
+        if fam not in families:
+            families.append(fam)
+
     if not families:
-        print(json.dumps({"status": "no_families", "families": args.families}, indent=2))
+        print(
+            json.dumps(
+                {
+                    "status": "no_families",
+                    "families": args.families,
+                    "auto_top_families": int(args.auto_top_families),
+                },
+                indent=2,
+            )
+        )
         return 2
 
     results: list[MatrixIteration] = []
@@ -162,6 +225,7 @@ def main() -> int:
         "status": "completed",
         "frozen_base": str(frozen_base),
         "families": families,
+        "auto_families": auto_families,
         "iterations_per_family": max(args.iterations, 0),
         "family_summaries": family_summaries,
         "matrix": [asdict(r) for r in results],
